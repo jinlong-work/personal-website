@@ -14,10 +14,7 @@
 
         <li class="nav__item">
           <div class="nav__link" @click="changeLanguage">
-            <i
-              class="fa-solid fa-language nav__icon nav__icon--translate"
-              
-            ></i>
+            <i class="fa-solid fa-language nav__icon nav__icon--translate"></i>
             <a class="nav__link" id="translate">中/en</a>
           </div>
         </li>
@@ -92,6 +89,7 @@ const changeLanguage = () => {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  transition: all 0.3s ease;
   @include min-screen(768px) {
     height: calc(var(--header-height) + 1.5rem);
     column-gap: 1rem;
@@ -104,6 +102,12 @@ const changeLanguage = () => {
   &__logo {
     color: var(--title-color);
     font-weight: var(--font-medium);
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+    &:hover {
+      color: var(--first-color);
+      transform: scale(1.05);
+    }
   }
   &__menu {
     &--show {
@@ -119,9 +123,9 @@ const changeLanguage = () => {
       width: 100%;
       background-color: var(--body-color);
       padding: 2rem 1.5rem 4rem;
-      box-shadow: 0 -1px 4px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 -1px 10px rgba(0, 0, 0, 0.1);
       border-radius: 1.5rem 1.5rem 0 0;
-      transition: 0.3s;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
     @include max-screen(350px) {
       padding: 2rem 0.25rem 4rem;
@@ -155,11 +159,28 @@ const changeLanguage = () => {
     font-weight: var(--font-medium);
     cursor: pointer;
     text-transform: capitalize;
+    transition: all 0.3s ease;
+    position: relative;
     &:hover {
       color: var(--first-color);
       svg {
         fill: var(--first-color);
+        transform: translateY(-2px);
       }
+    }
+    &:after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 2px;
+      background-color: var(--first-color);
+      transition: width 0.3s ease;
+    }
+    &:hover:after {
+      width: 100%;
     }
   }
   &__btns {
@@ -171,11 +192,13 @@ const changeLanguage = () => {
     font-weight: var(--font-medium);
     font-size: 1.1rem;
     cursor: pointer;
+    transition: all 0.3s ease;
     @include min-screen(768px) {
       display: none;
     }
     &:hover {
       color: var(--first-color);
+      transform: rotate(90deg);
     }
   }
   &__close {
@@ -184,8 +207,10 @@ const changeLanguage = () => {
     bottom: 0.5rem;
     cursor: pointer;
     color: var(--first-color);
+    transition: all 0.3s ease;
     &:hover {
       color: var(--first-color-alt);
+      transform: scale(1.1);
     }
     @include min-screen(768px) {
       display: none;
@@ -193,6 +218,7 @@ const changeLanguage = () => {
   }
   &__icon {
     font-size: 1.2rem;
+    transition: all 0.3s ease;
     &--translate {
       @include min-screen(768px) {
         display: block !important;
@@ -208,8 +234,10 @@ const changeLanguage = () => {
     color: var(--title-color);
     margin-right: var(--mb-1);
     cursor: pointer;
+    transition: all 0.3s ease;
     &:hover {
       color: var(--first-color);
+      transform: rotate(180deg);
     }
     @include min-screen(768px) {
       font-size: 1.4rem;

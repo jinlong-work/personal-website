@@ -99,8 +99,10 @@ writeText(titleText, 'write')
   &__icon {
     font-size: 1.3rem;
     color: var(--first-color);
+    transition: all 0.3s ease;
     &:hover {
       color: var(--first-color-alt);
+      transform: translateY(-3px);
     }
   }
 
@@ -111,15 +113,20 @@ writeText(titleText, 'write')
 
   &__three {
     height: 240px;
+    transition: all 0.5s ease;
     @include min-screen(568px) {
       order: 1;
       height: 340px;
+    }
+    &:hover {
+      transform: scale(1.05);
     }
   }
 
   &__data {
     max-width: 425px;
     grid-column: 1/3;
+    animation: fadeIn 0.8s ease forwards;
     @include min-screen(568px) {
       grid-column: initial;
     }
@@ -129,8 +136,8 @@ writeText(titleText, 'write')
   }
   @keyframes mydeamon {
     0% {
-      transform: scale(3); //scale代表闪烁的体型变化，其他倾斜等样式自行搜索
-      opacity: 1; //透明程度
+      transform: scale(3);
+      opacity: 1;
     }
 
     100% {
@@ -141,6 +148,11 @@ writeText(titleText, 'write')
   &__title {
     font-size: var(--big-font-size);
     margin: 0.4rem 0;
+    font-weight: var(--font-semi-bold);
+    background: linear-gradient(90deg, var(--first-color), var(--first-color-alt));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
 
   &__subtitle {
@@ -152,15 +164,16 @@ writeText(titleText, 'write')
 
   &__description {
     margin-bottom: var(--mb-2);
+    line-height: 1.6;
   }
 
   &__scroll {
     text-align: center;
     a {
       flex-direction: column;
+      transition: all 0.3s ease;
     }
     color: var(--first-color);
-    transition: 0.3s;
     span {
       font-size: var(--small-font-size);
       color: var(--title-color);
@@ -168,11 +181,18 @@ writeText(titleText, 'write')
     }
     &:hover {
       transform: translateY(0.25rem);
+      a {
+        color: var(--first-color-alt);
+      }
     }
   }
   &__arrow {
     font-size: 2rem;
     font-weight: 1000;
+    transition: all 0.3s ease;
+    &:hover {
+      transform: translateY(5px);
+    }
   }
 }
 </style>

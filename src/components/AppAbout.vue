@@ -41,6 +41,7 @@
   }
   &__data {
     max-width: 344px;
+    animation: fadeIn 0.8s ease forwards;
     @include min-screen(768px) {
       margin: 0 auto;
       align-self: center;
@@ -52,15 +53,22 @@
     border-radius: 100%;
     justify-self: center;
     align-self: center;
+    transition: all 0.5s ease;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
     @include min-screen(768px) {
       width: 170px;
       height: 200px;
+    }
+    &:hover {
+      transform: scale(1.05);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
     }
   }
 
   &__description {
     text-align: center;
     margin-bottom: var(--mb-2-5);
+    line-height: 1.6;
     @include min-screen(768px) {
       text-align: initial;
     }
@@ -74,17 +82,23 @@
   &__info-item {
     width: 100px;
     height: 50px;
+    transition: all 0.3s ease;
+    &:hover {
+      transform: translateY(-5px);
+    }
   }
 
   &__info-title {
     font-size: var(--h2-font-size);
     font-weight: var(--font-semi-bold);
-    color: var(--title-color);
+    color: var(--first-color);
     margin-bottom: var(--mb-0-5);
+    transition: all 0.3s ease;
   }
 
   &__info-name {
     font-size: var(--smaller-font-size);
+    color: var(--text-color);
   }
 
   &__info-title,
