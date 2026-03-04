@@ -18,7 +18,7 @@ const renderer = new THREE.WebGLRenderer({
   antialias: true
 })
 renderer.useLegacyLights = true
-renderer.outputEncoding = THREE.sRGBEncoding
+renderer.outputEncoding = THREE.SRGBColorSpace
 renderer.shadowMap.enabled = true
 renderer.shadowMap.type = THREE.PCFSoftShadowMap
 renderer.setSize(300, 300) // 初始大小
@@ -49,7 +49,7 @@ const setScreen = () => {
   videoTexture.minFilter = THREE.NearestFilter
   videoTexture.magFilter = THREE.NearestFilter
   videoTexture.generateMipmaps = false
-  videoTexture.encoding = THREE.sRGBEncoding
+  videoTexture.encoding = THREE.SRGBColorSpace
   // console.log(screen.material)
   screen.material = new THREE.MeshStandardMaterial({
     map: videoTexture
