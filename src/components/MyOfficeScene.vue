@@ -1,12 +1,12 @@
 <template>
-  <div class="three-container" ref="divDom"></div>
+  <div class="three-container" ref="divDomRef"></div>
 </template>
 <script setup>
 import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
-import { onMounted, getCurrentInstance, watch } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { useThemeState } from '@/store'
 import gsap from 'gsap'
 // import GUI from 'lil-gui'
@@ -26,6 +26,8 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 /*==================== 加载模型 ====================*/
 let chair = null
 let screen = null
+// 引用DOM元素
+const divDomRef = ref(null)
 // 设置椅子旋转
 const chairAnimate = () => {
   gsap.to(chair.rotation, {
@@ -164,19 +166,35 @@ const size = {
   frustrum: 10,
   pixelRatio: Math.min(window.devicePixelRatio, 2)
 }
-// 获取页面的实例对象
-const pageInstance = getCurrentInstance()
 const initSize = () => {
-  size.width = pageInstance.refs.divDom.offsetWidth
-  size.height = pageInstance.refs.divDom.offsetHeight
+  if (!divDomRef.value) return
+
+  // 获取父元素的尺寸
+  const parentWidth = divDomRef.value.offsetWidth
+  const parentHeight = divDomRef.value.offsetHeight
+
+  // 限制canvas大小，确保不会超过父元素
+  size.width = Math.min(parentWidth, 300) // 限制最大宽度为300px
+  size.height = Math.min(parentHeight, 300) // 限制最大高度为300px
+
+  // 保持宽高比
+  if (size.width / size.height > 1) {
+    size.width = size.height
+  } else {
+    size.height = size.width
+  }
+
   size.aspect = size.width / size.height
-  size.pixelRatio = Math.min(window.devicePixelRatio, 3)
-  // camera.aspect = size.aspect
+  size.pixelRatio = Math.min(window.devicePixelRatio, 2)
+
+  // 更新相机参数
   camera.left = (-size.aspect * size.frustrum) / 2
   camera.right = (size.aspect * size.frustrum) / 2
   camera.top = size.frustrum / 2
   camera.bottom = -size.frustrum / 2
   camera.updateProjectionMatrix()
+
+  // 设置渲染器大小
   renderer.setSize(size.width, size.height)
   renderer.setPixelRatio(size.pixelRatio)
 }
@@ -233,10 +251,12 @@ watch(theme, () => {
 onMounted(() => {
   // 确保DOM元素已经渲染
   setTimeout(() => {
+    if (!divDomRef.value) return
+
     initSize()
     animate()
     switchTheme()
-    pageInstance.refs.divDom.appendChild(renderer.domElement)
+    divDomRef.value.appendChild(renderer.domElement)
   }, 100)
 })
 </script>
