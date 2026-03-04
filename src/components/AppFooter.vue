@@ -1,4 +1,4 @@
-                                   <template>
+<template>
   <footer class="footer" id="contact">
     <div class="footer__bg">
       <div class="footer__container container grid">
