@@ -25,14 +25,18 @@
           <p class="home__description">
             {{ $t('home__description') }}
           </p>
-          <a href="#contact" class="button button-flex">
+          <a
+            href="#contact"
+            class="button button-flex"
+            @click="scrollToSection($event, '#contact')"
+          >
             <span>{{ $t('home__contact') }}</span>
             <i class="fa-solid fa-right-long button__icon"></i>
           </a>
         </div>
       </div>
       <div class="home__scroll">
-        <a href="#about" class="button--flex">
+        <a href="#about" class="button--flex" @click="scrollToSection($event, '#about')">
           <span>{{ $t('home__scroll-name') }}</span>
           <i class="fa-solid fa-arrow-down home__arrow"></i>
         </a>
@@ -72,6 +76,23 @@ const writeText = (text, type) => {
   }
 }
 writeText(titleText, 'write')
+
+// 平滑滚动到指定部分
+const scrollToSection = (event, href) => {
+  event.preventDefault()
+  const targetId = href.substring(1) // 移除 '#'
+  const targetElement = document.getElementById(targetId)
+
+  if (targetElement) {
+    const headerHeight = document.querySelector('.header')?.offsetHeight || 0
+    const targetPosition = targetElement.offsetTop - headerHeight
+
+    window.scrollTo({
+      top: targetPosition,
+      behavior: 'smooth'
+    })
+  }
+}
 </script>
 
 <style lang="scss" scoped>

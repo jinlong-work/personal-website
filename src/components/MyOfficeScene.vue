@@ -14,12 +14,15 @@ import gsap from 'gsap'
 const scene = new THREE.Scene()
 /*==================== 创建一个渲染器 ====================*/
 const renderer = new THREE.WebGLRenderer({
-  alpha: true
+  alpha: true,
+  antialias: true
 })
 renderer.useLegacyLights = true
 renderer.outputEncoding = THREE.sRGBEncoding
 renderer.shadowMap.enabled = true
 renderer.shadowMap.type = THREE.PCFSoftShadowMap
+renderer.setSize(300, 300) // 初始大小
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 /*==================== 加载模型 ====================*/
 let chair = null
 let screen = null
@@ -36,7 +39,7 @@ const chairAnimate = () => {
 // mac屏幕播放视频
 const setScreen = () => {
   const video = document.createElement('video')
-  video.src = '/3D/火影.mp4'
+  video.src = '/personal-website/3D/火影.mp4'
   video.muted = true
   video.playsInline = true
   video.autoplay = true
@@ -55,30 +58,45 @@ const setScreen = () => {
 // 加载glb模型
 const gltfLoader = new GLTFLoader()
 const dracoLoader = new DRACOLoader()
-dracoLoader.setDecoderPath('/draco/')
+dracoLoader.setDecoderPath('/personal-website/draco/')
 gltfLoader.setDRACOLoader(dracoLoader)
-gltfLoader.load('/3D/officeScene.glb', (glb) => {
-  console.log(glb.scene)
-  glb.scene.scale.set(1.8, 1.8, 1.8)
-  glb.scene.position.y = -1.5
-  // 获取椅子和电脑屏幕用于添加动画
-  glb.scene.children.forEach((item) => {
-    item.castShadow = true
-    item.receiveShadow = true
-    if (item.name === 'Chair') {
-      chair = item
-    } else if (item.name === 'mac-screen') {
-      screen = item
-    }
-  })
-  chairAnimate()
-  setScreen()
-  scene.add(glb.scene)
-  renderer.render(scene, camera)
-})
+gltfLoader.load(
+  '/personal-website/3D/officeScene.glb',
+  (glb) => {
+    console.log('模型加载成功', glb.scene)
+    glb.scene.scale.set(1.8, 1.8, 1.8)
+    glb.scene.position.y = -1.5
+    // 获取椅子和电脑屏幕用于添加动画
+    glb.scene.children.forEach((item) => {
+      item.castShadow = true
+      item.receiveShadow = true
+      if (item.name === 'Chair') {
+        chair = item
+      } else if (item.name === 'mac-screen') {
+        screen = item
+      }
+    })
+    chairAnimate()
+    setScreen()
+    scene.add(glb.scene)
+    renderer.render(scene, camera)
+  },
+  (progress) => {
+    console.log('加载进度:', (progress.loaded / progress.total) * 100 + '%')
+  },
+  (error) => {
+    console.error('模型加载失败:', error)
+    // 创建一个简单的立方体作为替代
+    const geometry = new THREE.BoxGeometry(2, 2, 2)
+    const material = new THREE.MeshStandardMaterial({ color: 0x00ff00 })
+    const cube = new THREE.Mesh(geometry, material)
+    scene.add(cube)
+    renderer.render(scene, camera)
+  }
+)
 /*==================== 创建相机 ====================*/
 // const camera = new THREE.PerspectiveCamera(45, 1, 1, 1000)
-const camera = new THREE.OrthographicCamera()
+const camera = new THREE.OrthographicCamera(-10, 10, 10, -10, 0.1, 1000)
 //设置相机位置
 camera.position.set(-9.72, 5.27, -2.25)
 //设置相机方向
@@ -213,10 +231,13 @@ watch(theme, () => {
   switchTheme()
 })
 onMounted(() => {
-  initSize()
-  animate()
-  switchTheme()
-  pageInstance.refs.divDom.appendChild(renderer.domElement)
+  // 确保DOM元素已经渲染
+  setTimeout(() => {
+    initSize()
+    animate()
+    switchTheme()
+    pageInstance.refs.divDom.appendChild(renderer.domElement)
+  }, 100)
 })
 </script>
 

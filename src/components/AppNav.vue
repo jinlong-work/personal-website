@@ -6,7 +6,7 @@
     <div :class="['nav__menu', menuShow ? 'nav__menu--show' : '']">
       <ul class="nav__list grid">
         <li class="nav__item" v-for="item in menuList" :key="item.name">
-          <a :href="item.href" class="nav__link">
+          <a :href="item.href" class="nav__link" @click="scrollToSection($event, item.href)">
             <i class="nav__icon" :class="[item.icon]"></i>
             <p>{{ $t(item.name) }}</p>
           </a>
@@ -78,6 +78,26 @@ const { locale } = useI18n()
 const changeLanguage = () => {
   locale.value = locale.value === 'zh' ? 'en' : 'zh'
   localStorage.setItem('i18n', locale.value)
+}
+
+// 平滑滚动到指定部分
+const scrollToSection = (event, href) => {
+  event.preventDefault()
+  const targetId = href.substring(1) // 移除 '#'
+  const targetElement = document.getElementById(targetId)
+
+  if (targetElement) {
+    const headerHeight = document.querySelector('.header')?.offsetHeight || 0
+    const targetPosition = targetElement.offsetTop - headerHeight
+
+    window.scrollTo({
+      top: targetPosition,
+      behavior: 'smooth'
+    })
+
+    // 关闭移动端菜单
+    menuShow.value = false
+  }
 }
 </script>
 

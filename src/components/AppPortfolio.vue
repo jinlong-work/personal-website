@@ -47,6 +47,11 @@ import 'swiper/css'
 import 'swiper/css/pagination'
 import 'swiper/css/navigation'
 
+// 导入图片
+import portfolio1Img from '@/assets/img/portfolio1.jpg'
+import portfolio2Img from '@/assets/img/portfolio2.jpg'
+import portfolio3Img from '@/assets/img/portfolio3.jpg'
+
 export default defineComponent({
   components: {
     Swiper,
@@ -58,19 +63,19 @@ export default defineComponent({
         url: 'http://www.caojinlong.site:8081',
         title: 'portfolio1__title',
         describe: 'portfolio1__description',
-        img: '/img/portfolio1.jpg'
+        img: portfolio1Img
       },
       {
         url: 'http://www.caojinlong.site:8082',
         title: 'portfolio2__title',
         describe: 'portfolio2__description',
-        img: '/img/portfolio2.jpg'
+        img: portfolio2Img
       },
       {
         url: 'http://www.caojinlong.site:8083',
         title: 'portfolio3__title',
         describe: 'portfolio3__description',
-        img: '/img/portfolio3.jpg'
+        img: portfolio3Img
       }
     ])
     return {
@@ -126,12 +131,12 @@ export default defineComponent({
 .grid {
   display: grid;
 }
-::v-deep .swiper-button-next:after,
-::v-deep .swiper-button-prev:after {
+:deep(.swiper-button-next):after,
+:deep(.swiper-button-prev):after {
   font-size: 1.5rem;
   color: var(--first-color);
 }
-::v-deep .swiper-pagination-bullet-active {
+:deep(.swiper-pagination-bullet-active) {
   background-color: var(--first-color);
 }
 </style>

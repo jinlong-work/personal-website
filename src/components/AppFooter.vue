@@ -1,4 +1,4 @@
-<template>
+                                   <template>
   <footer class="footer" id="contact">
     <div class="footer__bg">
       <div class="footer__container container grid">
@@ -6,7 +6,7 @@
           <i class="fa-solid fa-phone footer__icon"></i>
           <div>
             <h3 class="footer__title">{{ $t('tel') }}</h3>
-            <span class="footer__subtitle">13310539521</span>
+            <span class="footer__subtitle">{{ $t('tel__number') }}</span>
           </div>
         </div>
 
@@ -15,16 +15,16 @@
 
           <div>
             <h3 class="footer__title">{{ $t('email') }}</h3>
-            <span class="footer__subtitle">1426559553@qq.com</span>
+            <span class="footer__subtitle">{{ $t('email__address') }}</span>
           </div>
         </div>
 
-        <div class="footer__information">
+        <div class="footer__information footer__wechat">
           <i class="fa-brands fa-weixin footer__icon"></i>
 
           <div>
-            <!-- <h3 class="footer__title">{{ $t('wechat') }}</h3> -->
-            <img src="../assets/img/weixin.jpg" alt="weixin" class="weixin" />
+            <h3 class="footer__title">{{ $t('wechat') }}</h3>
+            <img src="@/assets/img/weixin.jpg" alt="weixin" class="weixin" />
           </div>
         </div>
 
@@ -48,11 +48,12 @@
 .footer {
   padding-top: 2rem;
   &__container {
+    gap: 2rem;
     @include min-screen(568px) {
       grid-template-columns: repeat(2, 1fr);
     }
     @include min-screen(768px) {
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       padding: 0 1rem;
     }
     @include min-screen(1024px) {
@@ -70,31 +71,53 @@
 
   &__title {
     font-size: var(--normal-font-size);
-    margin-bottom: var(--mb-0-25);
+    margin-bottom: var(--mb-0-5);
+    font-weight: var(--font-medium);
   }
 
   &__subtitle {
-    font-size: var(--normal-font-size);
+    font-size: var(--small-font-size);
+    opacity: 0.9;
   }
 
   &__information {
     display: flex;
-    padding-left: 40px;
-    margin-bottom: var(--mb-2);
+    flex-direction: column;
     align-items: center;
+    text-align: center;
+    padding: 0 1rem;
+    margin-bottom: var(--mb-2);
   }
 
   &__icon {
-    font-size: 2rem;
-    margin-right: var(--mb-0-75);
+    font-size: 2.5rem;
+    margin-bottom: var(--mb-1);
+    color: var(--first-color-light);
+    transition: all 0.3s ease;
+    &:hover {
+      transform: translateY(-3px);
+      color: var(--first-color);
+    }
   }
+
+  &__wechat {
+    .weixin {
+      width: 80px;
+      height: 80px;
+      max-width: 100%;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      margin-top: var(--mb-0-5);
+    }
+  }
+
   &__copy {
     font-size: var(--smaller-font-size);
     text-align: center;
     color: var(--text-color-light);
     margin-top: var(--mb-3);
     @include min-screen(768px) {
-      margin-top: 4.5rem;
+      margin-top: 3rem;
     }
   }
 
@@ -103,12 +126,6 @@
   &__information {
     color: #fff;
     fill: #fff;
-  }
-
-  .weixin {
-    width: 100px;
-    height: auto;
-    max-width: 100%;
   }
 }
 </style>
