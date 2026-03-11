@@ -41,7 +41,7 @@ const chairAnimate = () => {
 // mac屏幕播放视频
 const setScreen = () => {
   const video = document.createElement('video')
-  video.src = '/personal-website/3D/火影.mp4'
+  video.src = import.meta.env.BASE_URL + '3D/火影.mp4'
   video.muted = true
   video.playsInline = true
   video.autoplay = true
@@ -52,7 +52,6 @@ const setScreen = () => {
   videoTexture.magFilter = THREE.NearestFilter
   videoTexture.generateMipmaps = false
   videoTexture.encoding = THREE.SRGBColorSpace
-  // console.log(screen.material)
   screen.material = new THREE.MeshStandardMaterial({
     map: videoTexture
   })
@@ -60,10 +59,10 @@ const setScreen = () => {
 // 加载glb模型
 const gltfLoader = new GLTFLoader()
 const dracoLoader = new DRACOLoader()
-dracoLoader.setDecoderPath('/personal-website/draco/')
+dracoLoader.setDecoderPath(import.meta.env.BASE_URL + 'draco/')
 gltfLoader.setDRACOLoader(dracoLoader)
 gltfLoader.load(
-  '/personal-website/3D/officeScene.glb',
+  import.meta.env.BASE_URL + '3D/officeScene.glb',
   (glb) => {
     console.log('模型加载成功', glb.scene)
     glb.scene.scale.set(1.8, 1.8, 1.8)
