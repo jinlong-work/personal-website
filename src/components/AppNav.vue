@@ -8,7 +8,7 @@
         <li class="nav__item" v-for="item in menuList" :key="item.name">
           <a :href="item.href" class="nav__link" @click="scrollToSection($event, item.href)">
             <i class="nav__icon" :class="[item.icon]"></i>
-            <p>{{ $t(item.name) }}</p>
+            <p>{{ t(item.name) }}</p>
           </a>
         </li>
 
@@ -41,7 +41,7 @@ import { useThemeState } from '@/store'
 import { useI18n } from 'vue-i18n'
 import { ref } from 'vue'
 
-// 主题
+const { t } = useI18n()
 const { theme, toggleTheme } = useThemeState()
 // 响应式移动端时 点击菜单图标
 const menuShow = ref(false)

@@ -47,18 +47,13 @@
 
 <script setup>
 import MyOfficeScene from '@/components/MyOfficeScene.vue'
-import { ref, getCurrentInstance } from 'vue'
+import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 
-// 打字效果
-const {
-  appContext: {
-    config: { globalProperties }
-  }
-} = getCurrentInstance()
-const titleText = globalProperties.$t('home__title')
-// 用于动态展示打字特效
+const { t } = useI18n()
+
+const titleText = t('home__title')
 const titleTextArr = ref([])
-// 递归每隔500ms打一个字符，完成后隔2s再删除字符 循环
 const writeText = (text, type) => {
   for (let i = 0; i < text.length; i++) {
     setTimeout(() => {
@@ -77,10 +72,9 @@ const writeText = (text, type) => {
 }
 writeText(titleText, 'write')
 
-// 平滑滚动到指定部分
 const scrollToSection = (event, href) => {
   event.preventDefault()
-  const targetId = href.substring(1) // 移除 '#'
+  const targetId = href.substring(1)
   const targetElement = document.getElementById(targetId)
 
   if (targetElement) {

@@ -19,10 +19,10 @@
 
             <div class="portfolio_">
               <h3 class="portfolio__title" i18n="portfolio1__title">
-                {{ $t(item.title) }}
+                {{ t(item.title) }}
               </h3>
               <p class="portfolio__description" i18n="portfolio1__description">
-                {{ $t(item.describe) }}
+                {{ t(item.describe) }}
               </p>
               <a
                 :href="item.url"
@@ -41,6 +41,7 @@
 </template>
 <script>
 import { defineComponent, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { Pagination, Navigation } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import 'swiper/css'
@@ -58,6 +59,8 @@ export default defineComponent({
     SwiperSlide
   },
   setup() {
+    const { t } = useI18n()
+
     const portfolioList = ref([
       {
         url: 'http://www.caojinlong.site:8081',
@@ -80,7 +83,8 @@ export default defineComponent({
     ])
     return {
       modules: [Pagination, Navigation],
-      portfolioList
+      portfolioList,
+      t
     }
   }
 })

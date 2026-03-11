@@ -60,6 +60,7 @@ const setScreen = () => {
 const gltfLoader = new GLTFLoader()
 const dracoLoader = new DRACOLoader()
 dracoLoader.setDecoderPath(import.meta.env.BASE_URL + 'draco/')
+dracoLoader.setDecoderConfig({ type: 'js' })
 gltfLoader.setDRACOLoader(dracoLoader)
 gltfLoader.load(
   import.meta.env.BASE_URL + '3D/officeScene.glb',

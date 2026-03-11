@@ -9,14 +9,14 @@
     </template>
     <div>
       <h3 class="qualification__title">
-        {{ $t(item.title || '') }}
+        {{ t(item.title || '') }}
       </h3>
       <span class="qualification__subtitle">
-        {{ $t(item.describe || '') }}
+        {{ t(item.describe || '') }}
       </span>
       <div class="qualification__calendar">
         <i class="fa-solid fa-calendar-days"></i>
-        {{ $t(item.time || '') }}
+        {{ t(item.time || '') }}
       </div>
     </div>
     <template v-if="index % 2 === 0">
@@ -29,11 +29,15 @@
   </div>
 </template>
 <script setup>
+import { useI18n } from 'vue-i18n'
+
 defineProps({
   list: {
     type: Array
   }
 })
+
+const { t } = useI18n()
 </script>
 <style lang="scss" scoped>
 @import '../styles/tools/_sassMagic.scss';
