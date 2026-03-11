@@ -4,17 +4,8 @@
       <div class="footer__information">
         <i class="fa-solid fa-phone footer__icon"></i>
         <div>
-          <h3 class="footer__title">{{ $t('tel') }}</h3>
-          <span class="footer__subtitle">{{ $t('tel__number') }}</span>
-        </div>
-      </div>
-
-      <div class="footer__information">
-        <i class="fa-solid fa-envelope footer__icon"></i>
-
-        <div>
-          <h3 class="footer__title">{{ $t('email') }}</h3>
-          <span class="footer__subtitle">{{ $t('email__address') }}</span>
+          <h3 class="footer__title">{{ t('tel') }}</h3>
+          <span class="footer__subtitle">{{ t('tel__number') }}</span>
         </div>
       </div>
 
@@ -22,7 +13,7 @@
         <i class="fa-brands fa-weixin footer__icon"></i>
 
         <div>
-          <h3 class="footer__title">{{ $t('wechat') }}</h3>
+          <h3 class="footer__title">{{ t('wechat') }}</h3>
           <img src="@/assets/img/weixin.jpg" alt="weixin" class="weixin" />
         </div>
       </div>
@@ -31,15 +22,21 @@
         <i class="fa-solid fa-location-dot footer__icon"></i>
 
         <div>
-          <h3 class="footer__title">{{ $t('location') }}</h3>
-          <span class="footer__subtitle">{{ $t('location__detail') }}</span>
+          <h3 class="footer__title">{{ t('location') }}</h3>
+          <span class="footer__subtitle">{{ t('location__detail') }}</span>
         </div>
       </div>
     </div>
 
-    <p class="footer__copy">.footercopy; 2024 Caojinlong</p>
+    <p class="footer__copy">&copy; 2024 Caojinlong</p>
   </div>
 </template>
+
+<script setup>
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
+</script>
 
 <style lang="scss" scoped>
 @import '../styles/tools/_sassMagic.scss';
