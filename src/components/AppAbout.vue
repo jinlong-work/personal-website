@@ -1,23 +1,23 @@
 <template>
   <section class="about section" id="about">
-    <h2 class="section__title">{{ $t('about__title') }}</h2>
-    <span class="section__subtitle">{{ $t('about__subtitle') }}</span>
+    <h2 class="section__title">关于我</h2>
+    <span class="section__subtitle">自我介绍</span>
     <div class="about__container container grid">
       <img src="@/assets/img/个人照片2.jpg" class="about__img" />
 
       <div class="about__data">
         <p class="about__description">
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $t('about__description') }}
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;您好！我叫曹进龙，2023年毕业于湖北大学地理信息科学专业。在过去的一年中，我深入学习了WebGIS开发相关的知识，掌握了诸如Vue、Openlayers、Mapbox、Cesium等前端技术，并且熟悉使用这些技术来开发与GIS相关的应用。我对地理信息系统有着浓厚的兴趣，乐于钻研技术细节，致力于将地理数据与现代Web技术相结合，开发出高效、直观的GIS应用。我相信自己的专业背景和技术能力能够胜任贵公司的WebGIS岗位，期待能有机会为公司贡献我的力量。
         </p>
         <div class="about__info">
           <div class="about__info-item">
             <span class="about__info-title">24</span>
-            <span class="about__info-name">{{ $t('about__info-name1') }}</span>
+            <span class="about__info-name">年龄</span>
           </div>
 
           <div class="about__info-item">
-            <span class="about__info-title">{{ $t('about__info-education1') }}</span>
-            <span class="about__info-name">{{ $t('about__info-name2') }}</span>
+            <span class="about__info-title">本科</span>
+            <span class="about__info-name">学历</span>
           </div>
         </div>
       </div>

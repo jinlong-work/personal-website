@@ -1,9 +1,7 @@
 <template>
   <section class="qualification section">
-    <h2 class="section__title">
-      {{ $t('qualification__title') }}
-    </h2>
-    <span class="section__subtitle">{{ $t('qualification__subtitle') }}</span>
+    <h2 class="section__title">学习教育经历</h2>
+    <span class="section__subtitle">个人履历</span>
     <div class="container">
       <div class="qualification__tabs">
         <div
@@ -13,7 +11,7 @@
         >
           <i class="fa-solid fa-graduation-cap qualification__icon"></i>
 
-          <span>{{ $t('education') }}</span>
+          <span>教育</span>
         </div>
 
         <div
@@ -22,7 +20,7 @@
           @click="curSeleced = 'work'"
         >
           <i class="fa-solid fa-briefcase qualification__icon"></i>
-          <span>{{ $t('work') }}</span>
+          <span>实习</span>
         </div>
       </div>
       <div class="qualification__sections">
@@ -44,23 +42,23 @@ import TheQualificationItemVue from './TheQualificationItem.vue'
 
 // 当前选中的是教育还是工作
 const curSeleced = ref('education')
-// i18n 对应 key
+// 直接使用中文内容
 const educationList = ref([
   {
-    title: 'qualification1__title',
-    describe: 'qualification1__describe',
+    title: '地理信息科学',
+    describe: '湖北大学',
     time: '2019.09-2023.06'
   },
   {
-    title: 'qualification2__title',
-    describe: 'qualification2__describe',
+    title: 'WebGIS开发',
+    describe: '武汉新中地+自学',
     time: '2024.03-至今'
   }
 ])
 const workList = ref([
   {
-    title: 'qualification3__title',
-    describe: 'qualification3__describe',
+    title: 'WebGIS开发实习生',
+    describe: '武汉中地数码公司',
     time: '2022.07 - 2022.09'
   }
 ])

@@ -8,15 +8,8 @@
         <li class="nav__item" v-for="item in menuList" :key="item.name">
           <a :href="item.href" class="nav__link" @click="scrollToSection($event, item.href)">
             <i class="nav__icon" :class="[item.icon]"></i>
-            <p>{{ t(item.name) }}</p>
+            <p>{{ item.name }}</p>
           </a>
-        </li>
-
-        <li class="nav__item">
-          <div class="nav__link" @click="changeLanguage">
-            <i class="fa-solid fa-language nav__icon nav__icon--translate"></i>
-            <a class="nav__link" id="translate">中/en</a>
-          </div>
         </li>
       </ul>
       <i class="fa-solid fa-xmark nav__close nav__icon" @click="menuShow = false"></i>
@@ -38,47 +31,39 @@
 
 <script setup>
 import { useThemeState } from '@/store'
-import { useI18n } from 'vue-i18n'
 import { ref } from 'vue'
 
-const { t } = useI18n()
 const { theme, toggleTheme } = useThemeState()
 // 响应式移动端时 点击菜单图标
 const menuShow = ref(false)
-// 菜单列表
+// 菜单列表 - 直接使用中文名称
 const menuList = ref([
   {
-    name: 'home',
+    name: '主页',
     href: '#home',
     icon: 'fa-solid fa-house'
   },
   {
-    name: 'about',
+    name: '关于',
     href: '#about',
     icon: 'fa-regular fa-address-card'
   },
   {
-    name: 'skills',
+    name: '技能',
     href: '#skills',
     icon: 'fa-solid fa-kitchen-set'
   },
   {
-    name: 'portfolio',
+    name: '项目集',
     href: '#portfolio',
     icon: 'fa-solid fa-briefcase'
   },
   {
-    name: 'contact',
+    name: '联系方式',
     href: '#contact',
     icon: 'fa-solid fa-tty'
   }
 ])
-// 切换语言
-const { locale } = useI18n()
-const changeLanguage = () => {
-  locale.value = locale.value === 'zh' ? 'en' : 'zh'
-  localStorage.setItem('i18n', locale.value)
-}
 
 // 平滑滚动到指定部分
 const scrollToSection = (event, href) => {
@@ -113,11 +98,6 @@ const scrollToSection = (event, href) => {
   @include min-screen(768px) {
     height: calc(var(--header-height) + 1.5rem);
     column-gap: 1rem;
-  }
-  #translate {
-    @include min-screen(768px) {
-      font-size: 0;
-    }
   }
   &__logo {
     color: var(--title-color);
@@ -239,12 +219,6 @@ const scrollToSection = (event, href) => {
   &__icon {
     font-size: 1.2rem;
     transition: all 0.3s ease;
-    &--translate {
-      @include min-screen(768px) {
-        display: block !important;
-        font-size: 1.5rem;
-      }
-    }
     @include min-screen(768px) {
       display: none;
     }

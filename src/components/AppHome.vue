@@ -20,24 +20,24 @@
             {{ titleTextArr.join('') }}<span class="home__columeline">|</span>
           </h1>
           <h3 class="home__subtitle">
-            {{ $t('home__subtitle') }}
+            WebGIS工程师
           </h3>
           <p class="home__description">
-            {{ $t('home__description') }}
+            欢迎来到我的个人简历页面！这里展示了我的教育背景、技术技能以及自己做的相关地图框架案例。虽然我刚刚进入GIS开发，但我对地理信息系统和前端开发充满热情，并已在多个项目中实践了所学。期待通过这些信息，向你展示我的能力与潜力。
           </p>
           <a
             href="#contact"
             class="button button-flex"
             @click="scrollToSection($event, '#contact')"
           >
-            <span>{{ $t('home__contact') }}</span>
+            <span>与我联系</span>
             <i class="fa-solid fa-right-long button__icon"></i>
           </a>
         </div>
       </div>
       <div class="home__scroll">
         <a href="#about" class="button--flex" @click="scrollToSection($event, '#about')">
-          <span>{{ $t('home__scroll-name') }}</span>
+          <span>往下滑</span>
           <i class="fa-solid fa-arrow-down home__arrow"></i>
         </a>
       </div>
@@ -48,11 +48,8 @@
 <script setup>
 import MyOfficeScene from '@/components/MyOfficeScene.vue'
 import { ref } from 'vue'
-import { useI18n } from 'vue-i18n'
 
-const { t } = useI18n()
-
-const titleText = t('home__title')
+const titleText = 'Hi, Welcome to My Website!'
 const titleTextArr = ref([])
 const writeText = (text, type) => {
   for (let i = 0; i < text.length; i++) {

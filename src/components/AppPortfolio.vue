@@ -1,7 +1,7 @@
 <template>
   <section class="portfolio section" id="portfolio">
-    <h2 class="section__title">{{ $t('portfolio__title') }}</h2>
-    <span class="section__subtitle">{{ $t('portfolio__subtitle') }}</span>
+    <h2 class="section__title">地图框架案例集</h2>
+    <span class="section__subtitle">功能展示</span>
 
     <div class="portfolio__container container swiper-container">
       <swiper
@@ -18,11 +18,11 @@
             <img :src="item.img" alt="" class="portfolio__img" />
 
             <div class="portfolio_">
-              <h3 class="portfolio__title" i18n="portfolio1__title">
-                {{ t(item.title) }}
+              <h3 class="portfolio__title">
+                {{ item.title }}
               </h3>
-              <p class="portfolio__description" i18n="portfolio1__description">
-                {{ t(item.describe) }}
+              <p class="portfolio__description">
+                {{ item.describe }}
               </p>
               <a
                 :href="item.url"
@@ -41,7 +41,6 @@
 </template>
 <script>
 import { defineComponent, ref } from 'vue'
-import { useI18n } from 'vue-i18n'
 import { Pagination, Navigation } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import 'swiper/css'
@@ -59,32 +58,29 @@ export default defineComponent({
     SwiperSlide
   },
   setup() {
-    const { t } = useI18n()
-
     const portfolioList = ref([
       {
         url: 'http://www.caojinlong.site:8081',
-        title: 'portfolio1__title',
-        describe: 'portfolio1__description',
+        title: 'Cesium例子合集',
+        describe: '本合集汇集了多个 Cesium 的使用示例，涵盖基础到高级应用，使用了Cesium的核心功能。包括：天气效果、弹窗、聚合效果、常用数据加载、白膜特效等等。',
         img: portfolio1Img
       },
       {
         url: 'http://www.caojinlong.site:8082',
-        title: 'portfolio2__title',
-        describe: 'portfolio2__description',
+        title: 'Openlayers例子合集',
+        describe: '本合集汇集了多个 Openlayers 的使用示例，涵盖基础到高级应用，使用了Openlayers的核心功能。包括：地图加载、图层切换、高亮弹窗、腾讯地图IP定位、工具箱等等。',
         img: portfolio2Img
       },
       {
         url: 'http://www.caojinlong.site:8083',
-        title: 'portfolio3__title',
-        describe: 'portfolio3__description',
+        title: 'Mapbox例子合集',
+        describe: '本合集展示了多个基于 Mapbox 的三维地球和地图功能示例，涵盖基础到高级应用，使用了Mapbox的核心功能。包括：要素高亮、测量、图层动态弹窗、动态线、聚合图等等。',
         img: portfolio3Img
       }
     ])
     return {
       modules: [Pagination, Navigation],
-      portfolioList,
-      t
+      portfolioList
     }
   }
 })
