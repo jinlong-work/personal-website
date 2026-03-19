@@ -54,11 +54,6 @@ const menuList = ref([
     icon: 'fa-solid fa-kitchen-set'
   },
   {
-    name: '项目集',
-    href: '#portfolio',
-    icon: 'fa-solid fa-briefcase'
-  },
-  {
     name: '联系方式',
     href: '#contact',
     icon: 'fa-solid fa-tty'
