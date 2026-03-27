@@ -1,6 +1,5 @@
 // 重置样式
 import 'normalize.css'
-// import '@/styles/icon/iconfont.css'
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'

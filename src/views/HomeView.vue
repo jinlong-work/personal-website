@@ -1,30 +1,681 @@
 <template>
-  <header class="header scroll-header">
-    <AppNav></AppNav>
-  </header>
-  <main class="main">
-    <AppHome></AppHome>
-    <AppAbout></AppAbout>
-    <AppQualification></AppQualification>
-    <AppSkills></AppSkills>
-  </main>
-  <footer class="footer" id="contact">
-    <AppFooter></AppFooter>
-  </footer>
+  <div class="site-wrapper">
+    <!-- Three.js 3D 背景 -->
+    <div class="three-background">
+      <ThreeScene />
+    </div>
+
+    <!-- 左侧固定侧边栏 -->
+    <aside class="sidebar">
+      <div class="sidebar-content">
+        <div class="profile">
+          <h1 class="profile-name">曹进龙</h1>
+          <h2 class="profile-title">高级 WebGIS 开发工程师</h2>
+          <p class="profile-description">
+            拥有多年 GIS 开发经验，专注于高性能 WebGIS 应用架构设计与研发
+          </p>
+        </div>
+
+        <!-- 导航菜单 -->
+        <nav class="nav">
+          <a href="#about" class="nav-link" :class="{ active: activeSection === 'about' }">关于我</a>
+          <a href="#skills" class="nav-link" :class="{ active: activeSection === 'skills' }">技术技能</a>
+          <a href="#experience" class="nav-link" :class="{ active: activeSection === 'experience' }">工作经历</a>
+          <a href="#contact" class="nav-link" :class="{ active: activeSection === 'contact' }">联系方式</a>
+        </nav>
+
+        <!-- 社交媒体链接 -->
+        <div class="social-links">
+          <a href="https://github.com/jinlong-work" target="_blank" class="social-link" title="GitHub">
+            <i class="fa-brands fa-github"></i>
+          </a>
+          <a href="mailto:1426559553@qq.com" class="social-link" title="Email">
+            <i class="fa-solid fa-envelope"></i>
+          </a>
+        </div>
+      </div>
+    </aside>
+
+    <!-- 右侧主内容区域 -->
+    <main class="main-content" @scroll="handleScroll">
+      <section id="about" class="section">
+        <h2 class="section-title">关于我</h2>
+        <div class="about-content">
+          <p>
+            我是曹进龙，一名拥有丰富经验的高级 WebGIS 开发工程师。自 2023 年毕业于湖北大学地理信息科学专业以来，我一直专注于 WebGIS 领域的前沿技术研究与应用开发。
+          </p>
+          <p>
+            在多年的技术实践中，我深入掌握了从前端可视化到后端空间数据处理的全栈开发技能，擅长设计和实现高性能、高并发的 GIS 应用系统。我的专业领域包括但不限于：
+            2D/3D 地图可视化、空间数据分析、WebGL 渲染优化、分布式空间索引架构等。
+          </p>
+          <p>
+            我对地理信息系统的技术发展趋势保持敏锐的洞察力，致力于将先进的 Web 技术与传统 GIS 领域深度融合，以解决复杂的空间信息处理与可视化挑战。
+          </p>
+          <p>
+            我具备优秀的团队协作能力和架构设计能力，在多个大型 GIS 项目中承担核心技术研发工作，积累了丰富的项目管理和技术沉淀经验。
+          </p>
+        </div>
+      </section>
+
+      <section id="skills" class="section">
+        <h2 class="section-title">技术技能</h2>
+        <div class="skills-grid">
+          <!-- 2D/3D 地图可视化 -->
+          <div class="skill-category">
+            <h3 class="skill-category-title">2D/3D 地图可视化</h3>
+            <div class="skill-list">
+              <span class="skill-tag">OpenLayers</span>
+              <span class="skill-tag">Mapbox GL JS</span>
+              <span class="skill-tag">CesiumJS</span>
+              <span class="skill-tag">Deck.gl</span>
+              <span class="skill-tag">Leaflet</span>
+              <span class="skill-tag">Three.js</span>
+              <span class="skill-tag">WebGL/WebGPU</span>
+            </div>
+          </div>
+
+          <!-- 空间数据处理 -->
+          <div class="skill-category">
+            <h3 class="skill-category-title">空间数据处理</h3>
+            <div class="skill-list">
+              <span class="skill-tag">PostGIS</span>
+              <span class="skill-tag">GeoServer</span>
+              <span class="skill-tag">GDAL/OGR</span>
+              <span class="skill-tag">Turf.js</span>
+              <span class="skill-tag">JTS</span>
+              <span class="skill-tag">空间索引</span>
+            </div>
+          </div>
+
+          <!-- 全栈开发 -->
+          <div class="skill-category">
+            <h3 class="skill-category-title">全栈开发</h3>
+            <div class="skill-list">
+              <span class="skill-tag">Vue.js / Nuxt</span>
+              <span class="skill-tag">React / Next.js</span>
+              <span class="skill-tag">TypeScript</span>
+              <span class="skill-tag">Node.js</span>
+              <span class="skill-tag">Python</span>
+              <span class="skill-tag">Go</span>
+            </div>
+          </div>
+
+          <!-- 高性能架构 -->
+          <div class="skill-category">
+            <h3 class="skill-category-title">高性能架构</h3>
+            <div class="skill-list">
+              <span class="skill-tag">矢量瓦片</span>
+              <span class="skill-tag">渲染优化</span>
+              <span class="skill-tag">负载均衡</span>
+              <span class="skill-tag">Redis 缓存</span>
+              <span class="skill-tag">Kubernetes</span>
+              <span class="skill-tag">微服务</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="experience" class="section">
+        <h2 class="section-title">工作经历</h2>
+        <div class="experience-list">
+          <div class="experience-item">
+            <div class="experience-header">
+              <div class="experience-info">
+                <h3 class="experience-title">高级 WebGIS 开发工程师</h3>
+                <p class="experience-company">某大型软件公司</p>
+              </div>
+              <span class="experience-period">2023 - 至今</span>
+            </div>
+            <p class="experience-description">
+              负责公司核心 WebGIS 产品的架构设计与开发工作。主导完成了高性能矢量瓦片服务的研发，实现了地图渲染性能提升 400%。
+              设计并实现了空间分析引擎，支持复杂的空间查询和数据分析功能。负责团队技术指导和架构决策。
+            </p>
+          </div>
+          <div class="experience-item">
+            <div class="experience-header">
+              <div class="experience-info">
+                <h3 class="experience-title">WebGIS 开发工程师</h3>
+                <p class="experience-company">武汉中地数码集团</p>
+              </div>
+              <span class="experience-period">2022 - 2023</span>
+            </div>
+            <p class="experience-description">
+              参与多个国家级 GIS 项目的开发工作。负责地图可视化模块的开发，实现了复杂的地图交互功能和数据展示。
+              优化了地图渲染性能，解决了大数据量地图加载慢的问题。
+            </p>
+          </div>
+          <div class="experience-item">
+            <div class="experience-header">
+              <div class="experience-info">
+                <h3 class="experience-title">GIS 开发实习生</h3>
+                <p class="experience-company">某地理信息研究所</p>
+              </div>
+              <span class="experience-period">2021 - 2022</span>
+            </div>
+            <p class="experience-description">
+              参与土地利用规划系统的开发，负责空间数据处理和地图可视化功能。
+              完成了土地变更调查数据处理工具的开发，提高了工作效率 60%。
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact" class="section">
+        <h2 class="section-title">联系方式</h2>
+        <div class="contact-content">
+          <p>期待与志同道合的技术伙伴交流合作。目前我对具有挑战性的 WebGIS 高级开发岗位保持开放态度，欢迎通过以下方式联系我：</p>
+          <div class="contact-methods">
+            <a href="mailto:1426559553@qq.com" class="contact-method">
+              <i class="fa-solid fa-envelope"></i>
+              <span>1426559553@qq.com</span>
+            </a>
+            <a href="tel:13310539521" class="contact-method">
+              <i class="fa-solid fa-phone"></i>
+              <span>13310539521</span>
+            </a>
+            <div class="contact-method">
+              <i class="fa-solid fa-location-dot"></i>
+              <span>广东惠州</span>
+            </div>
+            <a href="https://github.com/jinlong-work" target="_blank" class="contact-method">
+              <i class="fa-brands fa-github"></i>
+              <span>github.com/jinlong-work</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <footer class="site-footer">
+        <p>&copy; 2024 曹进龙. All rights reserved.</p>
+      </footer>
+    </main>
+  </div>
 </template>
 
 <script setup>
-import AppNav from '../components/AppNav.vue'
-import AppHome from '../components/AppHome.vue'
-import AppAbout from '../components/AppAbout.vue'
-import AppSkills from '../components/AppSkills.vue'
-import AppQualification from '../components/AppQualification.vue'
-import AppFooter from '../components/AppFooter.vue'
+import { ref, onMounted, onUnmounted } from 'vue'
+import ThreeScene from '@/components/ThreeScene.vue'
+
+const activeSection = ref('about')
+
+const handleScroll = (event) => {
+  const main = event.target
+  const sections = main.querySelectorAll('.section')
+
+  let current = 'about'
+  sections.forEach((section) => {
+    const sectionTop = section.offsetTop - 100
+    if (main.scrollTop >= sectionTop) {
+      current = section.getAttribute('id')
+    }
+  })
+
+  activeSection.value = current
+}
+
+const setupScrollBehavior = () => {
+  const navLinks = document.querySelectorAll('.nav-link')
+  navLinks.forEach((link) => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault()
+      const targetId = link.getAttribute('href').substring(1)
+      const targetElement = document.getElementById(targetId)
+      const mainContent = document.querySelector('.main-content')
+
+      if (targetElement && mainContent) {
+        const targetPosition = targetElement.offsetTop - 40
+        mainContent.scrollTo({
+          top: targetPosition,
+          behavior: 'smooth'
+        })
+      }
+    })
+  })
+}
+
+onMounted(() => {
+  setupScrollBehavior()
+})
+
+onUnmounted(() => {
+  const navLinks = document.querySelectorAll('.nav-link')
+  navLinks.forEach((link) => {
+    link.removeEventListener('click', () => {})
+  })
+})
 </script>
 
 <style lang="scss">
-@import '../styles/tools/_sassMagic.scss';
-.footer {
-  padding-top: 2rem;
+.three-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg-color: #0a192f;
+  --bg-light: #112240;
+  --text-color: #8892b0;
+  --text-light: #ccd6f6;
+  --text-highlight: #64ffda;
+  --accent-color: #64ffda;
+  --border-color: #233554;
+  --transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+body {
+  font-family: 'SF Mono', 'Fira Code', 'Fira Mono', 'Roboto Mono', monospace;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  line-height: 1.6;
+  overflow: hidden;
+}
+
+.site-wrapper {
+  position: relative;
+  display: flex;
+  height: 100vh;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 0 150px;
+  z-index: 1;
+
+  @media (max-width: 1080px) {
+    padding: 0 100px;
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    padding: 0 50px;
+    height: auto;
+    overflow-y: auto;
+  }
+
+  @media (max-width: 480px) {
+    padding: 0 25px;
+  }
+}
+
+/* 左侧侧边栏 */
+.sidebar {
+  width: 350px;
+  height: 100vh;
+  padding: 40px 0;
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    height: auto;
+    position: relative;
+    padding: 40px 0;
+  }
+}
+
+.sidebar-content {
+  @media (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.profile {
+  margin-bottom: 40px;
+
+  @media (max-width: 768px) {
+    margin-bottom: 30px;
+  }
+}
+
+.profile-name {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-light);
+  margin-bottom: 8px;
+  line-height: 1.1;
+
+  &:hover {
+    color: var(--accent-color);
+  }
+}
+
+.profile-title {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--text-highlight);
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+
+.profile-description {
+  font-size: 0.95rem;
+  color: var(--text-color);
+  max-width: 300px;
+  line-height: 1.5;
+}
+
+/* 导航菜单 */
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 40px;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.85rem;
+  color: var(--text-color);
+  text-decoration: none;
+  padding: 8px 0;
+  position: relative;
+  letter-spacing: 0.5px;
+  transition: var(--transition);
+
+  &::before {
+    content: '';
+    width: 0;
+    height: 1px;
+    background-color: var(--accent-color);
+    margin-right: 16px;
+    transition: var(--transition);
+  }
+
+  &:hover,
+  &.active {
+    color: var(--text-light);
+
+    &::before {
+      width: 40px;
+    }
+  }
+
+  &.active {
+    color: var(--accent-color);
+  }
+}
+
+/* 社交媒体链接 */
+.social-links {
+  display: flex;
+  gap: 16px;
+
+  @media (max-width: 768px) {
+    gap: 20px;
+  }
+}
+
+.social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  color: var(--text-color);
+  font-size: 1.25rem;
+  text-decoration: none;
+  transition: var(--transition);
+
+  &:hover {
+    color: var(--accent-color);
+    transform: translateY(-3px);
+  }
+}
+
+/* 右侧主内容 */
+.main-content {
+  flex: 1;
+  height: 100vh;
+  overflow-y: auto;
+  padding: 80px 0;
+  margin-left: 50px;
+
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 4px;
+  }
+
+  @media (max-width: 768px) {
+    margin-left: 0;
+    padding: 0 0 80px 0;
+    height: auto;
+    overflow-y: visible;
+  }
+}
+
+.section {
+  padding: 40px 0;
+
+  &:first-child {
+    padding-top: 0;
+  }
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-light);
+  margin-bottom: 30px;
+
+  &::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background-color: var(--border-color);
+    margin-left: 20px;
+  }
+}
+
+/* About 内容 */
+.about-content {
+  max-width: 600px;
+
+  p {
+    margin-bottom: 16px;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--text-color);
+  }
+}
+
+/* 技能网格 */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30px;
+
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.skill-category {
+  background-color: var(--bg-light);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 24px;
+  transition: var(--transition);
+
+  &:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent-color);
+  }
+}
+
+.skill-category-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-light);
+  margin-bottom: 16px;
+}
+
+.skill-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.skill-tag {
+  display: inline-block;
+  padding: 6px 12px;
+  background-color: var(--bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-size: 0.85rem;
+  color: var(--accent-color);
+  transition: var(--transition);
+
+  &:hover {
+    background-color: var(--accent-color);
+    color: var(--bg-color);
+  }
+}
+
+/* 工作经历 */
+.experience-list {
+  max-width: 600px;
+}
+
+.experience-item {
+  padding: 20px 0;
+  border-bottom: 1px solid var(--border-color);
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.experience-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  margin-bottom: 8px;
+
+  @media (max-width: 640px) {
+    flex-direction: column;
+    gap: 8px;
+  }
+}
+
+.experience-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-light);
+  margin-bottom: 4px;
+}
+
+.experience-company {
+  font-size: 0.9rem;
+  color: var(--accent-color);
+}
+
+.experience-period {
+  font-size: 0.85rem;
+  color: var(--text-color);
+  white-space: nowrap;
+}
+
+.experience-description {
+  font-size: 0.9rem;
+  color: var(--text-color);
+  line-height: 1.6;
+  margin-top: 12px;
+  padding-left: 0;
+}
+
+/* 联系方式 */
+.contact-content {
+  max-width: 500px;
+
+  > p {
+    margin-bottom: 24px;
+    font-size: 0.95rem;
+    line-height: 1.7;
+  }
+}
+
+.contact-methods {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.contact-method {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 0.95rem;
+  color: var(--text-color);
+  text-decoration: none;
+  transition: var(--transition);
+
+  &:hover {
+    color: var(--accent-color);
+  }
+
+  i {
+    width: 24px;
+    text-align: center;
+    color: var(--accent-color);
+  }
+}
+
+/* 页脚 */
+.site-footer {
+  padding: 40px 0 0 0;
+  text-align: center;
+
+  p {
+    font-size: 0.8rem;
+    color: var(--text-color);
+  }
+}
+
+/* 动画效果 */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.section {
+  animation: fadeInUp 0.5s ease-out;
 }
 </style>
