@@ -5,6 +5,13 @@
       <ThreeScene />
     </div>
 
+    <!-- 移动端导航遮罩 -->
+    <div
+      class="nav-overlay"
+      :class="{ active: isMobileNavOpen }"
+      @click="isMobileNavOpen = false"
+    ></div>
+
     <!-- 项目详情弹窗 -->
     <ProjectDetailModal
       :visible="isModalVisible"
@@ -12,8 +19,18 @@
       @close="closeModal"
     />
 
+    <!-- 移动端顶部栏 -->
+    <div class="mobile-header">
+      <div class="mobile-profile">
+        <h1 class="mobile-name">曹进龙</h1>
+      </div>
+      <button class="menu-toggle" @click="isMobileNavOpen = !isMobileNavOpen">
+        <i :class="isMobileNavOpen ? 'fa-solid fa-xmark' : 'fa-solid fa-bars'"></i>
+      </button>
+    </div>
+
     <!-- 左侧固定侧边栏 -->
-    <aside class="sidebar">
+    <aside class="sidebar" :class="{ 'mobile-nav-open': isMobileNavOpen }">
       <div class="sidebar-content">
         <div class="profile">
           <h1 class="profile-name">曹进龙</h1>
@@ -25,19 +42,39 @@
 
         <!-- 导航菜单 -->
         <nav class="nav">
-          <a href="#about" class="nav-link" :class="{ active: activeSection === 'about' }"
+          <a
+            href="#about"
+            class="nav-link"
+            :class="{ active: activeSection === 'about' }"
+            @click="closeMobileNav"
             >关于我</a
           >
-          <a href="#skills" class="nav-link" :class="{ active: activeSection === 'skills' }"
+          <a
+            href="#skills"
+            class="nav-link"
+            :class="{ active: activeSection === 'skills' }"
+            @click="closeMobileNav"
             >技术技能</a
           >
-          <a href="#experience" class="nav-link" :class="{ active: activeSection === 'experience' }"
+          <a
+            href="#experience"
+            class="nav-link"
+            :class="{ active: activeSection === 'experience' }"
+            @click="closeMobileNav"
             >工作经历</a
           >
-          <a href="#projects" class="nav-link" :class="{ active: activeSection === 'projects' }"
+          <a
+            href="#projects"
+            class="nav-link"
+            :class="{ active: activeSection === 'projects' }"
+            @click="closeMobileNav"
             >项目经历</a
           >
-          <a href="#contact" class="nav-link" :class="{ active: activeSection === 'contact' }"
+          <a
+            href="#contact"
+            class="nav-link"
+            :class="{ active: activeSection === 'contact' }"
+            @click="closeMobileNav"
             >联系方式</a
           >
         </nav>
@@ -266,15 +303,27 @@ const activeSection = ref('about')
 const projects = ref([])
 const isModalVisible = ref(false)
 const selectedProject = ref({})
+const isMobileNavOpen = ref(false)
 
 const handleScroll = (event) => {
-  const main = event.target
-  const sections = main.querySelectorAll('.section')
+  const isMobile = window.innerWidth <= 768
+  let scrollContainer
+  let scrollTop
 
+  if (isMobile) {
+    scrollContainer = document
+    scrollTop = window.scrollY
+  } else {
+    scrollContainer = event.target
+    scrollTop = scrollContainer.scrollTop
+  }
+
+  const sections = document.querySelectorAll('.section')
   let current = 'about'
+
   sections.forEach((section) => {
     const sectionTop = section.offsetTop - 100
-    if (main.scrollTop >= sectionTop) {
+    if (scrollTop >= sectionTop) {
       current = section.getAttribute('id')
     }
   })
@@ -291,15 +340,34 @@ const setupScrollBehavior = () => {
       const targetElement = document.getElementById(targetId)
       const mainContent = document.querySelector('.main-content')
 
-      if (targetElement && mainContent) {
-        const targetPosition = targetElement.offsetTop - 40
-        mainContent.scrollTo({
-          top: targetPosition,
-          behavior: 'smooth'
-        })
+      if (targetElement) {
+        // 检测是否是移动端
+        const isMobile = window.innerWidth <= 768
+        if (isMobile) {
+          // 移动端使用 window 滚动
+          const targetPosition = targetElement.offsetTop - 80 // 留出顶部栏高度
+          window.scrollTo({
+            top: targetPosition,
+            behavior: 'smooth'
+          })
+        } else if (mainContent) {
+          // 桌面端使用 main-content 滚动
+          const targetPosition = targetElement.offsetTop - 40
+          mainContent.scrollTo({
+            top: targetPosition,
+            behavior: 'smooth'
+          })
+        }
       }
     })
   })
+}
+
+// 移动端滚动监听
+const handleMobileScroll = () => {
+  if (window.innerWidth <= 768) {
+    handleScroll({ target: document })
+  }
 }
 
 const showDetailDailog = (project) => {
@@ -312,8 +380,13 @@ const closeModal = () => {
   selectedProject.value = {}
 }
 
+const closeMobileNav = () => {
+  isMobileNavOpen.value = false
+}
+
 onMounted(() => {
   setupScrollBehavior()
+  window.addEventListener('scroll', handleMobileScroll)
   getProjects()
     .then((response) => {
       console.log('项目数据:', response)
@@ -329,6 +402,7 @@ onUnmounted(() => {
   navLinks.forEach((link) => {
     link.removeEventListener('click', () => {})
   })
+  window.removeEventListener('scroll', handleMobileScroll)
 })
 </script>
 
@@ -361,12 +435,89 @@ onUnmounted(() => {
   --transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   font-family: 'SF Mono', 'Fira Code', 'Fira Mono', 'Roboto Mono', monospace;
   background-color: var(--bg-color);
   color: var(--text-color);
   line-height: 1.6;
   overflow: hidden;
+
+  @media (max-width: 768px) {
+    overflow-y: auto;
+  }
+}
+
+/* 移动端导航遮罩 */
+.nav-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(10, 25, 47, 0.85);
+  z-index: 9;
+  opacity: 0;
+  visibility: hidden;
+  transition: var(--transition);
+
+  &.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  @media (max-width: 768px) {
+    display: block;
+  }
+}
+
+/* 移动端顶部栏 */
+.mobile-header {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background-color: rgba(10, 25, 47, 0.95);
+  backdrop-filter: blur(10px);
+  z-index: 100;
+  padding: 0 25px;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-color);
+
+  @media (max-width: 768px) {
+    display: flex;
+  }
+}
+
+.mobile-name {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-light);
+}
+
+.menu-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: none;
+  border: none;
+  color: var(--accent-color);
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: var(--transition);
+
+  &:hover {
+    transform: scale(1.1);
+  }
 }
 
 .site-wrapper {
@@ -384,13 +535,13 @@ body {
 
   @media (max-width: 768px) {
     flex-direction: column;
-    padding: 0 50px;
+    padding: 80px 25px 40px 25px;
     height: auto;
-    overflow-y: auto;
+    min-height: 100vh;
   }
 
   @media (max-width: 480px) {
-    padding: 0 25px;
+    padding: 80px 15px 40px 15px;
   }
 }
 
@@ -406,10 +557,21 @@ body {
   justify-content: space-between;
 
   @media (max-width: 768px) {
-    width: 100%;
-    height: auto;
-    position: relative;
-    padding: 40px 0;
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 80%;
+    max-width: 300px;
+    height: 100vh;
+    padding: 80px 30px 40px 30px;
+    background-color: var(--bg-light);
+    z-index: 10;
+    transition: var(--transition);
+    overflow-y: auto;
+
+    &.mobile-nav-open {
+      right: 0;
+    }
   }
 }
 
@@ -439,6 +601,10 @@ body {
   &:hover {
     color: var(--accent-color);
   }
+
+  @media (max-width: 768px) {
+    font-size: 1.5rem;
+  }
 }
 
 .profile-title {
@@ -447,6 +613,10 @@ body {
   color: var(--text-highlight);
   margin-bottom: 12px;
   line-height: 1.5;
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+  }
 }
 
 .profile-description {
@@ -454,6 +624,10 @@ body {
   color: var(--text-color);
   max-width: 300px;
   line-height: 1.5;
+
+  @media (max-width: 768px) {
+    font-size: 0.85rem;
+  }
 }
 
 /* 导航菜单 */
@@ -464,7 +638,8 @@ body {
   margin-bottom: 40px;
 
   @media (max-width: 768px) {
-    display: none;
+    display: flex;
+    gap: 12px;
   }
 }
 
@@ -553,7 +728,7 @@ body {
 
   @media (max-width: 768px) {
     margin-left: 0;
-    padding: 0 0 80px 0;
+    padding: 0;
     height: auto;
     overflow-y: visible;
   }
@@ -564,6 +739,10 @@ body {
 
   &:first-child {
     padding-top: 0;
+  }
+
+  @media (max-width: 768px) {
+    padding: 30px 0;
   }
 }
 
@@ -581,6 +760,10 @@ body {
     height: 1px;
     background-color: var(--border-color);
     margin-left: 20px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 1.25rem;
   }
 }
 
@@ -602,8 +785,9 @@ body {
   grid-template-columns: repeat(2, 1fr);
   gap: 30px;
 
-  @media (max-width: 640px) {
+  @media (max-width: 768px) {
     grid-template-columns: 1fr;
+    gap: 20px;
   }
 }
 
@@ -618,6 +802,10 @@ body {
     transform: translateY(-5px);
     border-color: var(--accent-color);
   }
+
+  @media (max-width: 480px) {
+    padding: 16px;
+  }
 }
 
 .skill-category-title {
@@ -625,6 +813,10 @@ body {
   font-weight: 600;
   color: var(--text-light);
   margin-bottom: 16px;
+
+  @media (max-width: 480px) {
+    font-size: 0.95rem;
+  }
 }
 
 .skill-list {
@@ -646,6 +838,11 @@ body {
   &:hover {
     background-color: var(--accent-color);
     color: var(--bg-color);
+  }
+
+  @media (max-width: 480px) {
+    font-size: 0.8rem;
+    padding: 5px 10px;
   }
 }
 
@@ -744,6 +941,11 @@ body {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 24px;
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
 }
 
 .project-card {
@@ -757,6 +959,10 @@ body {
   &:hover {
     transform: translateY(-5px);
     border-color: var(--accent-color);
+  }
+
+  @media (max-width: 480px) {
+    padding: 16px;
   }
 }
 
@@ -773,6 +979,10 @@ body {
   font-size: 1.1rem;
   font-weight: 600;
   color: var(--text-light);
+
+  @media (max-width: 480px) {
+    font-size: 1rem;
+  }
 }
 
 .project-tag {
@@ -790,6 +1000,10 @@ body {
   color: var(--text-color);
   line-height: 1.6;
   margin-bottom: 16px;
+
+  @media (max-width: 480px) {
+    font-size: 0.85rem;
+  }
 }
 
 .project-technologies {
@@ -846,6 +1060,10 @@ body {
         left: 0;
         color: var(--accent-color);
         font-weight: 600;
+      }
+
+      @media (max-width: 480px) {
+        font-size: 0.8rem;
       }
     }
   }
