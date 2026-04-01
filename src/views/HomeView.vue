@@ -299,6 +299,49 @@ import ThreeScene from '@/components/ThreeScene.vue'
 import ProjectDetailModal from '@/components/ProjectDetailModal.vue'
 import { getProjects } from '@/api/api'
 
+// 备用项目数据（内联在代码中，确保总能显示）
+const fallbackProjects = [
+  {
+    id: 1,
+    name: '海南国家调查地图基层网点系统',
+    type: '大屏二维项目',
+    description: '该项目是⼀个集⼤屏数据可视化、地理信息分析与后台运维管理于⼀体的综合性平台。主要用于展示和管理调查机构、专业及区域的分布与实时数据，通过"⼀张图"的形式实现对海南省调查资源的直观监管。',
+    technologies: ['Vue 3', 'ArcGIS API for JS', 'Element Plus', 'ECharts'],
+    achievements: [
+      '调查地图⼤屏开发：独立负责调查地图⼤屏的整体架构与开发，通过 ECharts 与Arcgis api for js，实现调查机构、调查专业及调查专业展示，支持多维度数据的实时动态渲染。',
+      '调查经济地图⼤屏开发：此大屏主要展示海南省全体居民、城镇居民、农村居民的收入收支情况，支持一系列数据查看，使用Echarts绘制海南省大致地图进行数据展示。',
+      '运维管理模块建设：开发配套的运维管理模块，运维管理模块负责管理大屏中的一系列数据的展示，包括调查机构、辅调员、调查证、调查网点管理。'
+    ],
+    images: ['/personal-website/img/调查一张图.jpg']
+  },
+  {
+    id: 2,
+    name: '深造村便民服务系统',
+    type: '大屏三维项目',
+    description: '该系统为大屏三维项目，属于琼中番响村智慧乡村项目，提供了村庄总览用于展示村庄概述、现状人口统计和领导小组。提供管理一张图板块，通过实时三维地图，用户可以直观地查看村庄规划和基础设施布局。',
+    technologies: ['Vue 3', '超图版Cesium', 'Element Plus'],
+    achievements: [
+      '负责村庄总览大屏的开发工作，提供了村庄总览用于展示村庄概述、现状人口统计和领导小组。',
+      '根据项目需求完成三维维地图界面开发与地图服务加载，实现服务切换及查询功能，支持弹窗移动。',
+      '根据需求完成报建审查功能，用户可自行绘制区域、输入坐标来进行报建审查，判定绘制范围占用生态红线、林地、基本农田等的面积。'
+    ],
+    images: ['/personal-website/img/调查一张图.jpg']
+  },
+  {
+    id: 3,
+    name: '海南三维项目',
+    type: '三维项目',
+    description: '海南3D项目是⼀个基于Vue 2和Cesium构建的三维地理信息系统应用，专注于提供海南地区的三维地理空间分析和可视化功能。该项目通过集成Cesium的强大功能，实现了对海南地区地理数据的三维展示和交互。',
+    technologies: ['Vue 3', 'ArcGIS API for JS', 'Element Plus', 'ECharts'],
+    achievements: [
+      '宜农资源分析：基于坡度分析计算符合条件的图斑面积，并输出可视化结果。支持三种获取分析区域方式：点击 ArcGIS 服务图斑、绘制矩形、上传文件。',
+      '⽔⼟保持监管：绘制区域对地形开挖，计算不同地形服务在绘制区域范围内的挖⽅量差值，评估⽔⼟流失情况。',
+      '交互功能：独立完成地图标绘系统（点线面体增删改查），多窗⼝对比分析功能以及比例尺组件开发。'
+    ],
+    images: ['/personal-website/img/调查一张图.jpg']
+  }
+]
+
 const activeSection = ref('about')
 const projects = ref([])
 const isModalVisible = ref(false)
@@ -387,13 +430,21 @@ const closeMobileNav = () => {
 onMounted(() => {
   setupScrollBehavior()
   window.addEventListener('scroll', handleMobileScroll)
+
+  // 先尝试从 API 加载，如果失败则使用备用数据
   getProjects()
     .then((response) => {
-      console.log('项目数据:', response)
-      projects.value = response.projects
+      console.log('项目数据加载成功:', response)
+      if (response && response.projects && response.projects.length > 0) {
+        projects.value = response.projects
+      } else {
+        console.log('API 返回数据为空，使用备用数据')
+        projects.value = fallbackProjects
+      }
     })
     .catch((error) => {
-      console.error('获取项目数据失败:', error)
+      console.warn('获取项目数据失败，使用备用数据:', error)
+      projects.value = fallbackProjects
     })
 })
 
