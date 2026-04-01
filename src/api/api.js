@@ -2,7 +2,7 @@ import axios from 'axios'
 
 // 创建一个axios实例
 const apiClient = axios.create({
-  baseURL: '/personal-website/public/config',
+  baseURL: '/personal-website/config',
   headers: {
     'Content-Type': 'application/json'
   }
@@ -18,3 +18,4 @@ export function getProjects() {
       throw error
     })
 }
+
