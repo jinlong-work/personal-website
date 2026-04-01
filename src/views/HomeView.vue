@@ -98,7 +98,7 @@
             <i class="fa-solid fa-envelope"></i>
           </a>
           <!-- 主题切换按钮 -->
-          <button class="theme-toggle social-link" @click="toggleTheme" :title="isDark ? '切换到明亮模式' : '切换到暗夜模式'">
+          <button class="social-link" @click="toggleTheme" :title="isDark ? '切换到明亮模式' : '切换到暗夜模式'">
             <i :class="isDark ? 'fa-solid fa-sun' : 'fa-solid fa-moon'"></i>
           </button>
         </div>
@@ -836,6 +836,10 @@ body {
   font-size: 1.25rem;
   text-decoration: none;
   transition: var(--transition);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
 
   &:hover {
     color: var(--accent-color);
