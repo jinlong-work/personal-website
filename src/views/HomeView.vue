@@ -527,16 +527,16 @@ onUnmounted(() => {
   --transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
 }
 
-/* 明亮主题 */
+/* 明亮主题（护眼柔和版） */
 html.light-theme {
-  --bg-color: #f8fafc;
-  --bg-light: #ffffff;
-  --text-color: #4a5568;
-  --text-light: #1a202c;
-  --text-highlight: #00875a;
-  --accent-color: #00875a;
-  --border-color: #e2e8f0;
-  --three-opacity: 0.15;
+  --bg-color: #fdf6e3;
+  --bg-light: #fef9ef;
+  --text-color: #657b83;
+  --text-light: #586e75;
+  --text-highlight: #859900;
+  --accent-color: #859900;
+  --border-color: #eee8d5;
+  --three-opacity: 0.12;
 }
 
 html {
