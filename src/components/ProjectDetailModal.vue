@@ -4,6 +4,7 @@
     :title="project.name"
     width="750px"
     top="5vh"
+    :fullscreen="isMobile"
     :close-on-click-modal="true"
     :close-on-press-escape="true"
     class="project-detail-dialog"
@@ -21,7 +22,7 @@
     <div class="dialog-content">
       <!-- 项目图片 -->
       <div v-if="project.images && project.images.length" class="image-section">
-        <el-carousel height="360px" arrow="always" indicator-position="outside">
+        <el-carousel :height="carouselHeight" arrow="always" indicator-position="outside">
           <el-carousel-item v-for="(img, index) in project.images" :key="index">
             <img :src="img" :alt="`${project.name} 截图 ${index + 1}`" class="carousel-image" />
           </el-carousel-item>
@@ -83,7 +84,7 @@
 </template>
 
 <script setup>
-import { ref, watch, onUnmounted } from 'vue'
+import { ref, watch, onUnmounted, nextTick, computed, onMounted } from 'vue'
 
 const props = defineProps({
   visible: {
@@ -99,6 +100,19 @@ const props = defineProps({
 const emit = defineEmits(['close'])
 
 const dialogVisible = ref(false)
+const windowWidth = ref(window.innerWidth)
+
+const isMobile = computed(() => windowWidth.value <= 768)
+
+const carouselHeight = computed(() => {
+  if (windowWidth.value <= 480) return '200px'
+  if (windowWidth.value <= 768) return '260px'
+  return '360px'
+})
+
+const handleResize = () => {
+  windowWidth.value = window.innerWidth
+}
 
 const lockBodyScroll = () => {
   document.body.style.overflow = 'hidden'
@@ -114,6 +128,13 @@ watch(
     dialogVisible.value = newVal
     if (newVal) {
       lockBodyScroll()
+      nextTick(() => {
+        const dialog = document.querySelector('.project-detail-dialog')
+        if (dialog) {
+          const isLight = document.documentElement.classList.contains('light-theme')
+          dialog.classList.toggle('light-theme', isLight)
+        }
+      })
     } else {
       unlockBodyScroll()
     }
@@ -136,8 +157,13 @@ const handleClosed = () => {
   unlockBodyScroll()
 }
 
+onMounted(() => {
+  window.addEventListener('resize', handleResize)
+})
+
 onUnmounted(() => {
   unlockBodyScroll()
+  window.removeEventListener('resize', handleResize)
 })
 </script>
 
@@ -152,7 +178,6 @@ onUnmounted(() => {
 .dialog-title {
   font-size: 1.4rem;
   font-weight: 700;
-  color: #ccd6f6;
 }
 
 .dialog-content {
@@ -166,6 +191,10 @@ onUnmounted(() => {
     object-fit: cover;
     border-radius: 8px;
     border: 1px solid #233554;
+
+    :deep(.project-detail-dialog.light-theme) & {
+      border-color: #eee8d5;
+    }
   }
 
   .info-section,
@@ -184,7 +213,6 @@ onUnmounted(() => {
     gap: 10px;
     font-size: 1.05rem;
     font-weight: 600;
-    color: #ccd6f6;
     margin-bottom: 16px;
 
     &::before {
@@ -193,16 +221,23 @@ onUnmounted(() => {
       height: 18px;
       background-color: #64ffda;
       border-radius: 2px;
+
+      :deep(.project-detail-dialog.light-theme) & {
+        background-color: #859900;
+      }
     }
 
     i {
       color: #64ffda;
+
+      :deep(.project-detail-dialog.light-theme) & {
+        color: #859900;
+      }
     }
   }
 
   .description-text {
     line-height: 1.8;
-    color: #8892b0;
     margin: 0;
     font-size: 0.95rem;
   }
@@ -226,6 +261,10 @@ onUnmounted(() => {
     padding: 16px 0;
     border-bottom: 1px solid #233554;
 
+    :deep(.project-detail-dialog.light-theme) & {
+      border-color: #eee8d5;
+    }
+
     &:last-child {
       border-bottom: none;
       padding-bottom: 0;
@@ -248,69 +287,225 @@ onUnmounted(() => {
     justify-content: center;
     font-size: 0.85rem;
     font-weight: 700;
+
+    :deep(.project-detail-dialog.light-theme) & {
+      background-color: #859900;
+      color: #fef9ef;
+    }
   }
 
   .achievement-text {
     flex: 1;
     line-height: 1.7;
-    color: #8892b0;
     font-size: 0.9rem;
+  }
+}
+
+/* 移动端适配 - scoped内 */
+@media (max-width: 768px) {
+  .dialog-title {
+    font-size: 1.2rem;
+  }
+  .dialog-content {
+    .image-section {
+      margin-bottom: 20px;
+    }
+    .info-section,
+    .tech-section,
+    .achievements-section {
+      margin-bottom: 20px;
+    }
+    .section-title {
+      font-size: 1rem;
+      margin-bottom: 12px;
+    }
+    .description-text {
+      font-size: 0.9rem;
+    }
+    .achievement-item {
+      padding: 12px 0;
+      gap: 10px;
+    }
+    .achievement-text {
+      font-size: 0.85rem;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .dialog-title {
+    font-size: 1.1rem;
+  }
+  .dialog-content {
+    .tech-tags {
+      gap: 8px;
+    }
+    .achievement-number {
+      width: 24px;
+      height: 24px;
+      font-size: 0.8rem;
+    }
   }
 }
 </style>
 
 <style lang="scss">
-/* 全局样式 - 用于覆盖 Element Plus 弹窗（Teleport 到 body 下） */
+/* 全局样式 - 用于覆盖 Element Plus 弹窗 */
 .project-detail-dialog {
-  background: #112240;
-  .el-dialog {
+  /* 暗夜主题（默认） */
+  &:not(.light-theme) {
     background-color: #112240;
-    border: 1px solid #233554;
+    .el-dialog {
+      background-color: #112240;
+      border: 1px solid #233554;
+    }
+    .el-dialog__header,
+    .el-dialog__body,
+    .el-dialog__footer {
+      background-color: #112240;
+      border-color: #233554;
+    }
+    .dialog-title {
+      color: #ccd6f6;
+    }
+    .section-title {
+      color: #ccd6f6;
+    }
+    .description-text,
+    .achievement-text {
+      color: #8892b0;
+    }
+    .el-dialog__body {
+      color: #8892b0;
+    }
+    .el-dialog__close {
+      color: #8892b0;
+    }
+    .el-carousel {
+      background-color: #0a192f;
+    }
+    .el-carousel__indicator .el-carousel__button {
+      background-color: #233554;
+    }
+    .el-dialog__body::-webkit-scrollbar-thumb {
+      background: #233554;
+    }
+    .achievement-item {
+      border-bottom-color: #233554;
+    }
+  }
+
+  /* 明亮主题 */
+  &.light-theme {
+    background-color: #fef9ef;
+    .el-dialog {
+      background-color: #fef9ef;
+      border: 1px solid #eee8d5;
+    }
+    .el-dialog__header,
+    .el-dialog__body,
+    .el-dialog__footer {
+      background-color: #fef9ef;
+      border-color: #eee8d5;
+    }
+    .dialog-title {
+      color: #586e75;
+    }
+    .section-title {
+      color: #586e75;
+    }
+    .description-text,
+    .achievement-text {
+      color: #657b83;
+    }
+    .el-dialog__body {
+      color: #657b83;
+    }
+    .el-dialog__close {
+      color: #657b83;
+    }
+    .el-carousel {
+      background-color: #fdf6e3;
+    }
+    .el-carousel__indicator .el-carousel__button {
+      background-color: #eee8d5;
+    }
+    .el-dialog__body::-webkit-scrollbar-thumb {
+      background: #eee8d5;
+    }
+    .achievement-item {
+      border-bottom-color: #eee8d5;
+    }
+  }
+
+  .el-dialog {
     border-radius: 12px;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-    margin: 5vh auto !important;
-    position: relative;
-    max-height: 85vh;
     display: flex;
     flex-direction: column;
     overflow: hidden;
   }
 
-  .el-dialog__header {
-    padding: 24px 32px 16px;
-    margin: 0;
-    border-bottom: 1px solid #233554;
-    background-color: #112240;
-    flex-shrink: 0;
+  /* 非全屏模式下的样式 */
+  &:not(.is-fullscreen) {
+    .el-dialog {
+      margin: 5vh auto !important;
+      max-height: 85vh;
+      position: relative;
+    }
+    .el-dialog__header {
+      padding: 24px 32px 16px;
+      margin: 0;
+      border-bottom: 1px solid;
+      flex-shrink: 0;
+    }
+    .el-dialog__body {
+      height: 70vh;
+      padding: 24px 32px;
+      overflow-y: auto;
+      flex: 1;
+
+      &::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      &::-webkit-scrollbar-track {
+        background: transparent;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        border-radius: 3px;
+      }
+    }
+    .el-dialog__footer {
+      padding: 16px 32px 24px;
+      border-top: 1px solid;
+      flex-shrink: 0;
+    }
+    .el-dialog__headerbtn {
+      top: 24px;
+      right: 32px;
+    }
   }
 
-  .el-dialog__body {
-    height: 70vh;
-    padding: 24px 32px;
-    background-color: #112240;
-    color: #8892b0;
-    overflow-y: auto;
-    flex: 1;
-
-    &::-webkit-scrollbar {
-      width: 6px;
+  /* 全屏模式下的样式 */
+  &.is-fullscreen {
+    .el-dialog {
+      border-radius: 0;
     }
-
-    &::-webkit-scrollbar-track {
-      background: transparent;
+    .el-dialog__header {
+      padding: 20px 20px 12px;
     }
-
-    &::-webkit-scrollbar-thumb {
-      background: #233554;
-      border-radius: 3px;
+    .el-dialog__body {
+      padding: 20px;
     }
-  }
-
-  .el-dialog__footer {
-    padding: 16px 32px 24px;
-    border-top: 1px solid #233554;
-    background-color: #112240;
-    flex-shrink: 0;
+    .el-dialog__footer {
+      padding: 12px 20px 16px;
+    }
+    .el-dialog__headerbtn {
+      top: 20px;
+      right: 20px;
+    }
   }
 
   /* Element Plus 组件深色主题覆盖 */
@@ -318,12 +513,24 @@ onUnmounted(() => {
     background-color: #233554;
     border-color: #64ffda;
     color: #64ffda;
+
+    html.light-theme & {
+      background-color: #fdf6e3;
+      border-color: #859900;
+      color: #859900;
+    }
   }
 
   .el-tag--success {
     background-color: rgba(100, 255, 218, 0.1);
     border-color: #64ffda;
     color: #64ffda;
+
+    html.light-theme & {
+      background-color: rgba(133, 153, 0, 0.1);
+      border-color: #859900;
+      color: #859900;
+    }
   }
 
   .el-button--primary {
@@ -336,25 +543,35 @@ onUnmounted(() => {
       background-color: #4dd9b5;
       border-color: #4dd9b5;
     }
-  }
 
-  .el-dialog__headerbtn {
-    top: 24px;
-    right: 32px;
-
-    .el-dialog__close {
-      color: #8892b0;
-      font-size: 1.2rem;
+    html.light-theme & {
+      background-color: #859900;
+      border-color: #859900;
+      color: #fef9ef;
 
       &:hover {
-        color: #64ffda;
+        background-color: #6b7a00;
+        border-color: #6b7a00;
       }
     }
   }
 
-  /* 轮播图深色样式 */
+  .el-dialog__headerbtn {
+    .el-dialog__close {
+      font-size: 1.2rem;
+
+      &:hover {
+        color: #64ffda;
+
+        html.light-theme & {
+          color: #859900;
+        }
+      }
+    }
+  }
+
+  /* 轮播图样式 */
   .el-carousel {
-    background-color: #0a192f;
     border-radius: 8px;
   }
 
@@ -364,22 +581,24 @@ onUnmounted(() => {
     &:hover {
       background-color: #64ffda;
     }
+
+    html.light-theme & {
+      background-color: rgba(133, 153, 0, 0.3);
+
+      &:hover {
+        background-color: #859900;
+      }
+    }
   }
 
   .el-carousel__indicator {
-    .el-carousel__button {
-      background-color: #233554;
-    }
-
     &.is-active .el-carousel__button {
       background-color: #64ffda;
+
+      html.light-theme & {
+        background-color: #859900;
+      }
     }
   }
 }
-
-// /* 遮罩层样式 */
-// .el-overlay {
-//   background-color: rgba(0, 0, 0, 0.75);
-//   backdrop-filter: blur(4px);
-// }
 </style>
