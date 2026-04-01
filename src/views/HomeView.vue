@@ -24,9 +24,14 @@
       <div class="mobile-profile">
         <h1 class="mobile-name">曹进龙</h1>
       </div>
-      <button class="menu-toggle" @click="isMobileNavOpen = !isMobileNavOpen">
-        <i :class="isMobileNavOpen ? 'fa-solid fa-xmark' : 'fa-solid fa-bars'"></i>
-      </button>
+      <div class="mobile-header-actions">
+        <button class="theme-toggle-mobile" @click="toggleTheme" :title="isDark ? '切换到明亮模式' : '切换到暗夜模式'">
+          <i :class="isDark ? 'fa-solid fa-sun' : 'fa-solid fa-moon'"></i>
+        </button>
+        <button class="menu-toggle" @click="isMobileNavOpen = !isMobileNavOpen">
+          <i :class="isMobileNavOpen ? 'fa-solid fa-xmark' : 'fa-solid fa-bars'"></i>
+        </button>
+      </div>
     </div>
 
     <!-- 左侧固定侧边栏 -->
@@ -92,6 +97,10 @@
           <a href="mailto:1426559553@qq.com" class="social-link" title="Email">
             <i class="fa-solid fa-envelope"></i>
           </a>
+          <!-- 主题切换按钮 -->
+          <button class="theme-toggle social-link" @click="toggleTheme" :title="isDark ? '切换到明亮模式' : '切换到暗夜模式'">
+            <i :class="isDark ? 'fa-solid fa-sun' : 'fa-solid fa-moon'"></i>
+          </button>
         </div>
       </div>
     </aside>
@@ -348,6 +357,34 @@ const isModalVisible = ref(false)
 const selectedProject = ref({})
 const isMobileNavOpen = ref(false)
 
+// 主题切换
+const isDark = ref(true)
+
+// 从 localStorage 读取主题偏好
+const loadTheme = () => {
+  const savedTheme = localStorage.getItem('theme')
+  if (savedTheme) {
+    isDark.value = savedTheme === 'dark'
+  } else {
+    // 默认暗夜模式
+    isDark.value = true
+  }
+  applyTheme()
+}
+
+// 应用主题
+const applyTheme = () => {
+  document.documentElement.classList.toggle('light-theme', !isDark.value)
+  document.documentElement.classList.toggle('dark-theme', isDark.value)
+}
+
+// 切换主题
+const toggleTheme = () => {
+  isDark.value = !isDark.value
+  localStorage.setItem('theme', isDark.value ? 'dark' : 'light')
+  applyTheme()
+}
+
 const handleScroll = (event) => {
   const isMobile = window.innerWidth <= 768
   let scrollContainer
@@ -428,6 +465,7 @@ const closeMobileNav = () => {
 }
 
 onMounted(() => {
+  loadTheme()
   setupScrollBehavior()
   window.addEventListener('scroll', handleMobileScroll)
 
@@ -465,8 +503,9 @@ onUnmounted(() => {
   width: 100%;
   height: 100%;
   z-index: 0;
-  opacity: 0.3;
+  opacity: var(--three-opacity, 0.3);
   pointer-events: none;
+  transition: opacity 0.3s ease;
 }
 
 * {
@@ -475,6 +514,7 @@ onUnmounted(() => {
   box-sizing: border-box;
 }
 
+/* 暗夜主题（默认） */
 :root {
   --bg-color: #0a192f;
   --bg-light: #112240;
@@ -483,7 +523,20 @@ onUnmounted(() => {
   --text-highlight: #64ffda;
   --accent-color: #64ffda;
   --border-color: #233554;
+  --three-opacity: 0.3;
   --transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+/* 明亮主题 */
+html.light-theme {
+  --bg-color: #f8fafc;
+  --bg-light: #ffffff;
+  --text-color: #4a5568;
+  --text-light: #1a202c;
+  --text-highlight: #00875a;
+  --accent-color: #00875a;
+  --border-color: #e2e8f0;
+  --three-opacity: 0.15;
 }
 
 html {
@@ -496,6 +549,7 @@ body {
   color: var(--text-color);
   line-height: 1.6;
   overflow: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
 
   @media (max-width: 768px) {
     overflow-y: auto;
@@ -515,6 +569,10 @@ body {
   opacity: 0;
   visibility: hidden;
   transition: var(--transition);
+
+  html.light-theme & {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
 
   &.active {
     opacity: 1;
@@ -541,16 +599,45 @@ body {
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid var(--border-color);
+  transition: background-color 0.3s ease;
+
+  html.light-theme & {
+    background-color: rgba(248, 250, 252, 0.95);
+  }
 
   @media (max-width: 768px) {
     display: flex;
   }
 }
 
+.mobile-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .mobile-name {
   font-size: 1.1rem;
   font-weight: 600;
   color: var(--text-light);
+}
+
+.theme-toggle-mobile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: none;
+  border: none;
+  color: var(--accent-color);
+  font-size: 1.25rem;
+  cursor: pointer;
+  transition: var(--transition);
+
+  &:hover {
+    transform: scale(1.1);
+  }
 }
 
 .menu-toggle {
