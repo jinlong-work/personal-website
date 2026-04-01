@@ -5,6 +5,13 @@
       <ThreeScene />
     </div>
 
+    <!-- 项目详情弹窗 -->
+    <ProjectDetailModal
+      :visible="isModalVisible"
+      :project="selectedProject"
+      @close="closeModal"
+    />
+
     <!-- 左侧固定侧边栏 -->
     <aside class="sidebar">
       <div class="sidebar-content">
@@ -18,15 +25,31 @@
 
         <!-- 导航菜单 -->
         <nav class="nav">
-          <a href="#about" class="nav-link" :class="{ active: activeSection === 'about' }">关于我</a>
-          <a href="#skills" class="nav-link" :class="{ active: activeSection === 'skills' }">技术技能</a>
-          <a href="#experience" class="nav-link" :class="{ active: activeSection === 'experience' }">工作经历</a>
-          <a href="#contact" class="nav-link" :class="{ active: activeSection === 'contact' }">联系方式</a>
+          <a href="#about" class="nav-link" :class="{ active: activeSection === 'about' }"
+            >关于我</a
+          >
+          <a href="#skills" class="nav-link" :class="{ active: activeSection === 'skills' }"
+            >技术技能</a
+          >
+          <a href="#experience" class="nav-link" :class="{ active: activeSection === 'experience' }"
+            >工作经历</a
+          >
+          <a href="#projects" class="nav-link" :class="{ active: activeSection === 'projects' }"
+            >项目经历</a
+          >
+          <a href="#contact" class="nav-link" :class="{ active: activeSection === 'contact' }"
+            >联系方式</a
+          >
         </nav>
 
         <!-- 社交媒体链接 -->
         <div class="social-links">
-          <a href="https://github.com/jinlong-work" target="_blank" class="social-link" title="GitHub">
+          <a
+            href="https://github.com/jinlong-work"
+            target="_blank"
+            class="social-link"
+            title="GitHub"
+          >
             <i class="fa-brands fa-github"></i>
           </a>
           <a href="mailto:1426559553@qq.com" class="social-link" title="Email">
@@ -42,17 +65,21 @@
         <h2 class="section-title">关于我</h2>
         <div class="about-content">
           <p>
-            我是曹进龙，一名拥有丰富经验的高级 WebGIS 开发工程师。自 2023 年毕业于湖北大学地理信息科学专业以来，我一直专注于 WebGIS 领域的前沿技术研究与应用开发。
+            我是曹进龙，一名拥有丰富经验的高级 WebGIS 开发工程师。自 2023
+            年毕业于湖北大学地理信息科学专业以来，我一直专注于 WebGIS 领域的前沿技术研究与应用开发。
           </p>
           <p>
-            在多年的技术实践中，我深入掌握了从前端可视化到后端空间数据处理的全栈开发技能，擅长设计和实现高性能、高并发的 GIS 应用系统。我的专业领域包括但不限于：
-            2D/3D 地图可视化、空间数据分析、WebGL 渲染优化、分布式空间索引架构等。
+            在多年的技术实践中，我深入掌握了从前端可视化到后端空间数据处理的全栈开发技能，擅长设计和实现高性能、高并发的
+            GIS 应用系统。我的专业领域包括但不限于： 2D/3D 地图可视化、空间数据分析、WebGL
+            渲染优化、分布式空间索引架构等。
           </p>
           <p>
-            我对地理信息系统的技术发展趋势保持敏锐的洞察力，致力于将先进的 Web 技术与传统 GIS 领域深度融合，以解决复杂的空间信息处理与可视化挑战。
+            我对地理信息系统的技术发展趋势保持敏锐的洞察力，致力于将先进的 Web 技术与传统 GIS
+            领域深度融合，以解决复杂的空间信息处理与可视化挑战。
           </p>
           <p>
-            我具备优秀的团队协作能力和架构设计能力，在多个大型 GIS 项目中承担核心技术研发工作，积累了丰富的项目管理和技术沉淀经验。
+            我具备优秀的团队协作能力和架构设计能力，在多个大型 GIS
+            项目中承担核心技术研发工作，积累了丰富的项目管理和技术沉淀经验。
           </p>
         </div>
       </section>
@@ -127,7 +154,9 @@
               <span class="experience-period">2023 - 至今</span>
             </div>
             <p class="experience-description">
-              负责公司核心 WebGIS 产品的架构设计与开发工作。主导完成了高性能矢量瓦片服务的研发，实现了地图渲染性能提升 400%。
+              负责公司核心 WebGIS
+              产品的架构设计与开发工作。主导完成了高性能矢量瓦片服务的研发，实现了地图渲染性能提升
+              400%。
               设计并实现了空间分析引擎，支持复杂的空间查询和数据分析功能。负责团队技术指导和架构决策。
             </p>
           </div>
@@ -140,7 +169,8 @@
               <span class="experience-period">2022 - 2023</span>
             </div>
             <p class="experience-description">
-              参与多个国家级 GIS 项目的开发工作。负责地图可视化模块的开发，实现了复杂的地图交互功能和数据展示。
+              参与多个国家级 GIS
+              项目的开发工作。负责地图可视化模块的开发，实现了复杂的地图交互功能和数据展示。
               优化了地图渲染性能，解决了大数据量地图加载慢的问题。
             </p>
           </div>
@@ -160,10 +190,44 @@
         </div>
       </section>
 
+      <section id="projects" class="section">
+        <h2 class="section-title">项目经历</h2>
+        <div class="projects-grid">
+          <div
+            class="project-card"
+            v-for="project in projects"
+            :key="project.id"
+            @click="showDetailDailog(project)"
+          >
+            <div class="project-header">
+              <h3 class="project-title">{{ project.name }}</h3>
+              <span class="project-tag">{{ project.type }}</span>
+            </div>
+            <p class="project-description">
+              {{ project.description }}
+            </p>
+            <div class="project-technologies">
+              <span class="tech-tag" v-for="value in project.technologies">{{ value }}</span>
+            </div>
+            <div class="project-achievements">
+              <h4>主要职责：</h4>
+              <ul>
+                <li v-for="duty in project.achievements" :key="duty">
+                  {{ duty }}
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section id="contact" class="section">
         <h2 class="section-title">联系方式</h2>
         <div class="contact-content">
-          <p>期待与志同道合的技术伙伴交流合作。目前我对具有挑战性的 WebGIS 高级开发岗位保持开放态度，欢迎通过以下方式联系我：</p>
+          <p>
+            期待与志同道合的技术伙伴交流合作。目前我对具有挑战性的 WebGIS
+            高级开发岗位保持开放态度，欢迎通过以下方式联系我：
+          </p>
           <div class="contact-methods">
             <a href="mailto:1426559553@qq.com" class="contact-method">
               <i class="fa-solid fa-envelope"></i>
@@ -195,8 +259,13 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
 import ThreeScene from '@/components/ThreeScene.vue'
+import ProjectDetailModal from '@/components/ProjectDetailModal.vue'
+import { getProjects } from '@/api/api'
 
 const activeSection = ref('about')
+const projects = ref([])
+const isModalVisible = ref(false)
+const selectedProject = ref({})
 
 const handleScroll = (event) => {
   const main = event.target
@@ -233,8 +302,26 @@ const setupScrollBehavior = () => {
   })
 }
 
+const showDetailDailog = (project) => {
+  selectedProject.value = project
+  isModalVisible.value = true
+}
+
+const closeModal = () => {
+  isModalVisible.value = false
+  selectedProject.value = {}
+}
+
 onMounted(() => {
   setupScrollBehavior()
+  getProjects()
+    .then((response) => {
+      console.log('项目数据:', response)
+      projects.value = response.projects
+    })
+    .catch((error) => {
+      console.error('获取项目数据失败:', error)
+    })
 })
 
 onUnmounted(() => {
@@ -649,6 +736,118 @@ body {
     width: 24px;
     text-align: center;
     color: var(--accent-color);
+  }
+}
+
+/* 项目经历 */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+.project-card {
+  background-color: var(--bg-light);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 24px;
+  transition: var(--transition);
+  cursor: pointer;
+
+  &:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent-color);
+  }
+}
+
+.project-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.project-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-light);
+}
+
+.project-tag {
+  display: inline-block;
+  padding: 4px 12px;
+  background-color: var(--accent-color);
+  color: var(--bg-color);
+  font-size: 0.75rem;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.project-description {
+  font-size: 0.9rem;
+  color: var(--text-color);
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.project-technologies {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.tech-tag {
+  display: inline-block;
+  padding: 4px 10px;
+  background-color: var(--bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-size: 0.8rem;
+  color: var(--accent-color);
+  transition: var(--transition);
+
+  &:hover {
+    background-color: var(--accent-color);
+    color: var(--bg-color);
+  }
+}
+
+.project-achievements {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-color);
+
+  h4 {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-light);
+    margin-bottom: 12px;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+      position: relative;
+      padding-left: 18px;
+      font-size: 0.85rem;
+      color: var(--text-color);
+      line-height: 1.5;
+      margin-bottom: 8px;
+
+      &::before {
+        content: '▹';
+        position: absolute;
+        left: 0;
+        color: var(--accent-color);
+        font-weight: 600;
+      }
+    }
   }
 }
 

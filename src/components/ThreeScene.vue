@@ -1,6 +1,6 @@
 <template>
-  <div class="three-container">
-    <canvas ref="canvas"></canvas>
+  <div class="w-full h-full absolute top-0 left-0 z-0">
+    <canvas ref="canvas" class="block w-full h-full"></canvas>
   </div>
 </template>
 
