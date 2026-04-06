@@ -22,9 +22,27 @@
     <div class="dialog-content">
       <!-- 项目图片 -->
       <div v-if="project.images && project.images.length" class="image-section">
+        <div class="image-hint">
+          <i class="fa-solid fa-magnifying-glass-plus"></i>
+          点击图片可放大预览
+        </div>
         <el-carousel :height="carouselHeight" arrow="always" indicator-position="outside">
           <el-carousel-item v-for="(img, index) in project.images" :key="index">
-            <img :src="img" :alt="`${project.name} 截图 ${index + 1}`" class="carousel-image" />
+            <div class="image-wrapper">
+              <el-image
+                :src="img"
+                :alt="`${project.name} 截图 ${index + 1}`"
+                :preview-src-list="project.images"
+                :initial-index="index"
+                scale="0.7"
+                fit="cover"
+                class="carousel-image"
+                preview-teleported
+              />
+              <div class="image-click-hint">
+                <i class="fa-solid fa-hand-pointer"></i>
+              </div>
+            </div>
           </el-carousel-item>
         </el-carousel>
       </div>
@@ -344,6 +362,54 @@ onUnmounted(() => {
       width: 24px;
       height: 24px;
       font-size: 0.8rem;
+    }
+  }
+
+  .image-hint {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    font-size: 0.85rem;
+    color: #8892b0;
+
+    :deep(.project-detail-dialog.light-theme) & {
+      color: #657b83;
+    }
+
+    i {
+      color: #64ffda;
+
+      :deep(.project-detail-dialog.light-theme) & {
+        color: #859900;
+      }
+    }
+  }
+
+  .image-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+  }
+
+  .image-click-hint {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 1rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+
+    .image-wrapper:hover & {
+      opacity: 1;
     }
   }
 }

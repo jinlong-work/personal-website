@@ -13,11 +13,7 @@
     ></div>
 
     <!-- 项目详情弹窗 -->
-    <ProjectDetailModal
-      :visible="isModalVisible"
-      :project="selectedProject"
-      @close="closeModal"
-    />
+    <ProjectDetailModal :visible="isModalVisible" :project="selectedProject" @close="closeModal" />
 
     <!-- 移动端顶部栏 -->
     <div class="mobile-header">
@@ -25,7 +21,19 @@
         <h1 class="mobile-name">曹进龙</h1>
       </div>
       <div class="mobile-header-actions">
-        <button class="theme-toggle-mobile" @click="toggleTheme" :title="isDark ? '切换到明亮模式' : '切换到暗夜模式'">
+        <a
+          href="/personal-website/曹进龙-个人简历.pdf"
+          download="曹进龙-个人简历.pdf"
+          class="resume-download-mobile"
+          title="下载简历"
+        >
+          <i class="fa-solid fa-download"></i>
+        </a>
+        <button
+          class="theme-toggle-mobile"
+          @click="toggleTheme"
+          :title="isDark ? '切换到明亮模式' : '切换到暗夜模式'"
+        >
           <i :class="isDark ? 'fa-solid fa-sun' : 'fa-solid fa-moon'"></i>
         </button>
         <button class="menu-toggle" @click="isMobileNavOpen = !isMobileNavOpen">
@@ -39,9 +47,9 @@
       <div class="sidebar-content">
         <div class="profile">
           <h1 class="profile-name">曹进龙</h1>
-          <h2 class="profile-title">高级 WebGIS 开发工程师</h2>
+          <h2 class="profile-title">WebGIS 开发工程师</h2>
           <p class="profile-description">
-            拥有多年 GIS 开发经验，专注于高性能 WebGIS 应用架构设计与研发
+            拥有多两年 GIS 开发经验，专注于高性能 WebGIS 应用架构设计与研发
           </p>
         </div>
 
@@ -55,18 +63,18 @@
             >关于我</a
           >
           <a
-            href="#skills"
-            class="nav-link"
-            :class="{ active: activeSection === 'skills' }"
-            @click="closeMobileNav"
-            >技术技能</a
-          >
-          <a
             href="#experience"
             class="nav-link"
             :class="{ active: activeSection === 'experience' }"
             @click="closeMobileNav"
             >工作经历</a
+          >
+          <a
+            href="#skills"
+            class="nav-link"
+            :class="{ active: activeSection === 'skills' }"
+            @click="closeMobileNav"
+            >技术技能</a
           >
           <a
             href="#projects"
@@ -86,19 +94,21 @@
 
         <!-- 社交媒体链接 -->
         <div class="social-links">
+          <!-- 简历下载按钮 -->
           <a
-            href="https://github.com/jinlong-work"
-            target="_blank"
+            href="/personal-website/曹进龙-个人简历.pdf"
+            download="曹进龙-个人简历.pdf"
             class="social-link"
-            title="GitHub"
+            title="下载简历"
           >
-            <i class="fa-brands fa-github"></i>
-          </a>
-          <a href="mailto:1426559553@qq.com" class="social-link" title="Email">
-            <i class="fa-solid fa-envelope"></i>
+            <i class="fa-solid fa-download"></i>
           </a>
           <!-- 主题切换按钮 -->
-          <button class="social-link" @click="toggleTheme" :title="isDark ? '切换到明亮模式' : '切换到暗夜模式'">
+          <button
+            class="social-link"
+            @click="toggleTheme"
+            :title="isDark ? '切换到明亮模式' : '切换到暗夜模式'"
+          >
             <i :class="isDark ? 'fa-solid fa-sun' : 'fa-solid fa-moon'"></i>
           </button>
         </div>
@@ -111,80 +121,20 @@
         <h2 class="section-title">关于我</h2>
         <div class="about-content">
           <p>
-            我是曹进龙，一名拥有丰富经验的高级 WebGIS 开发工程师。自 2023
-            年毕业于湖北大学地理信息科学专业以来，我一直专注于 WebGIS 领域的前沿技术研究与应用开发。
+            您好，我是曹进龙，一名专注于 WebGIS 开发的工程师。自 2023
+            年毕业于湖北大学地理信息科学专业以来，我一直深耕于 WebGIS 领域的技术实践与应用开发。
           </p>
           <p>
-            在多年的技术实践中，我深入掌握了从前端可视化到后端空间数据处理的全栈开发技能，擅长设计和实现高性能、高并发的
-            GIS 应用系统。我的专业领域包括但不限于： 2D/3D 地图可视化、空间数据分析、WebGL
-            渲染优化、分布式空间索引架构等。
+            在两年多的 GIS 开发经验中，我专注于前端地图可视化技术，熟练掌握 2D/3D
+            地图开发、空间数据展示与交互等核心技能。目前正在学习后端相关技术，致力于向全栈方向发展。
           </p>
           <p>
-            我对地理信息系统的技术发展趋势保持敏锐的洞察力，致力于将先进的 Web 技术与传统 GIS
-            领域深度融合，以解决复杂的空间信息处理与可视化挑战。
+            我对 WebGIS 技术保持持续的学习热情，善于将前端技术与 GIS
+            业务需求相结合，实现直观高效的空间信息可视化解决方案。
           </p>
           <p>
-            我具备优秀的团队协作能力和架构设计能力，在多个大型 GIS
-            项目中承担核心技术研发工作，积累了丰富的项目管理和技术沉淀经验。
+            在多个项目中，我负责地图可视化模块的核心开发工作，积累了丰富的实战经验，能够独立完成从需求分析到功能实现的完整开发流程。
           </p>
-        </div>
-      </section>
-
-      <section id="skills" class="section">
-        <h2 class="section-title">技术技能</h2>
-        <div class="skills-grid">
-          <!-- 2D/3D 地图可视化 -->
-          <div class="skill-category">
-            <h3 class="skill-category-title">2D/3D 地图可视化</h3>
-            <div class="skill-list">
-              <span class="skill-tag">OpenLayers</span>
-              <span class="skill-tag">Mapbox GL JS</span>
-              <span class="skill-tag">CesiumJS</span>
-              <span class="skill-tag">Deck.gl</span>
-              <span class="skill-tag">Leaflet</span>
-              <span class="skill-tag">Three.js</span>
-              <span class="skill-tag">WebGL/WebGPU</span>
-            </div>
-          </div>
-
-          <!-- 空间数据处理 -->
-          <div class="skill-category">
-            <h3 class="skill-category-title">空间数据处理</h3>
-            <div class="skill-list">
-              <span class="skill-tag">PostGIS</span>
-              <span class="skill-tag">GeoServer</span>
-              <span class="skill-tag">GDAL/OGR</span>
-              <span class="skill-tag">Turf.js</span>
-              <span class="skill-tag">JTS</span>
-              <span class="skill-tag">空间索引</span>
-            </div>
-          </div>
-
-          <!-- 全栈开发 -->
-          <div class="skill-category">
-            <h3 class="skill-category-title">全栈开发</h3>
-            <div class="skill-list">
-              <span class="skill-tag">Vue.js / Nuxt</span>
-              <span class="skill-tag">React / Next.js</span>
-              <span class="skill-tag">TypeScript</span>
-              <span class="skill-tag">Node.js</span>
-              <span class="skill-tag">Python</span>
-              <span class="skill-tag">Go</span>
-            </div>
-          </div>
-
-          <!-- 高性能架构 -->
-          <div class="skill-category">
-            <h3 class="skill-category-title">高性能架构</h3>
-            <div class="skill-list">
-              <span class="skill-tag">矢量瓦片</span>
-              <span class="skill-tag">渲染优化</span>
-              <span class="skill-tag">负载均衡</span>
-              <span class="skill-tag">Redis 缓存</span>
-              <span class="skill-tag">Kubernetes</span>
-              <span class="skill-tag">微服务</span>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -194,44 +144,87 @@
           <div class="experience-item">
             <div class="experience-header">
               <div class="experience-info">
-                <h3 class="experience-title">高级 WebGIS 开发工程师</h3>
-                <p class="experience-company">某大型软件公司</p>
-              </div>
-              <span class="experience-period">2023 - 至今</span>
-            </div>
-            <p class="experience-description">
-              负责公司核心 WebGIS
-              产品的架构设计与开发工作。主导完成了高性能矢量瓦片服务的研发，实现了地图渲染性能提升
-              400%。
-              设计并实现了空间分析引擎，支持复杂的空间查询和数据分析功能。负责团队技术指导和架构决策。
-            </p>
-          </div>
-          <div class="experience-item">
-            <div class="experience-header">
-              <div class="experience-info">
                 <h3 class="experience-title">WebGIS 开发工程师</h3>
-                <p class="experience-company">武汉中地数码集团</p>
+                <p class="experience-company">湖北嘉款科技有限公司</p>
               </div>
-              <span class="experience-period">2022 - 2023</span>
+              <span class="experience-period">2024.11 - 2026.03</span>
             </div>
             <p class="experience-description">
-              参与多个国家级 GIS
-              项目的开发工作。负责地图可视化模块的开发，实现了复杂的地图交互功能和数据展示。
-              优化了地图渲染性能，解决了大数据量地图加载慢的问题。
+              长期驻场海南省测绘地理信息局，负责二维地图、三维地图、数据大屏及运维管理系统开发。深入实践
+              ArcGIS API for
+              JS、Cesium、若依框架等技术，能够快速理解业务需求并提供解决方案，独立完成多个项目开发，获得单位领导高度认可。
             </p>
           </div>
           <div class="experience-item">
             <div class="experience-header">
               <div class="experience-info">
-                <h3 class="experience-title">GIS 开发实习生</h3>
-                <p class="experience-company">某地理信息研究所</p>
+                <h3 class="experience-title">WebGIS 开发实习生</h3>
+                <p class="experience-company">武汉中地数码科技有限公司</p>
               </div>
-              <span class="experience-period">2021 - 2022</span>
+              <span class="experience-period">2022.07 - 2022.09</span>
             </div>
             <p class="experience-description">
-              参与土地利用规划系统的开发，负责空间数据处理和地图可视化功能。
-              完成了土地变更调查数据处理工具的开发，提高了工作效率 60%。
+              使用 HTML、CSS、JavaScript 及 OpenLayers 进行 WebGIS
+              前端开发，构建交互式地图应用，实现图层切换、视频监控、测量工具等功能。学习并掌握了
+              WebGIS 开发基础，为后续深入发展奠定了坚实基础。
             </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="skills" class="section">
+        <h2 class="section-title">技术技能</h2>
+        <div class="skills-grid">
+          <!-- 前端基础技能 -->
+          <div class="skill-category">
+            <h3 class="skill-category-title">前端基础技能</h3>
+            <div class="skill-list">
+              <span class="skill-tag">HTML</span>
+              <span class="skill-tag">CSS</span>
+              <span class="skill-tag">SCSS</span>
+              <span class="skill-tag">JavaScript</span>
+              <span class="skill-tag">TypeScript</span>
+              <span class="skill-tag">ES6+</span>
+            </div>
+          </div>
+
+          <!-- Vue 相关技术 -->
+          <div class="skill-category">
+            <h3 class="skill-category-title">Vue 相关技术</h3>
+            <div class="skill-list">
+              <span class="skill-tag">Vue 2</span>
+              <span class="skill-tag">Vue 3</span>
+              <span class="skill-tag">Vue-router</span>
+              <span class="skill-tag">Pinia</span>
+              <span class="skill-tag">Webpack</span>
+              <span class="skill-tag">Vite</span>
+              <span class="skill-tag">Element Plus</span>
+              <span class="skill-tag">ECharts</span>
+            </div>
+          </div>
+
+          <!-- 前端地图开发相关技术 -->
+          <div class="skill-category">
+            <h3 class="skill-category-title">前端地图开发</h3>
+            <div class="skill-list">
+              <span class="skill-tag">OpenLayers</span>
+              <span class="skill-tag">ArcGIS API for JS</span>
+              <span class="skill-tag">Cesium</span>
+              <span class="skill-tag">MapBox</span>
+              <span class="skill-tag">Three.js</span>
+              <span class="skill-tag">WebGL</span>
+              <span class="skill-tag">MapGIS</span>
+            </div>
+          </div>
+
+          <!-- 其他技能 -->
+          <div class="skill-category">
+            <h3 class="skill-category-title">其他技能</h3>
+            <div class="skill-list">
+              <span class="skill-tag">Git/Gitee</span>
+              <span class="skill-tag">ArcGIS 软件</span>
+              <span class="skill-tag">空间分析</span>
+            </div>
           </div>
         </div>
       </section>
@@ -246,7 +239,10 @@
             @click="showDetailDailog(project)"
           >
             <div class="project-header">
-              <h3 class="project-title">{{ project.name }}</h3>
+              <h3 class="project-title">
+                {{ project.name }}
+                <i class="fa-solid fa-arrow-up-right-from-square click-hint-icon"></i>
+              </h3>
               <span class="project-tag">{{ project.type }}</span>
             </div>
             <p class="project-description">
@@ -263,6 +259,10 @@
                 </li>
               </ul>
             </div>
+            <div class="click-hint">
+              <i class="fa-solid fa-hand-pointer"></i>
+              点击查看详情
+            </div>
           </div>
         </div>
       </section>
@@ -272,7 +272,7 @@
         <div class="contact-content">
           <p>
             期待与志同道合的技术伙伴交流合作。目前我对具有挑战性的 WebGIS
-            高级开发岗位保持开放态度，欢迎通过以下方式联系我：
+            开发岗位保持开放态度，欢迎通过以下方式联系我：
           </p>
           <div class="contact-methods">
             <a href="mailto:1426559553@qq.com" class="contact-method">
@@ -285,12 +285,17 @@
             </a>
             <div class="contact-method">
               <i class="fa-solid fa-location-dot"></i>
-              <span>广东惠州</span>
+              <span>湖北恩施</span>
             </div>
-            <a href="https://github.com/jinlong-work" target="_blank" class="contact-method">
-              <i class="fa-brands fa-github"></i>
-              <span>github.com/jinlong-work</span>
-            </a>
+            <div class="contact-method wechat-method">
+              <i class="fa-brands fa-weixin"></i>
+              <div class="wechat-info">
+                <span class="wechat-label">微信</span>
+                <div class="wechat-qrcode-inline">
+                  <img :src="weixinImg" alt="微信二维码" class="wechat-img-inline" />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -307,6 +312,7 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import ThreeScene from '@/components/ThreeScene.vue'
 import ProjectDetailModal from '@/components/ProjectDetailModal.vue'
 import { getProjects } from '@/api/api'
+import weixinImg from '@/assets/img/weixin.jpg'
 
 // 备用项目数据（内联在代码中，确保总能显示）
 const fallbackProjects = [
@@ -314,7 +320,8 @@ const fallbackProjects = [
     id: 1,
     name: '海南国家调查地图基层网点系统',
     type: '大屏二维项目',
-    description: '该项目是⼀个集⼤屏数据可视化、地理信息分析与后台运维管理于⼀体的综合性平台。主要用于展示和管理调查机构、专业及区域的分布与实时数据，通过"⼀张图"的形式实现对海南省调查资源的直观监管。',
+    description:
+      '该项目是⼀个集⼤屏数据可视化、地理信息分析与后台运维管理于⼀体的综合性平台。主要用于展示和管理调查机构、专业及区域的分布与实时数据，通过"⼀张图"的形式实现对海南省调查资源的直观监管。',
     technologies: ['Vue 3', 'ArcGIS API for JS', 'Element Plus', 'ECharts'],
     achievements: [
       '调查地图⼤屏开发：独立负责调查地图⼤屏的整体架构与开发，通过 ECharts 与Arcgis api for js，实现调查机构、调查专业及调查专业展示，支持多维度数据的实时动态渲染。',
@@ -327,7 +334,8 @@ const fallbackProjects = [
     id: 2,
     name: '深造村便民服务系统',
     type: '大屏三维项目',
-    description: '该系统为大屏三维项目，属于琼中番响村智慧乡村项目，提供了村庄总览用于展示村庄概述、现状人口统计和领导小组。提供管理一张图板块，通过实时三维地图，用户可以直观地查看村庄规划和基础设施布局。',
+    description:
+      '该系统为大屏三维项目，属于琼中番响村智慧乡村项目，提供了村庄总览用于展示村庄概述、现状人口统计和领导小组。提供管理一张图板块，通过实时三维地图，用户可以直观地查看村庄规划和基础设施布局。',
     technologies: ['Vue 3', '超图版Cesium', 'Element Plus'],
     achievements: [
       '负责村庄总览大屏的开发工作，提供了村庄总览用于展示村庄概述、现状人口统计和领导小组。',
@@ -340,7 +348,8 @@ const fallbackProjects = [
     id: 3,
     name: '海南三维项目',
     type: '三维项目',
-    description: '海南3D项目是⼀个基于Vue 2和Cesium构建的三维地理信息系统应用，专注于提供海南地区的三维地理空间分析和可视化功能。该项目通过集成Cesium的强大功能，实现了对海南地区地理数据的三维展示和交互。',
+    description:
+      '海南3D项目是⼀个基于Vue 2和Cesium构建的三维地理信息系统应用，专注于提供海南地区的三维地理空间分析和可视化功能。该项目通过集成Cesium的强大功能，实现了对海南地区地理数据的三维展示和交互。',
     technologies: ['Vue 3', 'ArcGIS API for JS', 'Element Plus', 'ECharts'],
     achievements: [
       '宜农资源分析：基于坡度分析计算符合条件的图斑面积，并输出可视化结果。支持三种获取分析区域方式：点击 ArcGIS 服务图斑、绘制矩形、上传文件。',
@@ -549,7 +558,9 @@ body {
   color: var(--text-color);
   line-height: 1.6;
   overflow: hidden;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 
   @media (max-width: 768px) {
     overflow-y: auto;
@@ -620,6 +631,25 @@ body {
   font-size: 1.1rem;
   font-weight: 600;
   color: var(--text-light);
+}
+
+.resume-download-mobile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: none;
+  border: none;
+  color: var(--accent-color);
+  font-size: 1.25rem;
+  cursor: pointer;
+  transition: var(--transition);
+  text-decoration: none;
+
+  &:hover {
+    transform: scale(1.1);
+  }
 }
 
 .theme-toggle-mobile {
@@ -921,15 +951,14 @@ body {
   }
 }
 
-/* 技能网格 */
+/* 技能内容 */
 .skills-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 30px;
 
-  @media (max-width: 768px) {
+  @media (max-width: 640px) {
     grid-template-columns: 1fr;
-    gap: 20px;
   }
 }
 
@@ -944,10 +973,6 @@ body {
     transform: translateY(-5px);
     border-color: var(--accent-color);
   }
-
-  @media (max-width: 480px) {
-    padding: 16px;
-  }
 }
 
 .skill-category-title {
@@ -955,10 +980,6 @@ body {
   font-weight: 600;
   color: var(--text-light);
   margin-bottom: 16px;
-
-  @media (max-width: 480px) {
-    font-size: 0.95rem;
-  }
 }
 
 .skill-list {
@@ -980,11 +1001,6 @@ body {
   &:hover {
     background-color: var(--accent-color);
     color: var(--bg-color);
-  }
-
-  @media (max-width: 480px) {
-    font-size: 0.8rem;
-    padding: 5px 10px;
   }
 }
 
@@ -1078,6 +1094,49 @@ body {
   }
 }
 
+/* 微信内联样式 */
+.wechat-method {
+  align-items: flex-start;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.wechat-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.wechat-label {
+  font-size: 0.95rem;
+  color: var(--text-color);
+}
+
+.wechat-qrcode-inline {
+  display: inline-block;
+  background-color: var(--bg-light);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 8px;
+  transition: var(--transition);
+
+  &:hover {
+    border-color: var(--accent-color);
+  }
+}
+
+.wechat-img-inline {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  border-radius: 4px;
+
+  @media (max-width: 480px) {
+    width: 100px;
+    height: 100px;
+  }
+}
+
 /* 项目经历 */
 .projects-grid {
   display: grid;
@@ -1121,10 +1180,25 @@ body {
   font-size: 1.1rem;
   font-weight: 600;
   color: var(--text-light);
+  display: flex;
+  align-items: center;
+  gap: 8px;
 
   @media (max-width: 480px) {
     font-size: 1rem;
   }
+}
+
+.click-hint-icon {
+  font-size: 0.85rem;
+  color: var(--accent-color);
+  opacity: 0.7;
+  transition: var(--transition);
+}
+
+.project-card:hover .click-hint-icon {
+  opacity: 1;
+  transform: translate(2px, -2px);
 }
 
 .project-tag {
@@ -1209,6 +1283,29 @@ body {
       }
     }
   }
+}
+
+.click-hint {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border-color);
+  font-size: 0.85rem;
+  color: var(--text-color);
+  opacity: 0.8;
+  transition: var(--transition);
+
+  i {
+    color: var(--accent-color);
+  }
+}
+
+.project-card:hover .click-hint {
+  opacity: 1;
+  color: var(--accent-color);
 }
 
 /* 页脚 */
