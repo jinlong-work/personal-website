@@ -251,14 +251,14 @@
             <div class="project-technologies">
               <span class="tech-tag" v-for="value in project.technologies">{{ value }}</span>
             </div>
-            <div class="project-achievements">
+            <!-- <div class="project-achievements">
               <h4>主要职责：</h4>
               <ul>
                 <li v-for="duty in project.achievements" :key="duty">
                   {{ duty }}
                 </li>
               </ul>
-            </div>
+            </div> -->
             <div class="click-hint">
               <i class="fa-solid fa-hand-pointer"></i>
               点击查看详情
@@ -1245,45 +1245,45 @@ body {
   }
 }
 
-.project-achievements {
-  margin-top: 16px;
-  padding-top: 16px;
-  border-top: 1px solid var(--border-color);
+// .project-achievements {
+//   margin-top: 16px;
+//   padding-top: 16px;
+//   border-top: 1px solid var(--border-color);
 
-  h4 {
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--text-light);
-    margin-bottom: 12px;
-  }
+//   h4 {
+//     font-size: 0.9rem;
+//     font-weight: 600;
+//     color: var(--text-light);
+//     margin-bottom: 12px;
+//   }
 
-  ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+//   ul {
+//     list-style: none;
+//     padding: 0;
+//     margin: 0;
 
-    li {
-      position: relative;
-      padding-left: 18px;
-      font-size: 0.85rem;
-      color: var(--text-color);
-      line-height: 1.5;
-      margin-bottom: 8px;
+//     li {
+//       position: relative;
+//       padding-left: 18px;
+//       font-size: 0.85rem;
+//       color: var(--text-color);
+//       line-height: 1.5;
+//       margin-bottom: 8px;
 
-      &::before {
-        content: '▹';
-        position: absolute;
-        left: 0;
-        color: var(--accent-color);
-        font-weight: 600;
-      }
+//       &::before {
+//         content: '▹';
+//         position: absolute;
+//         left: 0;
+//         color: var(--accent-color);
+//         font-weight: 600;
+//       }
 
-      @media (max-width: 480px) {
-        font-size: 0.8rem;
-      }
-    }
-  }
-}
+//       @media (max-width: 480px) {
+//         font-size: 0.8rem;
+//       }
+//     }
+//   }
+// }
 
 .click-hint {
   display: flex;
