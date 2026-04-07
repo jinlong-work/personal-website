@@ -20,33 +20,6 @@
     </template>
 
     <div class="dialog-content">
-      <!-- 项目图片 -->
-      <div v-if="project.images && project.images.length" class="image-section">
-        <div class="image-hint">
-          <i class="fa-solid fa-magnifying-glass-plus"></i>
-          点击图片可放大预览
-        </div>
-        <el-carousel :height="carouselHeight" arrow="always" indicator-position="outside">
-          <el-carousel-item v-for="(img, index) in project.images" :key="index">
-            <div class="image-wrapper">
-              <el-image
-                :src="img"
-                :alt="`${project.name} 截图 ${index + 1}`"
-                :preview-src-list="project.images"
-                :initial-index="index"
-                scale="0.7"
-                fit="cover"
-                class="carousel-image"
-                preview-teleported
-              />
-              <div class="image-click-hint">
-                <i class="fa-solid fa-hand-pointer"></i>
-              </div>
-            </div>
-          </el-carousel-item>
-        </el-carousel>
-      </div>
-
       <!-- 项目描述 -->
       <div class="info-section">
         <h4 class="section-title">
@@ -122,12 +95,6 @@ const windowWidth = ref(window.innerWidth)
 
 const isMobile = computed(() => windowWidth.value <= 768)
 
-const carouselHeight = computed(() => {
-  if (windowWidth.value <= 480) return '200px'
-  if (windowWidth.value <= 768) return '260px'
-  return '360px'
-})
-
 const handleResize = () => {
   windowWidth.value = window.innerWidth
 }
@@ -199,22 +166,6 @@ onUnmounted(() => {
 }
 
 .dialog-content {
-  .image-section {
-    margin-bottom: 28px;
-  }
-
-  .carousel-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 8px;
-    border: 1px solid #233554;
-
-    :deep(.project-detail-dialog.light-theme) & {
-      border-color: #eee8d5;
-    }
-  }
-
   .info-section,
   .tech-section,
   .achievements-section {
@@ -325,9 +276,6 @@ onUnmounted(() => {
     font-size: 1.2rem;
   }
   .dialog-content {
-    .image-section {
-      margin-bottom: 20px;
-    }
     .info-section,
     .tech-section,
     .achievements-section {
@@ -362,54 +310,6 @@ onUnmounted(() => {
       width: 24px;
       height: 24px;
       font-size: 0.8rem;
-    }
-  }
-
-  .image-hint {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    margin-bottom: 12px;
-    font-size: 0.85rem;
-    color: #8892b0;
-
-    :deep(.project-detail-dialog.light-theme) & {
-      color: #657b83;
-    }
-
-    i {
-      color: #64ffda;
-
-      :deep(.project-detail-dialog.light-theme) & {
-        color: #859900;
-      }
-    }
-  }
-
-  .image-wrapper {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    cursor: pointer;
-  }
-
-  .image-click-hint {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: rgba(0, 0, 0, 0.6);
-    color: #fff;
-    padding: 12px 20px;
-    border-radius: 8px;
-    font-size: 1rem;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    pointer-events: none;
-
-    .image-wrapper:hover & {
-      opacity: 1;
     }
   }
 }
@@ -447,12 +347,6 @@ onUnmounted(() => {
     .el-dialog__close {
       color: #8892b0;
     }
-    .el-carousel {
-      background-color: #0a192f;
-    }
-    .el-carousel__indicator .el-carousel__button {
-      background-color: #233554;
-    }
     .el-dialog__body::-webkit-scrollbar-thumb {
       background: #233554;
     }
@@ -489,12 +383,6 @@ onUnmounted(() => {
     }
     .el-dialog__close {
       color: #657b83;
-    }
-    .el-carousel {
-      background-color: #fdf6e3;
-    }
-    .el-carousel__indicator .el-carousel__button {
-      background-color: #eee8d5;
     }
     .el-dialog__body::-webkit-scrollbar-thumb {
       background: #eee8d5;
@@ -632,37 +520,6 @@ onUnmounted(() => {
         html.light-theme & {
           color: #859900;
         }
-      }
-    }
-  }
-
-  /* 轮播图样式 */
-  .el-carousel {
-    border-radius: 8px;
-  }
-
-  .el-carousel__arrow {
-    background-color: rgba(100, 255, 218, 0.3);
-
-    &:hover {
-      background-color: #64ffda;
-    }
-
-    html.light-theme & {
-      background-color: rgba(133, 153, 0, 0.3);
-
-      &:hover {
-        background-color: #859900;
-      }
-    }
-  }
-
-  .el-carousel__indicator {
-    &.is-active .el-carousel__button {
-      background-color: #64ffda;
-
-      html.light-theme & {
-        background-color: #859900;
       }
     }
   }

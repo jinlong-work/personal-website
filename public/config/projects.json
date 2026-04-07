@@ -10,15 +10,6 @@
         "调查地图⼤屏开发：独立负责调查地图⼤屏的整体架构与开发，通过 ECharts 与Arcgis api for js，实现调查机构、调查专业及调查专业展示，支持多维度数据的实时动态渲染。在⼤屏中嵌⼊交互式地图逻辑，用户可通过地图下钻查看不同⾏政区划下的详细调查指标。",
         "调查经济地图⼤屏开发：此大屏主要展示海南省全体居民、城镇居民、农村居民的收入收支情况，支持一系列数据查看，使用Echarts绘制海南省大致地图进行数据展示。",
         "运维管理模块建设：开发配套的运维管理模块，运维管理模块负责管理大屏中的一系列数据的展示，包括调查机构、辅调员、调查证、调查网点管理。"
-      ],
-      "images": [
-        "/personal-website/img/调查一张图.jpg",
-        "/personal-website/img/调查一张图02.jpg",
-        "/personal-website/img/调查一张图03.jpg",
-        "/personal-website/img/调查一张图04.jpg",
-        "/personal-website/img/调查一张图05.jpg",
-        "/personal-website/img/调查一张图06.jpg",
-        "/personal-website/img/调查一张图07.jpg"
       ]
     },
     {
@@ -31,12 +22,6 @@
         "负责村庄总览大屏的开发工作，提供了村庄总览用于展示村庄概述、现状人口统计和领导小组。",
         "根据项目需求完成三维维地图界面开发与地图服务加载，实现服务切换及查询功能，支持弹窗移动。",
         "根据需求完成报建审查功能，用户可自行绘制区域、输入坐标来进行报建审查，判定绘制范围占用生态红线、林地、基本农田等的面积。"
-      ],
-      "images": [
-        "/personal-website/img/深造村01.jpg",
-        "/personal-website/img/深造村02.jpg",
-        "/personal-website/img/深造村03.jpg",
-        "/personal-website/img/深造村04.jpg"
       ]
     },
     {
@@ -49,14 +34,6 @@
         "宜农资源分析：基于坡度分析计算符合条件的图斑面积，并输出可视化结果。支持三种获取分析区域方式：点击 ArcGIS 服务图斑、绘制矩形、上传文件，并通过超图服务完成区域分析展示。",
         "⽔⼟保持监管：绘制区域对地形开挖，计算不同地形服务在绘制区域范围内的挖⽅量差值，评估⽔⼟流失情况。",
         "交互功能：独立完成地图标绘系统（点线面体增删改查），多窗⼝对比分析功能以及比例尺组件开发。"
-      ],
-      "images": [
-        "/personal-website/img/海南3D01.jpg",
-        "/personal-website/img/海南3D02.jpg",
-        "/personal-website/img/海南3D03.jpg",
-        "/personal-website/img/海南3D04.jpg",
-        "/personal-website/img/海南3D05.jpg",
-        "/personal-website/img/海南3D06.jpg"
       ]
     },
     {
@@ -69,15 +46,6 @@
         "专家库系统开发：负责专家库系统的开发工作，包括专家信息的添加、编辑、删除、搜索、筛选等功能。",
         "项目管理功能：用户可根据项目需求筛选出数据库中符合条件的专家以及快速为项目配制专家。",
         "系统优化：对系统进行性能优化和用户体验改进，提升系统的响应速度和易用性。"
-      ],
-      "images": [
-        "/personal-website/img/专家库系统01.jpg",
-        "/personal-website/img/专家库系统02.jpg",
-        "/personal-website/img/专家库系统03.jpg",
-        "/personal-website/img/专家库系统05.jpg",
-        "/personal-website/img/专家库系统06.jpg",
-        "/personal-website/img/专家库系统07.jpg",
-        "/personal-website/img/专家库系统08.jpg"
       ]
     },
     {
@@ -94,17 +62,6 @@
         "AI智能问答：集成Dify AI聊天机器人，支持全屏交互，在地籍资料库页面提供智能知识问答服务",
         "管理后台系统：开发完整的CRUD管理功能，包括资料管理、课程管理、试题管理及用户认证系统",
         "响应式设计：采用Tailwind CSS实现现代化响应式布局，适配不同屏幕尺寸，优化用户体验"
-      ],
-      "images": [
-        "/personal-website/img/地籍知识库01.jpg",
-        "/personal-website/img/地籍知识库02.jpg",
-        "/personal-website/img/地籍知识库03.jpg",
-        "/personal-website/img/地籍知识库04.jpg",
-        "/personal-website/img/地籍知识库05.jpg",
-        "/personal-website/img/地籍知识库06.jpg",
-        "/personal-website/img/地籍知识库07.jpg",
-        "/personal-website/img/地籍知识库08.jpg",
-        "/personal-website/img/地籍知识库09.jpg"
       ]
     },
     {
@@ -124,15 +81,6 @@
         "响应式布局适配：采用动态计算表格高度、弹性布局等方式，适配不同屏幕尺寸，支持大屏展示模式",
         "性能优化实践：使用Keep-alive缓存页面、虚拟列表优化大数据量表格、按需加载组件，提升系统响应速度",
         "权限控制前端实现：基于角色权限动态渲染菜单、控制按钮显隐、过滤数据范围，保障前端安全"
-      ],
-      "images": [
-        "/personal-website/img/机器管督查01.jpg",
-        "/personal-website/img/机器管督查02.jpg",
-        "/personal-website/img/机器管督查03.jpg",
-        "/personal-website/img/机器管督查04.jpg",
-        "/personal-website/img/机器管督查05.jpg",
-        "/personal-website/img/机器管督查06.jpg",
-        "/personal-website/img/机器管督查07.jpg"
       ]
     },
     {
@@ -145,8 +93,7 @@
         "路径绘制：实线绘实况、虚线绘预报，不同台风用不同颜色，路径点按台风等级着色",
         "风圈可视化：绘制七级/十级/十二级风圈（椭圆形，四个方向半径不同）",
         "交互动效：台风图标持续旋转动画，点击路径点显示详情弹窗并重新绘制风圈"
-      ],
-      "images": ["/personal-website/img/台风路径展示.jpg"]
+      ]
     },
     {
       "id": 8,
@@ -158,12 +105,6 @@
         "大屏界面开发：负责烈士纪念设施一张图的大屏整体布局与样式实现",
         "设施聚合展示：基于 Cesium 实现海南省烈士纪念设施的空间聚合展示，支持随地图缩放动态调整聚合粒度，直观呈现设施分布密度",
         "详情交互功能：开发设施图标点击与列表选择双触发机制，点击后弹出详情弹窗，展示设施介绍、历史背景及相关图片资料"
-      ],
-      "images": [
-        "/personal-website/img/烈士一张图01.jpg",
-        "/personal-website/img/烈士一张图02.jpg",
-        "/personal-website/img/烈士一张图03.jpg",
-        "/personal-website/img/烈士一张图04.jpg"
       ]
     }
   ]
