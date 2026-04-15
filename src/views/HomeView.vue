@@ -1,40 +1,40 @@
 <template>
   <div class="site-wrapper">
-    <!-- Three.js 3D 背景 -->
     <div class="three-background">
       <ThreeScene />
     </div>
 
-    <!-- 移动端导航遮罩 -->
     <div
       class="nav-overlay"
       :class="{ active: isMobileNavOpen }"
       @click="isMobileNavOpen = false"
     ></div>
 
-    <!-- 项目详情弹窗 -->
-    <ProjectDetailModal :visible="isModalVisible" :project="selectedProject" @close="closeModal" />
+    <ProjectDetailModal
+      :visible="isModalVisible"
+      :project="selectedProject"
+      :labels="content.dialog"
+      @close="closeModal"
+    />
 
-    <!-- 移动端顶部栏 -->
     <div class="mobile-header">
       <div class="mobile-profile">
-        <h1 class="mobile-name">曹进龙</h1>
+        <h1 class="mobile-name">{{ content.name }}</h1>
       </div>
       <div class="mobile-header-actions">
         <a
-          href="/personal-website/曹进龙-个人简历.pdf"
-          download="曹进龙-个人简历.pdf"
+          :href="RESUME_FILE_PATH"
+          :download="RESUME_FILE_NAME"
           class="resume-download-mobile"
-          title="下载简历"
+          :title="downloadTitle"
         >
           <i class="fa-solid fa-download"></i>
         </a>
-        <button
-          class="theme-toggle-mobile"
-          @click="toggleTheme"
-          :title="isDark ? '切换到明亮模式' : '切换到暗夜模式'"
-        >
+        <button class="theme-toggle-mobile" @click="toggleTheme" :title="themeToggleTitle">
           <i :class="isDark ? 'fa-solid fa-sun' : 'fa-solid fa-moon'"></i>
+        </button>
+        <button class="locale-toggle-mobile" @click="toggleLocale" :title="localeToggleTitle">
+          <i class="fa-solid fa-language"></i>
         </button>
         <button class="menu-toggle" @click="isMobileNavOpen = !isMobileNavOpen">
           <i :class="isMobileNavOpen ? 'fa-solid fa-xmark' : 'fa-solid fa-bars'"></i>
@@ -42,201 +42,110 @@
       </div>
     </div>
 
-    <!-- 左侧固定侧边栏 -->
     <aside class="sidebar" :class="{ 'mobile-nav-open': isMobileNavOpen }">
       <div class="sidebar-content">
         <div class="profile">
-          <h1 class="profile-name">曹进龙</h1>
-          <h2 class="profile-title">WebGIS 开发工程师</h2>
-          <p class="profile-description">
-            拥有多两年 GIS 开发经验，专注于高性能 WebGIS 应用架构设计与研发
-          </p>
+          <h1 class="profile-name">{{ content.name }}</h1>
+          <h2 class="profile-title">{{ content.profileTitle }}</h2>
+          <p class="profile-description">{{ content.profileDescription }}</p>
         </div>
 
-        <!-- 导航菜单 -->
         <nav class="nav">
           <a
-            href="#about"
+            v-for="item in navItems"
+            :key="item.id"
+            :href="`#${item.id}`"
             class="nav-link"
-            :class="{ active: activeSection === 'about' }"
-            @click="closeMobileNav"
-            >关于我</a
+            :class="{ active: activeSection === item.id }"
+            @click="handleNavClick($event, item.id)"
           >
-          <a
-            href="#experience"
-            class="nav-link"
-            :class="{ active: activeSection === 'experience' }"
-            @click="closeMobileNav"
-            >工作经历</a
-          >
-          <a
-            href="#skills"
-            class="nav-link"
-            :class="{ active: activeSection === 'skills' }"
-            @click="closeMobileNav"
-            >技术技能</a
-          >
-          <a
-            href="#projects"
-            class="nav-link"
-            :class="{ active: activeSection === 'projects' }"
-            @click="closeMobileNav"
-            >项目经历</a
-          >
-          <a
-            href="#contact"
-            class="nav-link"
-            :class="{ active: activeSection === 'contact' }"
-            @click="closeMobileNav"
-            >联系方式</a
-          >
+            {{ item.label }}
+          </a>
         </nav>
 
-        <!-- 社交媒体链接 -->
         <div class="social-links">
-          <!-- 简历下载按钮 -->
           <a
-            href="/personal-website/曹进龙-个人简历.pdf"
-            download="曹进龙-个人简历.pdf"
+            :href="RESUME_FILE_PATH"
+            :download="RESUME_FILE_NAME"
             class="social-link"
-            title="下载简历"
+            :title="downloadTitle"
           >
             <i class="fa-solid fa-download"></i>
           </a>
-          <!-- 主题切换按钮 -->
-          <button
-            class="social-link"
-            @click="toggleTheme"
-            :title="isDark ? '切换到明亮模式' : '切换到暗夜模式'"
-          >
+          <button class="social-link" @click="toggleTheme" :title="themeToggleTitle">
             <i :class="isDark ? 'fa-solid fa-sun' : 'fa-solid fa-moon'"></i>
+          </button>
+          <button
+            class="social-link locale-toggle"
+            @click="toggleLocale"
+            :title="localeToggleTitle"
+          >
+            <i class="fa-solid fa-language"></i>
           </button>
         </div>
       </div>
     </aside>
 
-    <!-- 右侧主内容区域 -->
-    <main class="main-content" @scroll="handleScroll">
+    <main ref="mainContentRef" class="main-content" @scroll="handleScroll">
       <section id="about" class="section">
-        <h2 class="section-title">关于我</h2>
+        <h2 class="section-title">{{ content.sections.about }}</h2>
         <div class="about-content">
-          <p>
-            您好，我是曹进龙，一名专注于 WebGIS 开发的工程师。自 2023
-            年毕业于湖北大学地理信息科学专业以来，我一直深耕于 WebGIS 领域的技术实践与应用开发。
-          </p>
-          <p>
-            在两年多的 GIS 开发经验中，我专注于前端地图可视化技术，熟练掌握 2D/3D
-            地图开发、空间数据展示与交互等核心技能。目前正在学习后端相关技术，致力于向全栈方向发展。
-          </p>
-          <p>
-            我对 WebGIS 技术保持持续的学习热情，善于将前端技术与 GIS
-            业务需求相结合，实现直观高效的空间信息可视化解决方案。
-          </p>
-          <p>
-            在多个项目中，我负责地图可视化模块的核心开发工作，积累了丰富的实战经验，能够独立完成从需求分析到功能实现的完整开发流程。
+          <p v-for="(paragraph, index) in content.about" :key="`about-${index}`">
+            {{ paragraph }}
           </p>
         </div>
       </section>
 
       <section id="experience" class="section">
-        <h2 class="section-title">工作经历</h2>
+        <h2 class="section-title">{{ content.sections.experience }}</h2>
         <div class="experience-list">
-          <div class="experience-item">
+          <div
+            v-for="(item, index) in content.experience"
+            :key="`experience-${index}`"
+            class="experience-item"
+          >
             <div class="experience-header">
               <div class="experience-info">
-                <h3 class="experience-title">WebGIS 开发工程师</h3>
-                <p class="experience-company">湖北嘉款科技有限公司</p>
+                <h3 class="experience-title">{{ item.title }}</h3>
+                <p class="experience-company">{{ item.company }}</p>
               </div>
-              <span class="experience-period">2024.11 - 2026.03</span>
+              <span class="experience-period">{{ item.period }}</span>
             </div>
-            <p class="experience-description">
-              长期驻场海南省测绘地理信息局，负责二维地图、三维地图、数据大屏及运维管理系统开发。深入实践
-              ArcGIS API for
-              JS、Cesium、若依框架等技术，能够快速理解业务需求并提供解决方案，独立完成多个项目开发，获得单位领导高度认可。
-            </p>
-          </div>
-          <div class="experience-item">
-            <div class="experience-header">
-              <div class="experience-info">
-                <h3 class="experience-title">WebGIS 开发实习生</h3>
-                <p class="experience-company">武汉中地数码科技有限公司</p>
-              </div>
-              <span class="experience-period">2022.07 - 2022.09</span>
-            </div>
-            <p class="experience-description">
-              使用 HTML、CSS、JavaScript 及 OpenLayers 进行 WebGIS
-              前端开发，构建交互式地图应用，实现图层切换、视频监控、测量工具等功能。学习并掌握了
-              WebGIS 开发基础，为后续深入发展奠定了坚实基础。
-            </p>
+            <p class="experience-description">{{ item.description }}</p>
           </div>
         </div>
       </section>
 
       <section id="skills" class="section">
-        <h2 class="section-title">技术技能</h2>
+        <h2 class="section-title">{{ content.sections.skills }}</h2>
         <div class="skills-grid">
-          <!-- 前端基础技能 -->
-          <div class="skill-category">
-            <h3 class="skill-category-title">前端基础技能</h3>
+          <div
+            v-for="(group, groupIndex) in content.skillGroups"
+            :key="`skill-group-${groupIndex}`"
+            class="skill-category"
+          >
+            <h3 class="skill-category-title">{{ group.title }}</h3>
             <div class="skill-list">
-              <span class="skill-tag">HTML</span>
-              <span class="skill-tag">CSS</span>
-              <span class="skill-tag">SCSS</span>
-              <span class="skill-tag">JavaScript</span>
-              <span class="skill-tag">TypeScript</span>
-              <span class="skill-tag">ES6+</span>
-            </div>
-          </div>
-
-          <!-- Vue 相关技术 -->
-          <div class="skill-category">
-            <h3 class="skill-category-title">Vue 相关技术</h3>
-            <div class="skill-list">
-              <span class="skill-tag">Vue 2</span>
-              <span class="skill-tag">Vue 3</span>
-              <span class="skill-tag">Vue-router</span>
-              <span class="skill-tag">Pinia</span>
-              <span class="skill-tag">Webpack</span>
-              <span class="skill-tag">Vite</span>
-              <span class="skill-tag">Element Plus</span>
-              <span class="skill-tag">ECharts</span>
-            </div>
-          </div>
-
-          <!-- 前端地图开发相关技术 -->
-          <div class="skill-category">
-            <h3 class="skill-category-title">前端地图开发</h3>
-            <div class="skill-list">
-              <span class="skill-tag">OpenLayers</span>
-              <span class="skill-tag">ArcGIS API for JS</span>
-              <span class="skill-tag">Cesium</span>
-              <span class="skill-tag">MapBox</span>
-              <span class="skill-tag">Three.js</span>
-              <span class="skill-tag">WebGL</span>
-              <span class="skill-tag">MapGIS</span>
-            </div>
-          </div>
-
-          <!-- 其他技能 -->
-          <div class="skill-category">
-            <h3 class="skill-category-title">其他技能</h3>
-            <div class="skill-list">
-              <span class="skill-tag">Git/Gitee</span>
-              <span class="skill-tag">ArcGIS 软件</span>
-              <span class="skill-tag">空间分析</span>
+              <span
+                v-for="(item, itemIndex) in group.items"
+                :key="`skill-${groupIndex}-${itemIndex}`"
+                class="skill-tag"
+              >
+                {{ item }}
+              </span>
             </div>
           </div>
         </div>
       </section>
 
       <section id="projects" class="section">
-        <h2 class="section-title">项目经历</h2>
+        <h2 class="section-title">{{ content.sections.projects }}</h2>
         <div class="projects-grid">
           <div
-            class="project-card"
-            v-for="project in projects"
+            v-for="project in localizedProjects"
             :key="project.id"
-            @click="showDetailDailog(project)"
+            class="project-card"
+            @click="openProjectDialog(project.id)"
           >
             <div class="project-header">
               <h3 class="project-title">
@@ -245,35 +154,24 @@
               </h3>
               <span class="project-tag">{{ project.type }}</span>
             </div>
-            <p class="project-description">
-              {{ project.description }}
-            </p>
+            <p class="project-description">{{ project.description }}</p>
             <div class="project-technologies">
-              <span class="tech-tag" v-for="value in project.technologies">{{ value }}</span>
+              <span v-for="tech in project.technologies" :key="tech" class="tech-tag">
+                {{ tech }}
+              </span>
             </div>
-            <!-- <div class="project-achievements">
-              <h4>主要职责：</h4>
-              <ul>
-                <li v-for="duty in project.achievements" :key="duty">
-                  {{ duty }}
-                </li>
-              </ul>
-            </div> -->
             <div class="click-hint">
               <i class="fa-solid fa-hand-pointer"></i>
-              点击查看详情
+              {{ content.projectHint }}
             </div>
           </div>
         </div>
       </section>
 
       <section id="contact" class="section">
-        <h2 class="section-title">联系方式</h2>
+        <h2 class="section-title">{{ content.sections.contact }}</h2>
         <div class="contact-content">
-          <p>
-            期待与志同道合的技术伙伴交流合作。目前我对具有挑战性的 WebGIS
-            开发岗位保持开放态度，欢迎通过以下方式联系我：
-          </p>
+          <p>{{ content.contactIntro }}</p>
           <div class="contact-methods">
             <a href="mailto:1426559553@qq.com" class="contact-method">
               <i class="fa-solid fa-envelope"></i>
@@ -285,14 +183,14 @@
             </a>
             <div class="contact-method">
               <i class="fa-solid fa-location-dot"></i>
-              <span>湖北恩施</span>
+              <span>{{ content.location }}</span>
             </div>
             <div class="contact-method wechat-method">
               <i class="fa-brands fa-weixin"></i>
               <div class="wechat-info">
-                <span class="wechat-label">微信</span>
+                <span class="wechat-label">{{ content.wechatLabel }}</span>
                 <div class="wechat-qrcode-inline">
-                  <img :src="weixinImg" alt="微信二维码" class="wechat-img-inline" />
+                  <img :src="weixinImg" :alt="content.qrAlt" class="wechat-img-inline" />
                 </div>
               </div>
             </div>
@@ -301,205 +199,177 @@
       </section>
 
       <footer class="site-footer">
-        <p>&copy; 2024 曹进龙. All rights reserved.</p>
+        <p>{{ content.footer }}</p>
       </footer>
     </main>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 import ThreeScene from '@/components/ThreeScene.vue'
 import ProjectDetailModal from '@/components/ProjectDetailModal.vue'
 import { getProjects } from '@/api/api'
 import weixinImg from '@/assets/img/weixin.jpg'
-
-// 备用项目数据（内联在代码中，确保总能显示）
-const fallbackProjects = [
-  {
-    id: 1,
-    name: '海南国家调查地图基层网点系统',
-    type: '大屏二维项目',
-    description:
-      '该项目是⼀个集⼤屏数据可视化、地理信息分析与后台运维管理于⼀体的综合性平台。主要用于展示和管理调查机构、专业及区域的分布与实时数据，通过"⼀张图"的形式实现对海南省调查资源的直观监管。',
-    technologies: ['Vue 3', 'ArcGIS API for JS', 'Element Plus', 'ECharts'],
-    achievements: [
-      '调查地图⼤屏开发：独立负责调查地图⼤屏的整体架构与开发，通过 ECharts 与Arcgis api for js，实现调查机构、调查专业及调查专业展示，支持多维度数据的实时动态渲染。',
-      '调查经济地图⼤屏开发：此大屏主要展示海南省全体居民、城镇居民、农村居民的收入收支情况，支持一系列数据查看，使用Echarts绘制海南省大致地图进行数据展示。',
-      '运维管理模块建设：开发配套的运维管理模块，运维管理模块负责管理大屏中的一系列数据的展示，包括调查机构、辅调员、调查证、调查网点管理。'
-    ],
-    images: ['/personal-website/img/调查一张图.jpg']
-  },
-  {
-    id: 2,
-    name: '深造村便民服务系统',
-    type: '大屏三维项目',
-    description:
-      '该系统为大屏三维项目，属于琼中番响村智慧乡村项目，提供了村庄总览用于展示村庄概述、现状人口统计和领导小组。提供管理一张图板块，通过实时三维地图，用户可以直观地查看村庄规划和基础设施布局。',
-    technologies: ['Vue 3', '超图版Cesium', 'Element Plus'],
-    achievements: [
-      '负责村庄总览大屏的开发工作，提供了村庄总览用于展示村庄概述、现状人口统计和领导小组。',
-      '根据项目需求完成三维维地图界面开发与地图服务加载，实现服务切换及查询功能，支持弹窗移动。',
-      '根据需求完成报建审查功能，用户可自行绘制区域、输入坐标来进行报建审查，判定绘制范围占用生态红线、林地、基本农田等的面积。'
-    ],
-    images: ['/personal-website/img/调查一张图.jpg']
-  },
-  {
-    id: 3,
-    name: '海南三维项目',
-    type: '三维项目',
-    description:
-      '海南3D项目是⼀个基于Vue 2和Cesium构建的三维地理信息系统应用，专注于提供海南地区的三维地理空间分析和可视化功能。该项目通过集成Cesium的强大功能，实现了对海南地区地理数据的三维展示和交互。',
-    technologies: ['Vue 3', 'ArcGIS API for JS', 'Element Plus', 'ECharts'],
-    achievements: [
-      '宜农资源分析：基于坡度分析计算符合条件的图斑面积，并输出可视化结果。支持三种获取分析区域方式：点击 ArcGIS 服务图斑、绘制矩形、上传文件。',
-      '⽔⼟保持监管：绘制区域对地形开挖，计算不同地形服务在绘制区域范围内的挖⽅量差值，评估⽔⼟流失情况。',
-      '交互功能：独立完成地图标绘系统（点线面体增删改查），多窗⼝对比分析功能以及比例尺组件开发。'
-    ],
-    images: ['/personal-website/img/调查一张图.jpg']
-  }
-]
+import {
+  fallbackProjects,
+  localizeProjects,
+  RESUME_FILE_NAME,
+  RESUME_FILE_PATH,
+  siteContent
+} from '@/content/siteContent'
 
 const activeSection = ref('about')
-const projects = ref([])
+const rawProjects = ref([])
 const isModalVisible = ref(false)
-const selectedProject = ref({})
+const selectedProjectId = ref(null)
 const isMobileNavOpen = ref(false)
-
-// 主题切换
 const isDark = ref(true)
+const locale = ref('zh')
+const mainContentRef = ref(null)
 
-// 从 localStorage 读取主题偏好
+const content = computed(() => siteContent[locale.value])
+const localizedProjects = computed(() => localizeProjects(rawProjects.value, locale.value))
+const selectedProject = computed(
+  () => localizedProjects.value.find((project) => project.id === selectedProjectId.value) ?? {}
+)
+
+const navItems = computed(() => [
+  { id: 'about', label: content.value.sections.about },
+  { id: 'experience', label: content.value.sections.experience },
+  { id: 'skills', label: content.value.sections.skills },
+  { id: 'projects', label: content.value.sections.projects },
+  { id: 'contact', label: content.value.sections.contact }
+])
+
+const downloadTitle = computed(() => (locale.value === 'zh' ? '下载简历' : 'Download Resume'))
+
+const themeToggleTitle = computed(() => {
+  if (locale.value === 'zh') {
+    return isDark.value ? '切换到明亮模式' : '切换到暗夜模式'
+  }
+
+  return isDark.value ? 'Switch to Light Mode' : 'Switch to Dark Mode'
+})
+
+const localeToggleTitle = computed(() =>
+  locale.value === 'zh' ? '切换到英文' : 'Switch to Chinese'
+)
+
 const loadTheme = () => {
   const savedTheme = localStorage.getItem('theme')
-  if (savedTheme) {
-    isDark.value = savedTheme === 'dark'
-  } else {
-    // 默认暗夜模式
-    isDark.value = true
-  }
+  isDark.value = savedTheme ? savedTheme === 'dark' : true
   applyTheme()
 }
 
-// 应用主题
 const applyTheme = () => {
   document.documentElement.classList.toggle('light-theme', !isDark.value)
   document.documentElement.classList.toggle('dark-theme', isDark.value)
 }
 
-// 切换主题
 const toggleTheme = () => {
   isDark.value = !isDark.value
   localStorage.setItem('theme', isDark.value ? 'dark' : 'light')
   applyTheme()
 }
 
+const applyLocale = () => {
+  document.documentElement.setAttribute('lang', locale.value === 'zh' ? 'zh-CN' : 'en')
+}
+
+const loadLocale = () => {
+  const savedLocale = localStorage.getItem('locale')
+  locale.value = savedLocale === 'en' ? 'en' : 'zh'
+  applyLocale()
+}
+
+const toggleLocale = () => {
+  locale.value = locale.value === 'zh' ? 'en' : 'zh'
+  localStorage.setItem('locale', locale.value)
+  applyLocale()
+}
+
 const handleScroll = (event) => {
   const isMobile = window.innerWidth <= 768
-  let scrollContainer
-  let scrollTop
-
-  if (isMobile) {
-    scrollContainer = document
-    scrollTop = window.scrollY
-  } else {
-    scrollContainer = event.target
-    scrollTop = scrollContainer.scrollTop
-  }
-
+  const scrollTop = isMobile ? window.scrollY : event.target.scrollTop
   const sections = document.querySelectorAll('.section')
   let current = 'about'
 
   sections.forEach((section) => {
     const sectionTop = section.offsetTop - 100
     if (scrollTop >= sectionTop) {
-      current = section.getAttribute('id')
+      current = section.getAttribute('id') || 'about'
     }
   })
 
   activeSection.value = current
 }
 
-const setupScrollBehavior = () => {
-  const navLinks = document.querySelectorAll('.nav-link')
-  navLinks.forEach((link) => {
-    link.addEventListener('click', (e) => {
-      e.preventDefault()
-      const targetId = link.getAttribute('href').substring(1)
-      const targetElement = document.getElementById(targetId)
-      const mainContent = document.querySelector('.main-content')
+const scrollToSection = (sectionId) => {
+  const targetElement = document.getElementById(sectionId)
 
-      if (targetElement) {
-        // 检测是否是移动端
-        const isMobile = window.innerWidth <= 768
-        if (isMobile) {
-          // 移动端使用 window 滚动
-          const targetPosition = targetElement.offsetTop - 80 // 留出顶部栏高度
-          window.scrollTo({
-            top: targetPosition,
-            behavior: 'smooth'
-          })
-        } else if (mainContent) {
-          // 桌面端使用 main-content 滚动
-          const targetPosition = targetElement.offsetTop - 40
-          mainContent.scrollTo({
-            top: targetPosition,
-            behavior: 'smooth'
-          })
-        }
-      }
+  if (!targetElement) {
+    return
+  }
+
+  if (window.innerWidth <= 768) {
+    window.scrollTo({
+      top: targetElement.offsetTop - 80,
+      behavior: 'smooth'
     })
+    return
+  }
+
+  mainContentRef.value?.scrollTo({
+    top: targetElement.offsetTop - 40,
+    behavior: 'smooth'
   })
 }
 
-// 移动端滚动监听
+const handleNavClick = (event, sectionId) => {
+  event.preventDefault()
+  closeMobileNav()
+  scrollToSection(sectionId)
+}
+
 const handleMobileScroll = () => {
   if (window.innerWidth <= 768) {
     handleScroll({ target: document })
   }
 }
 
-const showDetailDailog = (project) => {
-  selectedProject.value = project
+const openProjectDialog = (projectId) => {
+  selectedProjectId.value = projectId
   isModalVisible.value = true
 }
 
 const closeModal = () => {
   isModalVisible.value = false
-  selectedProject.value = {}
+  selectedProjectId.value = null
 }
 
 const closeMobileNav = () => {
   isMobileNavOpen.value = false
 }
 
-onMounted(() => {
-  loadTheme()
-  setupScrollBehavior()
-  window.addEventListener('scroll', handleMobileScroll)
-
-  // 先尝试从 API 加载，如果失败则使用备用数据
+const loadProjects = () => {
   getProjects()
     .then((response) => {
-      console.log('项目数据加载成功:', response)
-      if (response && response.projects && response.projects.length > 0) {
-        projects.value = response.projects
-      } else {
-        console.log('API 返回数据为空，使用备用数据')
-        projects.value = fallbackProjects
-      }
+      rawProjects.value = response?.projects?.length ? response.projects : fallbackProjects
     })
-    .catch((error) => {
-      console.warn('获取项目数据失败，使用备用数据:', error)
-      projects.value = fallbackProjects
+    .catch(() => {
+      rawProjects.value = fallbackProjects
     })
+}
+
+onMounted(() => {
+  loadTheme()
+  loadLocale()
+  loadProjects()
+  window.addEventListener('scroll', handleMobileScroll)
 })
 
 onUnmounted(() => {
-  const navLinks = document.querySelectorAll('.nav-link')
-  navLinks.forEach((link) => {
-    link.removeEventListener('click', () => {})
-  })
   window.removeEventListener('scroll', handleMobileScroll)
 })
 </script>
@@ -652,7 +522,8 @@ body {
   }
 }
 
-.theme-toggle-mobile {
+.theme-toggle-mobile,
+.locale-toggle-mobile {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -791,7 +662,7 @@ body {
   font-size: 0.95rem;
   color: var(--text-color);
   max-width: 300px;
-  line-height: 1.5;
+  line-height: 1.6;
 
   @media (max-width: 768px) {
     font-size: 0.85rem;

@@ -1,7 +1,7 @@
 <template>
   <el-dialog
     v-model="dialogVisible"
-    :title="project.name"
+    :title="project.name || ''"
     width="750px"
     top="5vh"
     :fullscreen="isMobile"
@@ -24,7 +24,7 @@
       <div class="info-section">
         <h4 class="section-title">
           <i class="fa-solid fa-file-lines"></i>
-          项目简介
+          {{ labels.overview }}
         </h4>
         <p class="description-text">{{ project.description }}</p>
       </div>
@@ -33,11 +33,11 @@
       <div class="tech-section">
         <h4 class="section-title">
           <i class="fa-solid fa-code"></i>
-          技术栈
+          {{ labels.techStack }}
         </h4>
         <div class="tech-tags">
           <el-tag
-            v-for="(tech, index) in project.technologies"
+            v-for="(tech, index) in project.technologies || []"
             :key="index"
             type="info"
             effect="dark"
@@ -51,11 +51,11 @@
       <div class="achievements-section">
         <h4 class="section-title">
           <i class="fa-solid fa-tasks"></i>
-          主要职责
+          {{ labels.achievements }}
         </h4>
         <ul class="achievements-list">
           <li
-            v-for="(achievement, index) in project.achievements"
+            v-for="(achievement, index) in project.achievements || []"
             :key="index"
             class="achievement-item"
           >
@@ -68,7 +68,7 @@
 
     <template #footer>
       <span class="dialog-footer">
-        <el-button type="primary" @click="handleClose">关闭</el-button>
+        <el-button type="primary" @click="handleClose">{{ labels.close }}</el-button>
       </span>
     </template>
   </el-dialog>
@@ -85,6 +85,15 @@ const props = defineProps({
   project: {
     type: Object,
     default: () => ({})
+  },
+  labels: {
+    type: Object,
+    default: () => ({
+      overview: '项目简介',
+      techStack: '技术栈',
+      achievements: '主要职责',
+      close: '关闭'
+    })
   }
 })
 
