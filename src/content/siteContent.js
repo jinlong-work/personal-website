@@ -184,8 +184,43 @@ export const siteContent = {
         ]
       },
       {
-        title: '其他技能',
-        items: ['Git/Gitee', 'ArcGIS 软件', '空间分析']
+        title: '后端与接口',
+        items: [
+          'Java',
+          'Spring Boot',
+          'Spring MVC',
+          'MyBatis / MyBatis-Plus',
+          'RESTful API',
+          '若依框架',
+          'JWT / RBAC',
+          'Swagger / Knife4j'
+        ]
+      },
+      {
+        title: '数据库与服务',
+        items: [
+          'MySQL',
+          'PostgreSQL / PostGIS',
+          'Redis',
+          'GeoServer',
+          'Supabase',
+          'Dify API',
+          'SQL',
+          '数据建模'
+        ]
+      },
+      {
+        title: '工程化与协作',
+        items: [
+          'Git/Gitee',
+          'pnpm / npm',
+          'Axios',
+          'Linux',
+          'Nginx',
+          'Docker',
+          'API 联调',
+          '空间分析'
+        ]
       }
     ],
     projectHint: '点击查看详情',
@@ -267,8 +302,43 @@ export const siteContent = {
         ]
       },
       {
-        title: 'Other Skills',
-        items: ['Git/Gitee', 'ArcGIS Desktop', 'Spatial Analysis']
+        title: 'Backend & APIs',
+        items: [
+          'Java',
+          'Spring Boot',
+          'Spring MVC',
+          'MyBatis / MyBatis-Plus',
+          'RESTful API',
+          'Ruoyi Framework',
+          'JWT / RBAC',
+          'Swagger / Knife4j'
+        ]
+      },
+      {
+        title: 'Databases & Services',
+        items: [
+          'MySQL',
+          'PostgreSQL / PostGIS',
+          'Redis',
+          'GeoServer',
+          'Supabase',
+          'Dify API',
+          'SQL',
+          'Data Modeling'
+        ]
+      },
+      {
+        title: 'Engineering & Collaboration',
+        items: [
+          'Git/Gitee',
+          'pnpm / npm',
+          'Axios',
+          'Linux',
+          'Nginx',
+          'Docker',
+          'API Integration',
+          'Spatial Analysis'
+        ]
       }
     ],
     projectHint: 'Click for details',
