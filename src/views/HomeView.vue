@@ -17,6 +17,23 @@
       @close="closeModal"
     />
 
+    <ResumePreviewModal
+      :visible="isResumePreviewVisible"
+      :pdf-src="RESUME_FILE_PATH"
+      :title="content.resumePreview"
+      :is-dark="isDark"
+      @close="closeResumePreview"
+    />
+
+    <button
+      class="resume-preview-fab"
+      :title="content.resumePreview"
+      :aria-label="content.resumePreview"
+      @click="openResumePreview"
+    >
+      <i class="fa-solid fa-file-pdf"></i>
+    </button>
+
     <div class="mobile-header">
       <div class="mobile-profile">
         <h1 class="mobile-name">{{ content.name }}</h1>
@@ -209,6 +226,7 @@
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import ThreeScene from '@/components/ThreeScene.vue'
 import ProjectDetailModal from '@/components/ProjectDetailModal.vue'
+import ResumePreviewModal from '@/components/ResumePreviewModal.vue'
 import { getProjects } from '@/api/api'
 import weixinImg from '@/assets/img/weixin.jpg'
 import {
@@ -222,6 +240,7 @@ import {
 const activeSection = ref('about')
 const rawProjects = ref([])
 const isModalVisible = ref(false)
+const isResumePreviewVisible = ref(false)
 const selectedProjectId = ref(null)
 const isMobileNavOpen = ref(false)
 const isDark = ref(true)
@@ -346,6 +365,14 @@ const openProjectDialog = (projectId) => {
 const closeModal = () => {
   isModalVisible.value = false
   selectedProjectId.value = null
+}
+
+const openResumePreview = () => {
+  isResumePreviewVisible.value = true
+}
+
+const closeResumePreview = () => {
+  isResumePreviewVisible.value = false
 }
 
 const closeMobileNav = () => {
@@ -745,6 +772,45 @@ body {
   &:hover {
     color: var(--accent-color);
     transform: translateY(-3px);
+  }
+}
+
+/* 右侧简历预览悬浮按钮 */
+.resume-preview-fab {
+  position: fixed;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bg-light);
+  border: 1px solid var(--accent-color);
+  color: var(--accent-color);
+  font-size: 1.25rem;
+  cursor: pointer;
+  z-index: 50;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  transition: var(--transition);
+
+  &:hover {
+    transform: translateY(-50%) scale(1.1);
+    background-color: var(--accent-color);
+    color: var(--bg-color);
+  }
+
+  @media (max-width: 768px) {
+    top: auto;
+    right: 16px;
+    bottom: 80px;
+    transform: none;
+
+    &:hover {
+      transform: scale(1.1);
+    }
   }
 }
 

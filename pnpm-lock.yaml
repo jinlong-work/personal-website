@@ -41,6 +41,9 @@ importers:
       vue-router:
         specifier: ^4.3.3
         version: 4.6.4(vue@3.5.30)
+      vue3-pdf-app:
+        specifier: ^1.0.3
+        version: 1.0.3(vue@3.5.30)
     devDependencies:
       '@rushstack/eslint-patch':
         specifier: ^1.8.0
@@ -1958,6 +1961,11 @@ packages:
     peerDependencies:
       vue: ^3.5.0
 
+  vue3-pdf-app@1.0.3:
+    resolution: {integrity: sha512-qegWTIF4wYKiocZ3KreB70wRXhqSdXWbdERDyyKzT7d5PbjKbS9tD6vaKkCqh3PzTM84NyKPYrQ3iuwJb60YPQ==}
+    peerDependencies:
+      vue: ^3.0.0
+
   vue@3.5.30:
     resolution: {integrity: sha512-hTHLc6VNZyzzEH/l7PFGjpcTvUgiaPK5mdLkbjrTeWSRcEfxFrv56g/XckIYlE9ckuobsdwqd5mk2g1sBkMewg==}
     peerDependencies:
@@ -3785,6 +3793,10 @@ snapshots:
   vue-router@4.6.4(vue@3.5.30):
     dependencies:
       '@vue/devtools-api': 6.6.4
+      vue: 3.5.30
+
+  vue3-pdf-app@1.0.3(vue@3.5.30):
+    dependencies:
       vue: 3.5.30
 
   vue@3.5.30:

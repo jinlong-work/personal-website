@@ -20,6 +20,39 @@
     </template>
 
     <div class="dialog-content">
+      <!-- 项目截图 -->
+      <div v-if="project.images && project.images.length" class="image-section">
+        <h4 class="section-title">
+          <i class="fa-solid fa-images"></i>
+          {{ labels.gallery }}
+        </h4>
+        <el-carousel :height="carouselHeight" arrow="always" indicator-position="outside">
+          <el-carousel-item v-for="(img, index) in project.images" :key="index">
+            <div class="image-wrapper">
+              <el-image
+                :src="img"
+                :alt="`${project.name} ${index + 1}`"
+                :preview-src-list="project.images"
+                :initial-index="index"
+                fit="contain"
+                class="carousel-image"
+                preview-teleported
+              />
+            </div>
+          </el-carousel-item>
+        </el-carousel>
+        <div class="image-meta">
+          <span class="image-hint">
+            <i class="fa-solid fa-magnifying-glass-plus"></i>
+            {{ labels.imageHint }}
+          </span>
+          <span class="image-disclaimer">
+            <i class="fa-solid fa-shield-halved"></i>
+            {{ labels.disclaimer }}
+          </span>
+        </div>
+      </div>
+
       <!-- 项目描述 -->
       <div class="info-section">
         <h4 class="section-title">
@@ -92,6 +125,9 @@ const props = defineProps({
       overview: '项目简介',
       techStack: '技术栈',
       achievements: '主要职责',
+      gallery: '项目截图',
+      imageHint: '点击图片可放大预览',
+      disclaimer: '展示图片已筛选并完成隐私脱敏',
       close: '关闭'
     })
   }
@@ -103,6 +139,12 @@ const dialogVisible = ref(false)
 const windowWidth = ref(window.innerWidth)
 
 const isMobile = computed(() => windowWidth.value <= 768)
+
+const carouselHeight = computed(() => {
+  if (windowWidth.value <= 480) return '200px'
+  if (windowWidth.value <= 768) return '260px'
+  return '360px'
+})
 
 const handleResize = () => {
   windowWidth.value = window.innerWidth
@@ -175,6 +217,83 @@ onUnmounted(() => {
 }
 
 .dialog-content {
+  .image-section {
+    margin-bottom: 28px;
+  }
+
+  .image-wrapper {
+    width: 100%;
+    height: 100%;
+    background: #101a2d;
+    border-radius: 8px;
+  }
+
+  .carousel-image {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: contain;
+    border-radius: 8px;
+    border: 1px solid #233554;
+
+    :deep(.project-detail-dialog.light-theme) & {
+      border-color: #eee8d5;
+    }
+  }
+
+  .image-meta {
+    margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .image-hint {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8rem;
+    color: #8892b0;
+
+    :deep(.project-detail-dialog.light-theme) & {
+      color: #657b83;
+    }
+
+    i {
+      color: #64ffda;
+
+      :deep(.project-detail-dialog.light-theme) & {
+        color: #859900;
+      }
+    }
+  }
+
+  .image-disclaimer {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.78rem;
+    padding: 8px 12px;
+    border-radius: 6px;
+    background-color: rgba(100, 255, 218, 0.08);
+    border: 1px solid rgba(100, 255, 218, 0.3);
+    color: #8892b0;
+
+    :deep(.project-detail-dialog.light-theme) & {
+      background-color: rgba(133, 153, 0, 0.08);
+      border-color: rgba(133, 153, 0, 0.3);
+      color: #657b83;
+    }
+
+    i {
+      color: #64ffda;
+
+      :deep(.project-detail-dialog.light-theme) & {
+        color: #859900;
+      }
+    }
+  }
+
   .info-section,
   .tech-section,
   .achievements-section {
@@ -285,6 +404,9 @@ onUnmounted(() => {
     font-size: 1.2rem;
   }
   .dialog-content {
+    .image-section {
+      margin-bottom: 20px;
+    }
     .info-section,
     .tech-section,
     .achievements-section {
@@ -362,6 +484,13 @@ onUnmounted(() => {
     .achievement-item {
       border-bottom-color: #233554;
     }
+    .el-carousel {
+      background-color: #0a192f;
+      border-radius: 8px;
+    }
+    .el-carousel__indicator .el-carousel__button {
+      background-color: #233554;
+    }
   }
 
   /* 明亮主题 */
@@ -398,6 +527,13 @@ onUnmounted(() => {
     }
     .achievement-item {
       border-bottom-color: #eee8d5;
+    }
+    .el-carousel {
+      background-color: #fdf6e3;
+      border-radius: 8px;
+    }
+    .el-carousel__indicator .el-carousel__button {
+      background-color: #eee8d5;
     }
   }
 
@@ -530,6 +666,31 @@ onUnmounted(() => {
           color: #859900;
         }
       }
+    }
+  }
+
+  /* 轮播图箭头与指示器主题适配 */
+  .el-carousel__arrow {
+    background-color: rgba(100, 255, 218, 0.3);
+
+    &:hover {
+      background-color: #64ffda;
+    }
+
+    html.light-theme & {
+      background-color: rgba(133, 153, 0, 0.3);
+
+      &:hover {
+        background-color: #859900;
+      }
+    }
+  }
+
+  .el-carousel__indicator.is-active .el-carousel__button {
+    background-color: #64ffda;
+
+    html.light-theme & {
+      background-color: #859900;
     }
   }
 }

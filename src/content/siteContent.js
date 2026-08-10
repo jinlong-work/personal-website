@@ -13,6 +13,12 @@ export const fallbackProjects = [
       '调查地图大屏开发：独立负责调查地图大屏的整体架构与开发，通过 ECharts 与 ArcGIS API for JS，实现调查机构、调查专业及多维度数据展示，支持实时动态渲染与地图下钻。',
       '调查经济地图大屏开发：展示海南省全体居民、城镇居民和农村居民的收入收支情况，支持多类统计数据查看，并使用 ECharts 地图进行可视化呈现。',
       '运维管理模块建设：开发配套运维管理模块，负责调查机构、辅调员、调查证及调查网点等数据的维护与展示。'
+    ],
+    images: [
+      '/personal-website/img/调查一张图.jpg',
+      '/personal-website/img/调查一张图02.jpg',
+      '/personal-website/img/调查一张图03.jpg',
+      '/personal-website/img/调查一张图05.jpg'
     ]
   },
   {
@@ -26,6 +32,10 @@ export const fallbackProjects = [
       '负责村庄总览大屏开发，实现村庄概述、人口统计和领导小组等内容的集中展示。',
       '根据项目需求完成三维地图界面开发与地图服务加载，实现服务切换、查询及弹窗拖拽功能。',
       '完成报建审查功能，支持用户绘制区域或输入坐标，判定占用生态红线、林地和基本农田等面积。'
+    ],
+    images: [
+      '/personal-website/img/深造村03.jpg',
+      '/personal-website/img/深造村04-脱敏.webp'
     ]
   },
   {
@@ -39,19 +49,12 @@ export const fallbackProjects = [
       '宜农资源分析：基于坡度分析计算符合条件的图斑面积，并输出可视化结果，支持点击 ArcGIS 图斑、绘制矩形和上传文件三种分析区域获取方式。',
       '水土保持监管：通过区域开挖分析计算不同地形服务在绘制范围内的挖方量差值，用于评估水土流失情况。',
       '交互功能开发：独立完成地图标绘系统、多窗口对比分析功能以及比例尺组件开发。'
-    ]
-  },
-  {
-    id: 4,
-    name: '海南省国土空间专家库系统',
-    type: '管理系统',
-    description:
-      '海南省国土空间生态修复和耕地保护专家库是一个基于 Vue 3 的管理系统，用于管理相关专家信息。系统支持专家信息维护、搜索筛选和项目专家配置等能力。',
-    technologies: ['Vue 3', 'Element Plus', '若依框架'],
-    achievements: [
-      '专家库系统开发：负责专家信息的新增、编辑、删除、搜索和筛选等完整业务功能开发。',
-      '项目管理能力建设：支持根据项目需求筛选符合条件的专家，并快速完成专家配置。',
-      '系统优化：持续改进系统性能与交互体验，提升页面响应速度和操作易用性。'
+    ],
+    images: [
+      '/personal-website/img/海南3D01.jpg',
+      '/personal-website/img/海南3D03.jpg',
+      '/personal-website/img/海南3D05.jpg',
+      '/personal-website/img/海南3D06.jpg'
     ]
   },
   {
@@ -69,6 +72,13 @@ export const fallbackProjects = [
       'AI 智能问答：集成 Dify AI 聊天机器人，在资料库页面提供全屏交互式知识问答服务。',
       '管理后台系统：开发完整的 CRUD 管理能力，覆盖资料、课程、试题和用户认证。',
       '响应式设计：采用 Tailwind CSS 实现现代化响应式布局，适配不同屏幕尺寸并优化用户体验。'
+    ],
+    images: [
+      '/personal-website/img/地籍知识库01.jpg',
+      '/personal-website/img/地籍知识库03.jpg',
+      '/personal-website/img/地籍知识库04.jpg',
+      '/personal-website/img/地籍知识库06.jpg',
+      '/personal-website/img/地籍知识库07.jpg'
     ]
   },
   {
@@ -89,6 +99,11 @@ export const fallbackProjects = [
       '响应式布局适配：通过动态计算表格高度和弹性布局等方式适配不同屏幕尺寸，并支持大屏展示模式。',
       '性能优化实践：使用 KeepAlive 缓存页面、虚拟列表优化大数据量表格，并按需加载组件。',
       '权限控制前端实现：基于角色权限动态渲染菜单、控制按钮显隐并过滤数据范围。'
+    ],
+    images: [
+      '/personal-website/img/机器管督查04.jpg',
+      '/personal-website/img/机器管督查05.jpg',
+      '/personal-website/img/机器管督查06.jpg'
     ]
   },
   {
@@ -102,7 +117,8 @@ export const fallbackProjects = [
       '路径绘制：使用实线绘制实况路径、虚线绘制预报路径，并按台风等级与不同台风进行颜色区分。',
       '风圈可视化：绘制七级、十级和十二级风圈，支持四个方向半径不一致的椭圆风圈表达。',
       '交互动效：实现台风图标持续旋转动画，点击路径点后显示详情弹窗并重新绘制风圈。'
-    ]
+    ],
+    images: ['/personal-website/img/台风路径展示.jpg']
   },
   {
     id: 8,
@@ -115,6 +131,32 @@ export const fallbackProjects = [
       '大屏界面开发：负责烈士纪念设施一张图的大屏整体布局与样式实现。',
       '设施聚合展示：基于 Cesium 实现海南省烈士纪念设施空间聚合展示，支持随地图缩放动态调整聚合粒度。',
       '详情交互功能：实现设施图标点击与列表选择双触发，弹出详情窗口展示设施介绍、历史背景和图片资料。'
+    ],
+    images: [
+      '/personal-website/img/烈士一张图01.jpg',
+      '/personal-website/img/烈士一张图02.jpg',
+      '/personal-website/img/烈士一张图03.jpg',
+      '/personal-website/img/烈士一张图04.jpg'
+    ]
+  },
+  {
+    id: 9,
+    name: '海南省林业一张图',
+    type: '二维大屏项目',
+    description:
+      '面向海南省林业资源综合监管与专题分析建设的可视化平台，集中展示森林资源、公益林、湿地、自然保护地、红树林、森林防火和有害生物防控等业务数据，并通过一张图呈现资源概况、空间分布与应用系统入口。',
+    technologies: ['Vue 2', 'Element UI', 'ECharts', 'WebGIS', 'Axios'],
+    achievements: [
+      '可视化大屏开发：完成 1920×1080 林业数据大屏的整体布局与页面开发，采用动态缩放适配不同分辨率，并构建可复用的指标卡片、图表和专题面板组件。',
+      '林业专题整合：围绕森林资源、公益林、自然保护地、红树林、森林防火和有害生物防控等业务，开发多类专题页面与统计图表。',
+      'WebGIS 地图集成：将林业专题地图嵌入大屏，联动展示资源分布、行政区划和业务指标，形成地图与两侧数据面板协同展示的一张图界面。',
+      '配置化与系统联动：使用 JSON 配置和 Axios 动态加载面板数据、菜单及跳转信息，整合数据中心和多个林业业务系统入口，提升页面扩展与维护效率。'
+    ],
+    images: [
+      '/personal-website/img/林业一张图01.jpg',
+      '/personal-website/img/林业一张图02.jpg',
+      '/personal-website/img/林业一张图03.jpg',
+      '/personal-website/img/林业一张图04.jpg'
     ]
   }
 ]
@@ -122,8 +164,9 @@ export const fallbackProjects = [
 export const siteContent = {
   zh: {
     name: '曹进龙',
-    profileTitle: 'gis全栈工程师',
-    profileDescription: '拥有两年多 GIS 开发经验，专注于高性能 WebGIS 应用架构设计与研发。',
+    profileTitle: 'GIS 全栈工程师',
+    profileDescription:
+      '以 WebGIS 前端开发为核心优势，目前正在系统补强 Java 后端能力，逐步向 GIS 全栈方向转型。',
     sections: {
       about: '关于我',
       experience: '工作经历',
@@ -132,18 +175,18 @@ export const siteContent = {
       contact: '联系方式'
     },
     about: [
-      '您好，我是曹进龙，一名专注于 GIS 全栈开发的工程师。自 2023 年毕业于湖北大学地理信息科学专业以来，我一直深耕于 WebGIS 领域的技术实践与应用开发。',
-      '在两年多的 GIS 开发经验中，我专注于前端地图可视化技术，熟练掌握 2D/3D 地图开发、空间数据展示与交互等核心技能，并持续补强后端能力，向全栈方向深入发展。',
-      '我对 WebGIS 技术保持持续的学习热情，善于将前端技术、GIS 业务需求与系统工程思维结合，实现直观高效的空间信息可视化解决方案。',
-      '在多个项目中，我负责地图可视化模块、业务系统页面和数据交互能力的核心开发工作，能够独立完成从需求分析到功能实现的完整开发流程。'
+      '您好，我是曹进龙，一名正在向 GIS 全栈方向转型的开发工程师。自 2023 年毕业于湖北大学地理信息科学专业以来，我一直深耕 WebGIS 领域的技术实践与应用开发。',
+      '我的能力重心是 WebGIS 前端：熟练进行 2D/3D 地图开发、空间数据可视化、复杂地图交互和数据大屏建设，能够将 GIS 业务需求转化为清晰、流畅且易用的前端产品。',
+      '目前我正在系统学习并实践 Java、Spring Boot、MyBatis 等后端技术，已能够承担接口、业务逻辑和数据访问层的开发工作，并持续补强服务端架构与工程化能力。',
+      '我的目标是在保持 WebGIS 前端优势的基础上，逐步形成覆盖前端地图应用、Java 后端服务与空间数据处理的 GIS 全栈交付能力。'
     ],
     experience: [
       {
-        title: 'gis全栈工程师',
+        title: 'WebGIS 开发工程师',
         company: '湖北嘉款科技有限公司',
-        period: '2024.11 - 2026.03',
+        period: '2024.11 - 至今',
         description:
-          '长期驻场海南省测绘地理信息局，负责二维地图、三维地图、数据大屏及运维管理系统开发。深入实践 ArcGIS API for JS、Cesium、若依框架等技术，能够快速理解业务需求并提供解决方案，独立完成多个项目开发。'
+          '长期驻场海南省测绘地理信息局，以 WebGIS 前端开发为主要职责，负责二维地图、三维地图、数据大屏及业务管理系统建设；同时参与若依框架下的 Java 后端接口与业务功能开发，能够独立推进多个 GIS 项目交付。'
       },
       {
         title: 'WebGIS 开发实习生',
@@ -184,7 +227,7 @@ export const siteContent = {
         ]
       },
       {
-        title: '后端与接口',
+        title: 'Java 后端与接口',
         items: [
           'Java',
           'Spring Boot',
@@ -198,16 +241,7 @@ export const siteContent = {
       },
       {
         title: '数据库与服务',
-        items: [
-          'MySQL',
-          'PostgreSQL / PostGIS',
-          'Redis',
-          'GeoServer',
-          'Supabase',
-          'Dify API',
-          'SQL',
-          '数据建模'
-        ]
+        items: ['MySQL', 'PostgreSQL', 'Redis']
       },
       {
         title: '工程化与协作',
@@ -224,8 +258,9 @@ export const siteContent = {
       }
     ],
     projectHint: '点击查看详情',
+    resumePreview: '预览简历',
     contactIntro:
-      '期待与志同道合的技术伙伴交流合作。目前我对具有挑战性的 GIS 全栈开发岗位保持开放态度，欢迎通过以下方式联系我：',
+      '期待与志同道合的技术伙伴交流合作。目前我正以 WebGIS 前端优势为基础向 GIS 全栈方向发展，并对相关岗位保持开放态度，欢迎通过以下方式联系我：',
     location: '湖北恩施',
     wechatLabel: '微信',
     qrAlt: '微信二维码',
@@ -234,6 +269,9 @@ export const siteContent = {
       overview: '项目简介',
       techStack: '技术栈',
       achievements: '主要职责',
+      gallery: '项目截图',
+      imageHint: '点击图片可放大预览',
+      disclaimer: '展示图片已筛选并完成隐私脱敏',
       close: '关闭'
     }
   },
@@ -241,7 +279,7 @@ export const siteContent = {
     name: 'Jinlong Cao',
     profileTitle: 'GIS Full-Stack Engineer',
     profileDescription:
-      '2+ years of GIS development experience focused on high-performance WebGIS architecture, interactive mapping, and end-to-end product delivery.',
+      'Building on a strong WebGIS frontend foundation while systematically strengthening my Java backend skills and transitioning toward GIS full-stack engineering.',
     sections: {
       about: 'About',
       experience: 'Experience',
@@ -250,18 +288,18 @@ export const siteContent = {
       contact: 'Contact'
     },
     about: [
-      'I am Jinlong Cao, a GIS full-stack engineer with a strong focus on WebGIS product development. Since graduating from Hubei University in 2023 with a major in Geographic Information Science, I have been building practical GIS applications for real-world scenarios.',
-      'Over the past two-plus years, I have specialized in 2D and 3D map interfaces, spatial data visualization, and interaction design, while steadily expanding my backend capabilities to grow into a stronger full-stack developer.',
-      'I enjoy connecting frontend engineering with GIS domain needs, and I care about turning complex spatial information into products that feel clear, efficient, and intuitive to use.',
-      'Across multiple projects, I have owned core work on map visualization modules, business system pages, and data interaction flows, and I am comfortable taking features from requirements analysis to final delivery.'
+      'I am Jinlong Cao, a developer currently transitioning toward GIS full-stack engineering. Since graduating from Hubei University in 2023 with a major in Geographic Information Science, I have focused on building real-world WebGIS applications.',
+      'My primary expertise is in 2D and 3D mapping, spatial data visualization, complex map interactions, and large-screen dashboards. I turn GIS requirements into frontend products that are clear, responsive, and intuitive to use.',
+      'I am systematically learning and applying Java, Spring Boot, and MyBatis. I can already deliver backend APIs, business logic, and data-access features while continuing to strengthen my server-side architecture and engineering skills.',
+      'My goal is to retain WebGIS frontend as a core strength while developing end-to-end delivery capabilities across map applications, Java backend services, and spatial data workflows.'
     ],
     experience: [
       {
-        title: 'GIS Full-Stack Engineer',
+        title: 'WebGIS Developer',
         company: 'Hubei Jiakuan Technology Co., Ltd.',
-        period: 'Nov 2024 - Mar 2026',
+        period: 'Nov 2024 - Present',
         description:
-          'Worked onsite for the Hainan Surveying and Geographic Information Bureau, building 2D and 3D map applications, large-screen dashboards, and operations management systems. Applied ArcGIS API for JS, Cesium, and the Ruoyi framework to deliver multiple projects independently and respond quickly to business needs.'
+          'Worked onsite for the Hainan Surveying and Geographic Information Bureau with WebGIS frontend development as my primary responsibility, building 2D and 3D maps, dashboards, and business systems. I also contributed Java backend APIs and business features within the Ruoyi framework and independently drove multiple GIS projects to delivery.'
       },
       {
         title: 'WebGIS Development Intern',
@@ -302,7 +340,7 @@ export const siteContent = {
         ]
       },
       {
-        title: 'Backend & APIs',
+        title: 'Java Backend & APIs',
         items: [
           'Java',
           'Spring Boot',
@@ -316,16 +354,7 @@ export const siteContent = {
       },
       {
         title: 'Databases & Services',
-        items: [
-          'MySQL',
-          'PostgreSQL / PostGIS',
-          'Redis',
-          'GeoServer',
-          'Supabase',
-          'Dify API',
-          'SQL',
-          'Data Modeling'
-        ]
+        items: ['MySQL', 'PostgreSQL', 'Redis']
       },
       {
         title: 'Engineering & Collaboration',
@@ -342,8 +371,9 @@ export const siteContent = {
       }
     ],
     projectHint: 'Click for details',
+    resumePreview: 'Preview Resume',
     contactIntro:
-      'I’m open to challenging GIS full-stack roles and meaningful collaborations. If you would like to talk about projects, opportunities, or ideas, feel free to reach out through any of the channels below.',
+      'I’m building toward GIS full-stack engineering from a strong WebGIS frontend foundation and remain open to related roles. If you would like to discuss projects, opportunities, or ideas, feel free to reach out.',
     location: 'Enshi, Hubei',
     wechatLabel: 'WeChat',
     qrAlt: 'WeChat QR Code',
@@ -352,6 +382,9 @@ export const siteContent = {
       overview: 'Project Overview',
       techStack: 'Tech Stack',
       achievements: 'Key Contributions',
+      gallery: 'Screenshots',
+      imageHint: 'Click an image to enlarge',
+      disclaimer: 'Portfolio images have been reviewed and privacy-redacted.',
       close: 'Close'
     }
   }
@@ -393,18 +426,6 @@ const projectTranslations = {
         'Implemented agricultural suitability analysis based on slope calculations, with support for selecting analysis areas from ArcGIS features, drawn rectangles, or uploaded files.',
         'Built soil and water conservation supervision tools that estimated excavation differences across terrain services to assess erosion risks.',
         'Delivered advanced interactions including a full map markup system, multi-window comparison analysis, and custom scale components.'
-      ]
-    },
-    4: {
-      name: 'Hainan Territorial Spatial Expert Database System',
-      type: 'Management System',
-      description:
-        'A Vue 3-based management system for maintaining expert information related to territorial spatial ecological restoration and farmland protection in Hainan. It supports expert maintenance, search, filtering, and project-based expert assignment.',
-      technologies: ['Vue 3', 'Element Plus', 'Ruoyi Framework'],
-      achievements: [
-        'Developed the full expert database workflow, including adding, editing, deleting, searching, and filtering expert records.',
-        'Built project management features that allow users to filter experts by project needs and quickly assemble suitable expert groups.',
-        'Improved performance and usability to make the system faster and easier for administrators to operate.'
       ]
     },
     5: {
@@ -464,6 +485,19 @@ const projectTranslations = {
         'Implemented the overall large-screen layout and styling for the memorial-facilities one-map interface.',
         'Built Cesium-based clustering for memorial facilities across Hainan, with cluster granularity that adjusts dynamically as the map zoom level changes.',
         'Implemented dual-trigger details interactions from both map icons and list selections, showing facility information, historical background, and related images in a popup.'
+      ]
+    },
+    9: {
+      name: 'Hainan Forestry One-Map',
+      type: '2D Dashboard Project',
+      description:
+        'A visual analytics platform for integrated forestry-resource supervision in Hainan. It brings together forest resources, public-welfare forests, wetlands, protected areas, mangroves, wildfire prevention, pest control, and connected business-system entry points in one map-centric interface.',
+      technologies: ['Vue 2', 'Element UI', 'ECharts', 'WebGIS', 'Axios'],
+      achievements: [
+        'Built the 1920×1080 forestry dashboard with resolution-aware scaling and reusable metric cards, charts, and thematic panels.',
+        'Delivered thematic views and statistical visualizations for forest resources, public-welfare forests, protected areas, mangroves, wildfire prevention, and pest control.',
+        'Integrated the WebGIS map with resource distributions, administrative context, and business indicators to coordinate the central map with surrounding data panels.',
+        'Used JSON configuration and Axios-based loading for dashboard data, menus, and navigation, connecting the data center with multiple forestry business systems while keeping the interface maintainable.'
       ]
     }
   }
