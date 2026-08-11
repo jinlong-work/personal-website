@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>个人网站</title>
+    <script type="text/javascript">
+      // GitHub Pages 404 重定向解决方案
+      var path = window.location.pathname
+      var hash = window.location.hash
+      var search = window.location.search
+
+      // 重定向到根目录，保留hash和search参数
+      window.location.href = '/personal-website/' + search + hash
+    </script>
+  </head>
+  <body>
+    <noscript>
+      <meta http-equiv="refresh" content="0;url=/personal-website/" />
+    </noscript>
+  </body>
+</html>
