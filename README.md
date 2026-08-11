@@ -113,7 +113,7 @@ src/
 
 ## 🌐 在线访问
 
-网站已部署到 GitHub Pages：[访问我的个人网站](https://jinlong-work.github.io/personal-website)
+网站地址：[www.caojinlong.top](https://www.caojinlong.top)
 
 ## 📱 联系方式
 

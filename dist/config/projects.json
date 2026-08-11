@@ -12,10 +12,10 @@
         "运维管理模块建设：开发配套的运维管理模块，运维管理模块负责管理大屏中的一系列数据的展示，包括调查机构、辅调员、调查证、调查网点管理。"
       ],
       "images": [
-        "/personal-website/img/调查一张图.jpg",
-        "/personal-website/img/调查一张图02.jpg",
-        "/personal-website/img/调查一张图03.jpg",
-        "/personal-website/img/调查一张图05.jpg"
+        "/img/调查一张图.jpg",
+        "/img/调查一张图02.jpg",
+        "/img/调查一张图03.jpg",
+        "/img/调查一张图05.jpg"
       ]
     },
     {
@@ -30,8 +30,8 @@
         "根据需求完成报建审查功能，用户可自行绘制区域、输入坐标来进行报建审查，判定绘制范围占用生态红线、林地、基本农田等的面积。"
       ],
       "images": [
-        "/personal-website/img/深造村03.jpg",
-        "/personal-website/img/深造村04-脱敏.webp"
+        "/img/深造村03.jpg",
+        "/img/深造村04-脱敏.webp"
       ]
     },
     {
@@ -46,10 +46,10 @@
         "交互功能：独立完成地图标绘系统（点线面体增删改查），多窗⼝对比分析功能以及比例尺组件开发。"
       ],
       "images": [
-        "/personal-website/img/海南3D01.jpg",
-        "/personal-website/img/海南3D03.jpg",
-        "/personal-website/img/海南3D05.jpg",
-        "/personal-website/img/海南3D06.jpg"
+        "/img/海南3D01.jpg",
+        "/img/海南3D03.jpg",
+        "/img/海南3D05.jpg",
+        "/img/海南3D06.jpg"
       ]
     },
     {
@@ -68,11 +68,11 @@
         "响应式设计：采用Tailwind CSS实现现代化响应式布局，适配不同屏幕尺寸，优化用户体验"
       ],
       "images": [
-        "/personal-website/img/地籍知识库01.jpg",
-        "/personal-website/img/地籍知识库03.jpg",
-        "/personal-website/img/地籍知识库04.jpg",
-        "/personal-website/img/地籍知识库06.jpg",
-        "/personal-website/img/地籍知识库07.jpg"
+        "/img/地籍知识库01.jpg",
+        "/img/地籍知识库03.jpg",
+        "/img/地籍知识库04.jpg",
+        "/img/地籍知识库06.jpg",
+        "/img/地籍知识库07.jpg"
       ]
     },
     {
@@ -94,9 +94,9 @@
         "权限控制前端实现：基于角色权限动态渲染菜单、控制按钮显隐、过滤数据范围，保障前端安全"
       ],
       "images": [
-        "/personal-website/img/机器管督查04.jpg",
-        "/personal-website/img/机器管督查05.jpg",
-        "/personal-website/img/机器管督查06.jpg"
+        "/img/机器管督查04.jpg",
+        "/img/机器管督查05.jpg",
+        "/img/机器管督查06.jpg"
       ]
     },
     {
@@ -110,7 +110,7 @@
         "风圈可视化：绘制七级/十级/十二级风圈（椭圆形，四个方向半径不同）",
         "交互动效：台风图标持续旋转动画，点击路径点显示详情弹窗并重新绘制风圈"
       ],
-      "images": ["/personal-website/img/台风路径展示.jpg"]
+      "images": ["/img/台风路径展示.jpg"]
     },
     {
       "id": 8,
@@ -124,10 +124,10 @@
         "详情交互功能：开发设施图标点击与列表选择双触发机制，点击后弹出详情弹窗，展示设施介绍、历史背景及相关图片资料"
       ],
       "images": [
-        "/personal-website/img/烈士一张图01.jpg",
-        "/personal-website/img/烈士一张图02.jpg",
-        "/personal-website/img/烈士一张图03.jpg",
-        "/personal-website/img/烈士一张图04.jpg"
+        "/img/烈士一张图01.jpg",
+        "/img/烈士一张图02.jpg",
+        "/img/烈士一张图03.jpg",
+        "/img/烈士一张图04.jpg"
       ]
     },
     {
@@ -143,10 +143,10 @@
         "配置化与系统联动：使用 JSON 配置和 Axios 动态加载面板数据、菜单及跳转信息，整合数据中心和多个林业业务系统入口，提升页面扩展与维护效率。"
       ],
       "images": [
-        "/personal-website/img/林业一张图01.jpg",
-        "/personal-website/img/林业一张图02.jpg",
-        "/personal-website/img/林业一张图03.jpg",
-        "/personal-website/img/林业一张图04.jpg"
+        "/img/林业一张图01.jpg",
+        "/img/林业一张图02.jpg",
+        "/img/林业一张图03.jpg",
+        "/img/林业一张图04.jpg"
       ]
     }
   ]

@@ -2,7 +2,7 @@ import axios from 'axios'
 
 // 创建一个axios实例
 const apiClient = axios.create({
-  baseURL: '/personal-website/config',
+  baseURL: `${import.meta.env.BASE_URL}config`,
   headers: {
     'Content-Type': 'application/json'
   }

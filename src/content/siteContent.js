@@ -1,5 +1,5 @@
 export const RESUME_FILE_NAME = '曹进龙-个人简历.pdf'
-export const RESUME_FILE_PATH = `/personal-website/${RESUME_FILE_NAME}`
+export const RESUME_FILE_PATH = `${import.meta.env.BASE_URL}${RESUME_FILE_NAME}`
 
 export const fallbackProjects = [
   {
@@ -15,10 +15,10 @@ export const fallbackProjects = [
       '运维管理模块建设：开发配套运维管理模块，负责调查机构、辅调员、调查证及调查网点等数据的维护与展示。'
     ],
     images: [
-      '/personal-website/img/调查一张图.jpg',
-      '/personal-website/img/调查一张图02.jpg',
-      '/personal-website/img/调查一张图03.jpg',
-      '/personal-website/img/调查一张图05.jpg'
+      '/img/调查一张图.jpg',
+      '/img/调查一张图02.jpg',
+      '/img/调查一张图03.jpg',
+      '/img/调查一张图05.jpg'
     ]
   },
   {
@@ -34,8 +34,8 @@ export const fallbackProjects = [
       '完成报建审查功能，支持用户绘制区域或输入坐标，判定占用生态红线、林地和基本农田等面积。'
     ],
     images: [
-      '/personal-website/img/深造村03.jpg',
-      '/personal-website/img/深造村04-脱敏.webp'
+      '/img/深造村03.jpg',
+      '/img/深造村04-脱敏.webp'
     ]
   },
   {
@@ -51,10 +51,10 @@ export const fallbackProjects = [
       '交互功能开发：独立完成地图标绘系统、多窗口对比分析功能以及比例尺组件开发。'
     ],
     images: [
-      '/personal-website/img/海南3D01.jpg',
-      '/personal-website/img/海南3D03.jpg',
-      '/personal-website/img/海南3D05.jpg',
-      '/personal-website/img/海南3D06.jpg'
+      '/img/海南3D01.jpg',
+      '/img/海南3D03.jpg',
+      '/img/海南3D05.jpg',
+      '/img/海南3D06.jpg'
     ]
   },
   {
@@ -74,11 +74,11 @@ export const fallbackProjects = [
       '响应式设计：采用 Tailwind CSS 实现现代化响应式布局，适配不同屏幕尺寸并优化用户体验。'
     ],
     images: [
-      '/personal-website/img/地籍知识库01.jpg',
-      '/personal-website/img/地籍知识库03.jpg',
-      '/personal-website/img/地籍知识库04.jpg',
-      '/personal-website/img/地籍知识库06.jpg',
-      '/personal-website/img/地籍知识库07.jpg'
+      '/img/地籍知识库01.jpg',
+      '/img/地籍知识库03.jpg',
+      '/img/地籍知识库04.jpg',
+      '/img/地籍知识库06.jpg',
+      '/img/地籍知识库07.jpg'
     ]
   },
   {
@@ -101,9 +101,9 @@ export const fallbackProjects = [
       '权限控制前端实现：基于角色权限动态渲染菜单、控制按钮显隐并过滤数据范围。'
     ],
     images: [
-      '/personal-website/img/机器管督查04.jpg',
-      '/personal-website/img/机器管督查05.jpg',
-      '/personal-website/img/机器管督查06.jpg'
+      '/img/机器管督查04.jpg',
+      '/img/机器管督查05.jpg',
+      '/img/机器管督查06.jpg'
     ]
   },
   {
@@ -118,7 +118,7 @@ export const fallbackProjects = [
       '风圈可视化：绘制七级、十级和十二级风圈，支持四个方向半径不一致的椭圆风圈表达。',
       '交互动效：实现台风图标持续旋转动画，点击路径点后显示详情弹窗并重新绘制风圈。'
     ],
-    images: ['/personal-website/img/台风路径展示.jpg']
+    images: ['/img/台风路径展示.jpg']
   },
   {
     id: 8,
@@ -133,10 +133,10 @@ export const fallbackProjects = [
       '详情交互功能：实现设施图标点击与列表选择双触发，弹出详情窗口展示设施介绍、历史背景和图片资料。'
     ],
     images: [
-      '/personal-website/img/烈士一张图01.jpg',
-      '/personal-website/img/烈士一张图02.jpg',
-      '/personal-website/img/烈士一张图03.jpg',
-      '/personal-website/img/烈士一张图04.jpg'
+      '/img/烈士一张图01.jpg',
+      '/img/烈士一张图02.jpg',
+      '/img/烈士一张图03.jpg',
+      '/img/烈士一张图04.jpg'
     ]
   },
   {
@@ -153,10 +153,10 @@ export const fallbackProjects = [
       '配置化与系统联动：使用 JSON 配置和 Axios 动态加载面板数据、菜单及跳转信息，整合数据中心和多个林业业务系统入口，提升页面扩展与维护效率。'
     ],
     images: [
-      '/personal-website/img/林业一张图01.jpg',
-      '/personal-website/img/林业一张图02.jpg',
-      '/personal-website/img/林业一张图03.jpg',
-      '/personal-website/img/林业一张图04.jpg'
+      '/img/林业一张图01.jpg',
+      '/img/林业一张图02.jpg',
+      '/img/林业一张图03.jpg',
+      '/img/林业一张图04.jpg'
     ]
   }
 ]
