@@ -18,12 +18,34 @@
       </div>
     </template>
 
+    <div class="resume-tools">
+      <span>{{ locale === 'zh' ? '原版中文简历' : 'Original resume · Chinese' }}</span>
+      <button
+        type="button"
+        @click="scale = Math.max(50, scale - 25)"
+        :aria-label="locale === 'zh' ? '缩小' : 'Zoom out'"
+      >
+        −
+      </button>
+      <span>{{ scale }}%</span>
+      <button
+        type="button"
+        @click="scale = Math.min(200, scale + 25)"
+        :aria-label="locale === 'zh' ? '放大' : 'Zoom in'"
+      >
+        ＋
+      </button>
+      <a :href="pdfSrc" :download="fileName">{{
+        locale === 'zh' ? '下载简历 ↓' : 'Download resume ↓'
+      }}</a>
+    </div>
     <div class="pdf-viewer-wrapper">
       <vue-pdf-app
         :pdf="pdfSrc"
         :theme="isDark ? 'dark' : 'light'"
         :file-name="fileName"
-        page-scale="page-width"
+        :page-scale="String(scale)"
+        :config="{ toolbar: false, sidebar: false, secondaryToolbar: false, errorWrapper: false }"
       />
     </div>
   </el-dialog>
@@ -42,13 +64,15 @@ const VuePdfApp = defineAsyncComponent({
     render: () =>
       h('div', { class: 'pdf-loading' }, [
         h('i', { class: 'fa-solid fa-circle-notch fa-spin' }),
-        h('span', null, '加载中…')
+        h('span', null, props.locale === 'zh' ? '加载中…' : 'Loading…')
       ])
   },
   delay: 0
 })
 
+const scale = ref(100)
 const props = defineProps({
+  locale: { type: String, default: 'zh' },
   visible: {
     type: Boolean,
     default: false
@@ -129,7 +153,7 @@ onUnmounted(() => {
 }
 
 .dialog-icon {
-  color: #64ffda;
+  color: #c7e9a3;
 
   :deep(.resume-preview-dialog.light-theme) & {
     color: #859900;
@@ -162,12 +186,12 @@ onUnmounted(() => {
   align-items: center;
   justify-content: center;
   gap: 14px;
-  color: #8892b0;
+  color: #9baea3;
   font-size: 0.95rem;
 
   i {
     font-size: 2rem;
-    color: #64ffda;
+    color: #c7e9a3;
   }
 
   :deep(.resume-preview-dialog.light-theme) & {
@@ -186,23 +210,23 @@ onUnmounted(() => {
   /* 暗夜主题（默认） */
   &:not(.light-theme) {
     .el-dialog {
-      background-color: #112240;
-      border: 1px solid #233554;
+      background-color: #17251f;
+      border: 1px solid #34483c;
     }
     .el-dialog__header,
     .el-dialog__body,
     .el-dialog__footer {
-      background-color: #112240;
-      border-color: #233554;
+      background-color: #17251f;
+      border-color: #34483c;
     }
     .dialog-title {
-      color: #ccd6f6;
+      color: #f0eee4;
     }
     .el-dialog__body {
-      color: #8892b0;
+      color: #9baea3;
     }
     .el-dialog__close {
-      color: #8892b0;
+      color: #9baea3;
     }
   }
 
@@ -287,7 +311,7 @@ onUnmounted(() => {
       font-size: 1.2rem;
 
       &:hover {
-        color: #64ffda;
+        color: #c7e9a3;
 
         html.light-theme & {
           color: #859900;
@@ -295,5 +319,29 @@ onUnmounted(() => {
       }
     }
   }
+}
+</style>
+
+<style scoped>
+.resume-tools {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 12px;
+  color: #c3d4bf;
+  font-size: 12px;
+}
+.resume-tools button {
+  background: #20382a;
+  color: #dbedc7;
+  border: 1px solid #658367;
+  border-radius: 6px;
+  padding: 4px 10px;
+  cursor: pointer;
+}
+.resume-tools a {
+  color: #c7e9a3;
+  margin-left: auto;
 }
 </style>

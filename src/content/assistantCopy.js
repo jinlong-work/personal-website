@@ -1,0 +1,62 @@
+export const assistantCopy = {
+  zh: {
+    a9: '进龙 / 作品集助手',
+    a20: '暂时无法获取回答，请稍后再试。也可以直接查看项目与简历。',
+    a19: '问答演示 · 示例回复，尚未连接 AI 服务。',
+    a7: '可以聊聊项目实践、技术能力和职业经历。',
+    a2: '个人经历 · 项目实践 · 技术能力',
+    a10: '项目实践 / 查看完整项目介绍',
+    a1: '关于进龙的 AI 助手',
+    a6: '我是进龙的作品集助手。',
+    a5: '想先了解我的哪一面？',
+    a17: '输入你想了解的问题…',
+    a0: '问问 AI，了解我',
+    a14: '继续了解技术栈 ↗',
+    a16: '输入你想了解的问题',
+    a3: '收起 AI 助手',
+    a12: '查看个人简历 ↗',
+    a13: '查看联系方式 ↗',
+    a11: '查看项目详情',
+    a15: '正在整理回答',
+    a8: '对话记录',
+    a18: '发送问题',
+    a4: '你好，',
+    questions: [
+      '做过哪些 GIS 项目？',
+      '他有三维 GIS 项目经验吗？',
+      '有 Java 后端经验吗？',
+      '查看简历与联系方式',
+      '最擅长什么技术？'
+    ]
+  },
+  en: {
+    a9: 'JINLONG / PORTFOLIO ASSISTANT',
+    a20: 'Unable to reply right now. Please try again or explore the projects and resume.',
+    a19: 'Demo · Sample replies. AI service coming later.',
+    a7: 'Ask about projects, skills and experience.',
+    a2: 'Experience · Projects · Skills',
+    a10: 'Project / Read the full story',
+    a1: 'Jinlong’s portfolio assistant',
+    a6: 'I’m Jinlong’s portfolio assistant.',
+    a5: 'What would you like to know?',
+    a17: 'Ask a question…',
+    a0: 'Ask AI about me',
+    a14: 'Explore technical skills ↗',
+    a16: 'Ask a question',
+    a3: 'Close AI assistant',
+    a12: 'View resume ↗',
+    a13: 'Contact details ↗',
+    a11: 'View project details',
+    a15: 'Preparing a reply',
+    a8: 'Conversation',
+    a18: 'Send question',
+    a4: 'Hello,',
+    questions: [
+      'What GIS projects has he built?',
+      'Does he have 3D GIS experience?',
+      'Does he have Java backend experience?',
+      'Resume and contact details',
+      'What are his technical skills?'
+    ]
+  }
+}

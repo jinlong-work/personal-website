@@ -1,11 +1,17 @@
 <template>
-  <div id="app">
-    <RouterView />
+  <div class="app-shell">
+    <el-config-provider :locale="elementLocale"><RouterView /></el-config-provider>
   </div>
 </template>
 
 <script setup>
 import { RouterView } from 'vue-router'
+import { computed } from 'vue'
+import zhCn from 'element-plus/es/locale/lang/zh-cn'
+import en from 'element-plus/es/locale/lang/en'
+import { usePortfolioLocale } from '@/composables/usePortfolioLocale'
+const { locale } = usePortfolioLocale()
+const elementLocale = computed(() => (locale.value === 'zh' ? zhCn : en))
 </script>
 
 <style>
@@ -18,14 +24,14 @@ import { RouterView } from 'vue-router'
 
 body {
   margin: 0;
-  font-family: 'SF Mono', 'Fira Code', 'Fira Mono', 'Roboto Mono', monospace;
+  font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow: hidden;
+  overflow-x: clip;
 }
 
 #app {
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
 }
 </style>

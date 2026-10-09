@@ -8,6 +8,16 @@ export default defineConfig({
   plugins: [vue()],
   // 独立域名部署在 https://www.caojinlong.top/ 根目录
   base: '/',
+  server: {
+    port: 5173,
+    strictPort: true,
+    proxy: {
+      '/api': {
+        target: 'http://127.0.0.1:8080',
+        changeOrigin: true
+      }
+    }
+  },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))

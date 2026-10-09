@@ -224,7 +224,7 @@ onUnmounted(() => {
   .image-wrapper {
     width: 100%;
     height: 100%;
-    background: #101a2d;
+    background: #14231e;
     border-radius: 8px;
   }
 
@@ -234,7 +234,7 @@ onUnmounted(() => {
     display: block;
     object-fit: contain;
     border-radius: 8px;
-    border: 1px solid #233554;
+    border: 1px solid #34483c;
 
     :deep(.project-detail-dialog.light-theme) & {
       border-color: #eee8d5;
@@ -253,14 +253,14 @@ onUnmounted(() => {
     align-items: center;
     gap: 6px;
     font-size: 0.8rem;
-    color: #8892b0;
+    color: #9baea3;
 
     :deep(.project-detail-dialog.light-theme) & {
       color: #657b83;
     }
 
     i {
-      color: #64ffda;
+      color: #c7e9a3;
 
       :deep(.project-detail-dialog.light-theme) & {
         color: #859900;
@@ -275,9 +275,9 @@ onUnmounted(() => {
     font-size: 0.78rem;
     padding: 8px 12px;
     border-radius: 6px;
-    background-color: rgba(100, 255, 218, 0.08);
-    border: 1px solid rgba(100, 255, 218, 0.3);
-    color: #8892b0;
+    background-color: rgba(199, 233, 163, 0.08);
+    border: 1px solid rgba(199, 233, 163, 0.3);
+    color: #9baea3;
 
     :deep(.project-detail-dialog.light-theme) & {
       background-color: rgba(133, 153, 0, 0.08);
@@ -286,7 +286,7 @@ onUnmounted(() => {
     }
 
     i {
-      color: #64ffda;
+      color: #c7e9a3;
 
       :deep(.project-detail-dialog.light-theme) & {
         color: #859900;
@@ -316,7 +316,7 @@ onUnmounted(() => {
       content: '';
       width: 4px;
       height: 18px;
-      background-color: #64ffda;
+      background-color: #c7e9a3;
       border-radius: 2px;
 
       :deep(.project-detail-dialog.light-theme) & {
@@ -325,7 +325,7 @@ onUnmounted(() => {
     }
 
     i {
-      color: #64ffda;
+      color: #c7e9a3;
 
       :deep(.project-detail-dialog.light-theme) & {
         color: #859900;
@@ -356,7 +356,7 @@ onUnmounted(() => {
     align-items: flex-start;
     gap: 14px;
     padding: 16px 0;
-    border-bottom: 1px solid #233554;
+    border-bottom: 1px solid #34483c;
 
     :deep(.project-detail-dialog.light-theme) & {
       border-color: #eee8d5;
@@ -376,8 +376,8 @@ onUnmounted(() => {
     flex-shrink: 0;
     width: 28px;
     height: 28px;
-    background-color: #64ffda;
-    color: #0a192f;
+    background-color: #c7e9a3;
+    color: #0c1715;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -451,45 +451,45 @@ onUnmounted(() => {
 .project-detail-dialog {
   /* 暗夜主题（默认） */
   &:not(.light-theme) {
-    background-color: #112240;
+    background-color: #17251f;
     .el-dialog {
-      background-color: #112240;
-      border: 1px solid #233554;
+      background-color: #17251f;
+      border: 1px solid #34483c;
     }
     .el-dialog__header,
     .el-dialog__body,
     .el-dialog__footer {
-      background-color: #112240;
-      border-color: #233554;
+      background-color: #17251f;
+      border-color: #34483c;
     }
     .dialog-title {
-      color: #ccd6f6;
+      color: #f0eee4;
     }
     .section-title {
-      color: #ccd6f6;
+      color: #f0eee4;
     }
     .description-text,
     .achievement-text {
-      color: #8892b0;
+      color: #9baea3;
     }
     .el-dialog__body {
-      color: #8892b0;
+      color: #9baea3;
     }
     .el-dialog__close {
-      color: #8892b0;
+      color: #9baea3;
     }
     .el-dialog__body::-webkit-scrollbar-thumb {
-      background: #233554;
+      background: #34483c;
     }
     .achievement-item {
-      border-bottom-color: #233554;
+      border-bottom-color: #34483c;
     }
     .el-carousel {
-      background-color: #0a192f;
+      background-color: #0c1715;
       border-radius: 8px;
     }
     .el-carousel__indicator .el-carousel__button {
-      background-color: #233554;
+      background-color: #34483c;
     }
   }
 
@@ -609,9 +609,9 @@ onUnmounted(() => {
 
   /* Element Plus 组件深色主题覆盖 */
   .el-tag--info {
-    background-color: #233554;
-    border-color: #64ffda;
-    color: #64ffda;
+    background-color: #34483c;
+    border-color: #c7e9a3;
+    color: #c7e9a3;
 
     html.light-theme & {
       background-color: #fdf6e3;
@@ -621,9 +621,9 @@ onUnmounted(() => {
   }
 
   .el-tag--success {
-    background-color: rgba(100, 255, 218, 0.1);
-    border-color: #64ffda;
-    color: #64ffda;
+    background-color: rgba(199, 233, 163, 0.1);
+    border-color: #c7e9a3;
+    color: #c7e9a3;
 
     html.light-theme & {
       background-color: rgba(133, 153, 0, 0.1);
@@ -633,14 +633,14 @@ onUnmounted(() => {
   }
 
   .el-button--primary {
-    background-color: #64ffda;
-    border-color: #64ffda;
-    color: #0a192f;
+    background-color: #c7e9a3;
+    border-color: #c7e9a3;
+    color: #0c1715;
     font-weight: 600;
 
     &:hover {
-      background-color: #4dd9b5;
-      border-color: #4dd9b5;
+      background-color: #b4d991;
+      border-color: #b4d991;
     }
 
     html.light-theme & {
@@ -660,7 +660,7 @@ onUnmounted(() => {
       font-size: 1.2rem;
 
       &:hover {
-        color: #64ffda;
+        color: #c7e9a3;
 
         html.light-theme & {
           color: #859900;
@@ -671,10 +671,10 @@ onUnmounted(() => {
 
   /* 轮播图箭头与指示器主题适配 */
   .el-carousel__arrow {
-    background-color: rgba(100, 255, 218, 0.3);
+    background-color: rgba(199, 233, 163, 0.3);
 
     &:hover {
-      background-color: #64ffda;
+      background-color: #c7e9a3;
     }
 
     html.light-theme & {
@@ -687,7 +687,7 @@ onUnmounted(() => {
   }
 
   .el-carousel__indicator.is-active .el-carousel__button {
-    background-color: #64ffda;
+    background-color: #c7e9a3;
 
     html.light-theme & {
       background-color: #859900;
