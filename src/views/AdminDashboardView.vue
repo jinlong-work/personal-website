@@ -4,7 +4,7 @@
       <RouterLink to="/" class="admin-brand"><span>jl.</span><div>曹进龙<small>网站管理中心</small></div></RouterLink>
       <p class="nav-label">工作空间</p>
       <nav aria-label="后台管理导航">
-        <button v-for="item in sections" :key="item.key" type="button" :disabled="accountSaving" :class="{ active: section === item.key }" :aria-current="section === item.key ? 'page' : undefined" @click="section = item.key">
+        <button v-for="item in sections" :key="item.key" type="button" :disabled="loggingOut || accountSaving" :class="{ active: section === item.key }" :aria-current="section === item.key ? 'page' : undefined" @click="section = item.key">
           <span aria-hidden="true">{{ item.icon }}</span>{{ item.label }}<small v-if="['projects', 'settings'].includes(item.key)">待完善</small>
         </button>
       </nav>
@@ -14,30 +14,28 @@
     <div class="admin-body">
       <header class="admin-topbar">
         <span>后台管理 <span class="separator">/</span> {{ activeSection.label }}</span>
-        <div class="admin-account"><span class="avatar">{{ displayName.slice(0, 1) }}</span><span>{{ displayName }}</span><button type="button" :disabled="loggingOut || refreshing || accountSaving" @click="logout">{{ loggingOut ? '正在退出…' : '退出登录' }}</button></div>
+        <div class="admin-account"><UserAvatar class="avatar" :avatar="currentAdmin?.avatar || ''" :name="displayName" /><span>{{ displayName }}</span><button type="button" :disabled="loggingOut || refreshing || accountSaving" @click="logout">{{ loggingOut ? '正在退出…' : '退出登录' }}</button></div>
       </header>
 
       <main class="admin-content">
         <p v-if="feedback" class="dashboard-feedback" role="status">{{ feedback }}</p>
+        <p v-if="currentAdmin?.needsPasswordUpdate" class="dashboard-feedback" role="status">{{ currentAdmin?.canManageUsers ? '当前账号需要更新密码，请在用户管理中重置本人密码。' : '当前账号需要更新密码，请联系管理员处理。' }}</p>
         <template v-if="section === 'overview'">
           <section class="welcome-panel">
             <div><p class="eyebrow">YOUR CREATIVE SPACE</p><h1>你好，{{ displayName }}。</h1><p>欢迎回到你的网站管理空间，从这里开始今天的更新。</p></div>
             <span class="welcome-symbol" aria-hidden="true">✳</span>
           </section>
-          <div class="overview-grid">
+          <div class="overview-grid" :class="{ 'single-card': sections.length === 1 }">
             <section class="content-card">
               <div class="card-heading"><h2>当前账号</h2><span class="status-badge">{{ currentAdmin ? '已登录' : '待验证' }}</span></div>
-              <dl><div><dt>登录账号</dt><dd>{{ currentAdmin?.username || '—' }}</dd></div><div><dt>账号角色</dt><dd>管理员</dd></div><div><dt>联系邮箱</dt><dd>{{ currentAdmin?.email || '未设置' }}</dd></div><div><dt>最近登录</dt><dd>{{ formatDate(currentAdmin?.lastLoginAt) }}</dd></div><div><dt>当前登录有效至</dt><dd>{{ formatDate(tokenState?.expiresAt) }}</dd></div><div><dt>最长登录有效至</dt><dd>{{ formatDate(tokenState?.maxExpiresAt) }}</dd></div></dl>
-              <button class="secondary-button" type="button" :disabled="refreshing || loggingOut" @click="refreshAccount">{{ refreshing ? '正在刷新…' : '刷新账号信息' }}</button>
+              <dl><div><dt>登录账号</dt><dd>{{ currentAdmin?.username || '—' }}</dd></div><div><dt>账号角色</dt><dd>{{ currentAdmin?.roleLabel || '—' }}</dd></div><div><dt>联系邮箱</dt><dd>{{ currentAdmin?.email || '未设置' }}</dd></div><div><dt>最近登录</dt><dd>{{ formatDate(currentAdmin?.lastLoginAt) }}</dd></div><div><dt>登录凭证有效至</dt><dd>{{ formatDate(tokenState?.expiresAt) }}</dd></div></dl>
+              <button class="secondary-button" type="button" :disabled="refreshing || loggingOut || accountSaving" @click="refreshAccount">{{ refreshing ? '正在刷新…' : '刷新账号信息' }}</button>
             </section>
-            <section class="content-card"><div class="card-heading"><h2>管理入口</h2><span class="muted">逐步完善</span></div><div class="quick-links"><button v-for="item in sections.slice(1)" :key="item.key" type="button" @click="section = item.key"><span>{{ item.label }}<small>{{ item.description }}</small></span><span aria-hidden="true">↗</span></button></div></section>
+            <section v-if="sections.length > 1" class="content-card"><div class="card-heading"><h2>管理入口</h2><span class="muted">工作空间</span></div><div class="quick-links"><button v-for="item in sections.slice(1)" :key="item.key" type="button" :disabled="accountSaving" @click="section = item.key"><span>{{ item.label }}<small>{{ item.description }}</small></span><span aria-hidden="true">↗</span></button></div></section>
           </div>
-          <section class="content-card progress-note"><span aria-hidden="true">↗</span><div><h2>管理空间已就绪</h2><p>目前已接入管理员登录、账号资料修改和退出登录。项目管理及网站设置将在后续逐步开放。</p></div></section>
+          <section class="content-card progress-note"><span aria-hidden="true">↗</span><div><h2>管理空间已就绪</h2><p>{{ currentAdmin?.canManageUsers ? '用户管理支持头像、账号资料、密码和角色维护。项目管理及网站设置将在后续逐步开放。' : '如需修改账号资料、头像或密码，请联系管理员。' }}</p></div></section>
         </template>
-        <div v-else-if="section === 'profile'">
-          <AdminProfileForm :disabled="loggingOut || refreshing || passwordSaving" @busy="profileSaving = $event" />
-          <AdminPasswordForm :disabled="loggingOut || refreshing || profileSaving" @busy="passwordSaving = $event" />
-        </div>
+        <AdminUserLedger v-else-if="section === 'users' && currentAdmin?.canManageUsers" @busy="accountSaving = $event" />
         <section v-else class="content-card placeholder-panel">
           <p class="eyebrow">COMING SOON</p><span class="placeholder-icon" aria-hidden="true">{{ activeSection.icon }}</span><h1>{{ activeSection.label }}</h1><p>{{ activeSection.description }}，功能正在规划中。</p><button class="secondary-button" type="button" @click="section = 'overview'">返回工作台</button>
         </section>
@@ -48,10 +46,10 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
-import AdminProfileForm from '@/components/AdminProfileForm.vue'
-import AdminPasswordForm from '@/components/AdminPasswordForm.vue'
+import AdminUserLedger from '@/components/AdminUserLedger.vue'
+import UserAvatar from '@/components/UserAvatar.vue'
 import { authErrorMessage, currentAdmin, fetchCurrentAdmin, isSessionError, logoutAdmin } from '@/services/adminAuth'
 import { tokenState } from '@/utils/auth'
 
@@ -59,18 +57,22 @@ const router = useRouter()
 const section = ref('overview')
 const loggingOut = ref(false)
 const refreshing = ref(false)
-const profileSaving = ref(false)
-const passwordSaving = ref(false)
-const accountSaving = computed(() => profileSaving.value || passwordSaving.value)
+const accountSaving = ref(false)
 const feedback = ref('')
-const sections = [
+const sections = computed(() => [
   { key: 'overview', label: '工作台', icon: '◈' },
-  { key: 'projects', label: '项目管理', icon: '▦', description: '整理与展示你的精选作品' },
-  { key: 'profile', label: '个人资料', icon: '◎', description: '修改登录账号、昵称和联系邮箱' },
-  { key: 'settings', label: '网站设置', icon: '⚙', description: '管理网站的基础信息' }
-]
-const activeSection = computed(() => sections.find(item => item.key === section.value))
+  ...(currentAdmin.value?.canManageUsers ? [
+    { key: 'users', label: '用户管理', icon: '♙', description: '用户台账、账号密码和角色权限' },
+    { key: 'projects', label: '项目管理', icon: '▦', description: '整理与展示你的精选作品' }
+  ] : []),
+  ...(currentAdmin.value?.canManageUsers ? [{ key: 'settings', label: '网站设置', icon: '⚙', description: '管理网站的基础信息' }] : [])
+])
+const activeSection = computed(() => sections.value.find(item => item.key === section.value) || sections.value[0])
 const displayName = computed(() => currentAdmin.value?.nickname || currentAdmin.value?.username || '管理员')
+
+watch(currentAdmin, (account) => {
+  if (account && !sections.value.some(item => item.key === section.value)) section.value = 'overview'
+})
 
 function formatDate(value) {
   if (!value) return '—'
@@ -79,7 +81,7 @@ function formatDate(value) {
 }
 
 async function refreshAccount() {
-  if (refreshing.value || loggingOut.value) return
+  if (refreshing.value || loggingOut.value || accountSaving.value) return
   refreshing.value = true
   feedback.value = ''
   try {
@@ -138,6 +140,7 @@ h1 { font-size: 28px; font-weight: 600; margin: 15px 0; }
 .welcome-panel p:last-child { font-size: 13px; line-height: 1.8; color: #67795d; }
 .welcome-symbol { font-size: 90px; color: #617b42; }
 .overview-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.overview-grid.single-card { grid-template-columns: 1fr; }
 .content-card { border: 1px solid #dfe5d8; border-radius: 14px; background: #fbfcf8; padding: 26px; }
 .card-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 24px; }
 h2 { font-size: 15px; font-weight: 600; }
@@ -165,4 +168,5 @@ button:disabled { opacity: .6; cursor: wait; }
 a:focus-visible, button:focus-visible { outline: 2px solid #91ad62; outline-offset: 4px; }
 @media (max-width: 1050px) { .admin-sidebar { width: 210px; } .overview-grid { grid-template-columns: 1fr; } .admin-content { padding: 24px; } .admin-topbar { padding: 18px 24px; } }
 @media (max-width: 700px) { .admin-shell { flex-direction: column; } .admin-sidebar { width: 100%; padding: 16px; } .admin-brand { padding: 0 8px 16px; } .admin-brand > span { font-size: 36px; } .nav-label, .sidebar-return { display: none; } nav { grid-template-columns: repeat(4, 1fr); gap: 4px; } nav button { padding: 12px 6px; justify-content: center; font-size: 11px; gap: 6px; } nav button small { display: none; } .admin-topbar { padding: 16px; min-height: 70px; flex-wrap: wrap; } .admin-content { padding: 20px 16px; } .welcome-panel { padding: 24px; } .welcome-symbol { display: none; } h1 { font-size: 24px; } .content-card { padding: 22px; } .admin-footer { padding: 20px 16px; } }
+@media (max-width: 700px) { nav { grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); } }
 </style>

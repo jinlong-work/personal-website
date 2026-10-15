@@ -26,20 +26,24 @@ const router = createRouter({
   ]
 })
 
-router.beforeEach(async (to) => {
+router.beforeEach(async (to, from) => {
   // 登录页与姓名入口共用管理页鉴权，只在后端确认失效后要求重新登录。
   if (to.name === 'admin-login') {
     return getToken() ? { name: 'admin-dashboard', replace: true } : true
   }
   if (!to.meta.requiresAdmin) return true
-  if (!getToken()) return { name: 'admin-login', query: { reason: 'expired' }, replace: true }
+  if (!getToken()) return {
+    name: 'admin-login',
+    query: { redirect: to.fullPath, ...(from.meta.requiresAdmin ? { reason: 'expired' } : {}) },
+    replace: true
+  }
   try {
     await fetchCurrentAdmin({ suppressAuthRedirect: true })
     return true
   } catch (error) {
     if (isSessionError(error)) {
       clearAdminLogin()
-      return { name: 'admin-login', query: { reason: 'expired' }, replace: true }
+      return { name: 'admin-login', query: { reason: 'expired', redirect: to.fullPath }, replace: true }
     }
     // 暂时无法验证时保留Token，回到公开网站；直接打开后台地址也不会留下空页面。
     ElMessage.error('暂时无法验证登录状态，请稍后再次点击姓名进入后台')
@@ -50,7 +54,7 @@ router.beforeEach(async (to) => {
 // 多个并发请求失效时，Token 在第一次响应中清理，仅触发一次跳转。
 setSessionExpiredHandler(() => {
   if (router.currentRoute.value.meta.requiresAdmin) {
-    void router.replace({ name: 'admin-login', query: { reason: 'expired' } })
+    void router.replace({ name: 'admin-login', query: { reason: 'expired', redirect: router.currentRoute.value.fullPath } })
   }
 })
 

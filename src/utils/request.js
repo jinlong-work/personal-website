@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { getToken, removeToken, updateTokenExpiry } from '@/utils/auth'
+import { getToken, removeToken } from '@/utils/auth'
 
 const request = axios.create({
   baseURL: (import.meta.env.VITE_API_BASE_URL || '/api').replace(/\/$/, ''),
@@ -12,6 +12,20 @@ export function setUnauthorizedHandler(handler) {
   onUnauthorized = handler
 }
 
+export function getErrorStatus(error) {
+  return error?.businessCode || error?.response?.status
+}
+
+function handleUnauthorized(error) {
+  const config = error.config
+  // 403 表示本次操作无权限，不等同于登录失效。
+  if (getErrorStatus(error) === 401 && config?.authToken && config.authToken === getToken()) {
+    removeToken()
+    onUnauthorized({ redirect: !config.suppressAuthRedirect })
+  }
+  return Promise.reject(error)
+}
+
 request.interceptors.request.use((config) => {
   const token = config.skipAuth ? '' : getToken()
   if (token) config.headers.set('Authorization', `Bearer ${token}`)
@@ -21,19 +35,17 @@ request.interceptors.request.use((config) => {
 })
 
 request.interceptors.response.use((response) => {
-  updateTokenExpiry(response.config.authToken,
-    Number(response.headers['x-token-expires-at']),
-    Number(response.headers['x-token-max-expires-at']))
-  return response
-}, (error) => {
-  const config = error.config
-  const status = error.response?.status
-  const invalidLogin = status === 401 || (status === 403 && error.response?.data?.code === 'FORBIDDEN')
-  if (invalidLogin && config?.authToken && config.authToken === getToken()) {
-    removeToken()
-    onUnauthorized({ redirect: !config.suppressAuthRedirect })
+  const body = response.data
+  if (body?.code !== 200) {
+    const error = new axios.AxiosError(
+      body?.msg || '后台响应异常，请稍后重试',
+      'ERR_BAD_RESPONSE', response.config, response.request, response
+    )
+    error.businessCode = Number.isInteger(body?.code) && body.code >= 400 && body.code <= 599
+      ? body.code : 502
+    return handleUnauthorized(error)
   }
-  return Promise.reject(error)
-})
+  return response
+}, handleUnauthorized)
 
 export default request
