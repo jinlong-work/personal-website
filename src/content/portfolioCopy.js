@@ -1,5 +1,18 @@
 export const portfolioCopy = {
   zh: {
+    hero: {
+      welcome: '保持好奇，持续创造',
+      hello: '你好，很高兴在这里遇见你',
+      role: '空间可视化探索者',
+      statement: '以代码构建，',
+      statementAccent: '让空间可见。',
+      intro: '专注 WebGIS、三维地图与数据可视化。把复杂的空间数据，变成直观、有温度的交互体验。',
+      education: '教育背景',
+      major: '地理信息科学 · 2023 届',
+      location: '来自哪里',
+      currentLocation: '当前驻场海南',
+      chapter: '关于我的一小部分'
+    },
     t0: '主导航',
     t1: '曹进龙',
     t2: '精选项目',
@@ -83,6 +96,20 @@ export const portfolioCopy = {
     }
   },
   en: {
+    hero: {
+      welcome: 'STAY CURIOUS. KEEP CREATING.',
+      hello: 'Hello, glad you found your way here',
+      role: 'Spatial explorer',
+      statement: 'Built with code. ',
+      statementAccent: 'Rooted in space.',
+      intro:
+        'I build WebGIS applications, 3D maps and data visualizations, turning complex spatial data into clear, thoughtful experiences.',
+      education: 'EDUCATION',
+      major: 'GIS · Class of 2023',
+      location: 'BASED IN',
+      currentLocation: 'Working in Hainan',
+      chapter: 'A LITTLE ABOUT ME'
+    },
     t0: 'Main navigation',
     t1: 'Jinlong Cao',
     t2: 'Selected work',

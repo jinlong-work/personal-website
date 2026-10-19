@@ -8,6 +8,7 @@
     :close-on-click-modal="true"
     :close-on-press-escape="true"
     class="project-detail-dialog"
+    :class="{ 'light-theme': !isDark }"
     @closed="handleClosed"
   >
     <template #header>
@@ -108,9 +109,10 @@
 </template>
 
 <script setup>
-import { ref, watch, onUnmounted, nextTick, computed, onMounted } from 'vue'
+import { ref, watch, onUnmounted, computed, onMounted } from 'vue'
 
 const props = defineProps({
+  isDark: { type: Boolean, default: true },
   visible: {
     type: Boolean,
     default: false
@@ -127,7 +129,7 @@ const props = defineProps({
       achievements: '主要职责',
       gallery: '项目截图',
       imageHint: '点击图片可放大预览',
-      disclaimer: '展示图片已筛选并完成隐私脱敏',
+      disclaimer: '项目效果图，仅供作品展示。',
       close: '关闭'
     })
   }
@@ -164,13 +166,6 @@ watch(
     dialogVisible.value = newVal
     if (newVal) {
       lockBodyScroll()
-      nextTick(() => {
-        const dialog = document.querySelector('.project-detail-dialog')
-        if (dialog) {
-          const isLight = document.documentElement.classList.contains('light-theme')
-          dialog.classList.toggle('light-theme', isLight)
-        }
-      })
     } else {
       unlockBodyScroll()
     }
@@ -224,7 +219,7 @@ onUnmounted(() => {
   .image-wrapper {
     width: 100%;
     height: 100%;
-    background: #14231e;
+    background: var(--surface-inset);
     border-radius: 8px;
   }
 
@@ -234,10 +229,10 @@ onUnmounted(() => {
     display: block;
     object-fit: contain;
     border-radius: 8px;
-    border: 1px solid #34483c;
+    border: 1px solid var(--line);
 
     :deep(.project-detail-dialog.light-theme) & {
-      border-color: #eee8d5;
+      border-color: var(--line);
     }
   }
 
@@ -253,17 +248,17 @@ onUnmounted(() => {
     align-items: center;
     gap: 6px;
     font-size: 0.8rem;
-    color: #9baea3;
+    color: var(--muted);
 
     :deep(.project-detail-dialog.light-theme) & {
-      color: #657b83;
+      color: var(--muted);
     }
 
     i {
-      color: #c7e9a3;
+      color: var(--lime);
 
       :deep(.project-detail-dialog.light-theme) & {
-        color: #859900;
+        color: var(--lime);
       }
     }
   }
@@ -275,21 +270,21 @@ onUnmounted(() => {
     font-size: 0.78rem;
     padding: 8px 12px;
     border-radius: 6px;
-    background-color: rgba(199, 233, 163, 0.08);
-    border: 1px solid rgba(199, 233, 163, 0.3);
-    color: #9baea3;
+    background-color: var(--accent-soft);
+    border: 1px solid var(--line-strong);
+    color: var(--muted);
 
     :deep(.project-detail-dialog.light-theme) & {
-      background-color: rgba(133, 153, 0, 0.08);
-      border-color: rgba(133, 153, 0, 0.3);
-      color: #657b83;
+      background-color: var(--accent-soft);
+      border-color: var(--line-strong);
+      color: var(--muted);
     }
 
     i {
-      color: #c7e9a3;
+      color: var(--lime);
 
       :deep(.project-detail-dialog.light-theme) & {
-        color: #859900;
+        color: var(--lime);
       }
     }
   }
@@ -316,19 +311,19 @@ onUnmounted(() => {
       content: '';
       width: 4px;
       height: 18px;
-      background-color: #c7e9a3;
+      background-color: var(--lime);
       border-radius: 2px;
 
       :deep(.project-detail-dialog.light-theme) & {
-        background-color: #859900;
+        background-color: var(--lime);
       }
     }
 
     i {
-      color: #c7e9a3;
+      color: var(--lime);
 
       :deep(.project-detail-dialog.light-theme) & {
-        color: #859900;
+        color: var(--lime);
       }
     }
   }
@@ -356,10 +351,10 @@ onUnmounted(() => {
     align-items: flex-start;
     gap: 14px;
     padding: 16px 0;
-    border-bottom: 1px solid #34483c;
+    border-bottom: 1px solid var(--line);
 
     :deep(.project-detail-dialog.light-theme) & {
-      border-color: #eee8d5;
+      border-color: var(--line);
     }
 
     &:last-child {
@@ -376,8 +371,8 @@ onUnmounted(() => {
     flex-shrink: 0;
     width: 28px;
     height: 28px;
-    background-color: #c7e9a3;
-    color: #0c1715;
+    background-color: var(--lime);
+    color: var(--on-accent);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -386,8 +381,8 @@ onUnmounted(() => {
     font-weight: 700;
 
     :deep(.project-detail-dialog.light-theme) & {
-      background-color: #859900;
-      color: #fef9ef;
+      background-color: var(--lime);
+      color: var(--surface-raised);
     }
   }
 
@@ -449,97 +444,42 @@ onUnmounted(() => {
 <style lang="scss">
 /* 全局样式 - 用于覆盖 Element Plus 弹窗 */
 .project-detail-dialog {
-  /* 暗夜主题（默认） */
-  &:not(.light-theme) {
-    background-color: #17251f;
-    .el-dialog {
-      background-color: #17251f;
-      border: 1px solid #34483c;
-    }
-    .el-dialog__header,
-    .el-dialog__body,
-    .el-dialog__footer {
-      background-color: #17251f;
-      border-color: #34483c;
-    }
-    .dialog-title {
-      color: #f0eee4;
-    }
-    .section-title {
-      color: #f0eee4;
-    }
-    .description-text,
-    .achievement-text {
-      color: #9baea3;
-    }
-    .el-dialog__body {
-      color: #9baea3;
-    }
-    .el-dialog__close {
-      color: #9baea3;
-    }
-    .el-dialog__body::-webkit-scrollbar-thumb {
-      background: #34483c;
-    }
-    .achievement-item {
-      border-bottom-color: #34483c;
-    }
-    .el-carousel {
-      background-color: #0c1715;
-      border-radius: 8px;
-    }
-    .el-carousel__indicator .el-carousel__button {
-      background-color: #34483c;
-    }
-  }
+  background: var(--surface-raised);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
 
-  /* 明亮主题 */
-  &.light-theme {
-    background-color: #fef9ef;
-    .el-dialog {
-      background-color: #fef9ef;
-      border: 1px solid #eee8d5;
-    }
-    .el-dialog__header,
-    .el-dialog__body,
-    .el-dialog__footer {
-      background-color: #fef9ef;
-      border-color: #eee8d5;
-    }
-    .dialog-title {
-      color: #586e75;
-    }
-    .section-title {
-      color: #586e75;
-    }
-    .description-text,
-    .achievement-text {
-      color: #657b83;
-    }
-    .el-dialog__body {
-      color: #657b83;
-    }
-    .el-dialog__close {
-      color: #657b83;
-    }
-    .el-dialog__body::-webkit-scrollbar-thumb {
-      background: #eee8d5;
-    }
-    .achievement-item {
-      border-bottom-color: #eee8d5;
-    }
-    .el-carousel {
-      background-color: #fdf6e3;
-      border-radius: 8px;
-    }
-    .el-carousel__indicator .el-carousel__button {
-      background-color: #eee8d5;
-    }
+  .el-dialog__header,
+  .el-dialog__body,
+  .el-dialog__footer {
+    background: var(--surface-raised);
+    border-color: var(--line);
+  }
+  .dialog-title,
+  .section-title {
+    color: var(--ink);
+  }
+  .description-text,
+  .achievement-text,
+  .el-dialog__body,
+  .el-dialog__close {
+    color: var(--muted);
+  }
+  .achievement-item {
+    border-bottom-color: var(--line);
+  }
+  .el-carousel {
+    background: var(--surface-inset);
+    border-radius: 8px;
+  }
+  .el-carousel__indicator .el-carousel__button {
+    background: var(--line-strong);
   }
 
   .el-dialog {
     border-radius: 12px;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 25px 50px -12px var(--backdrop);
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -609,48 +549,48 @@ onUnmounted(() => {
 
   /* Element Plus 组件深色主题覆盖 */
   .el-tag--info {
-    background-color: #34483c;
-    border-color: #c7e9a3;
-    color: #c7e9a3;
+    background-color: var(--line);
+    border-color: var(--lime);
+    color: var(--lime);
 
     html.light-theme & {
-      background-color: #fdf6e3;
-      border-color: #859900;
-      color: #859900;
+      background-color: var(--surface-inset);
+      border-color: var(--lime);
+      color: var(--lime);
     }
   }
 
   .el-tag--success {
-    background-color: rgba(199, 233, 163, 0.1);
-    border-color: #c7e9a3;
-    color: #c7e9a3;
+    background-color: var(--accent-soft);
+    border-color: var(--lime);
+    color: var(--lime);
 
     html.light-theme & {
-      background-color: rgba(133, 153, 0, 0.1);
-      border-color: #859900;
-      color: #859900;
+      background-color: var(--accent-soft);
+      border-color: var(--lime);
+      color: var(--lime);
     }
   }
 
   .el-button--primary {
-    background-color: #c7e9a3;
-    border-color: #c7e9a3;
-    color: #0c1715;
+    background-color: var(--lime);
+    border-color: var(--lime);
+    color: var(--on-accent);
     font-weight: 600;
 
     &:hover {
-      background-color: #b4d991;
-      border-color: #b4d991;
+      background-color: var(--lime);
+      border-color: var(--lime);
     }
 
     html.light-theme & {
-      background-color: #859900;
-      border-color: #859900;
-      color: #fef9ef;
+      background-color: var(--lime);
+      border-color: var(--lime);
+      color: var(--surface-raised);
 
       &:hover {
-        background-color: #6b7a00;
-        border-color: #6b7a00;
+        background-color: var(--lime);
+        border-color: var(--lime);
       }
     }
   }
@@ -660,10 +600,10 @@ onUnmounted(() => {
       font-size: 1.2rem;
 
       &:hover {
-        color: #c7e9a3;
+        color: var(--lime);
 
         html.light-theme & {
-          color: #859900;
+          color: var(--lime);
         }
       }
     }
@@ -671,26 +611,27 @@ onUnmounted(() => {
 
   /* 轮播图箭头与指示器主题适配 */
   .el-carousel__arrow {
-    background-color: rgba(199, 233, 163, 0.3);
+    color: var(--ink);
+    background-color: var(--surface-raised);
 
     &:hover {
-      background-color: #c7e9a3;
+      background-color: var(--lime);
     }
 
     html.light-theme & {
-      background-color: rgba(133, 153, 0, 0.3);
+      background-color: var(--line-strong);
 
       &:hover {
-        background-color: #859900;
+        background-color: var(--lime);
       }
     }
   }
 
   .el-carousel__indicator.is-active .el-carousel__button {
-    background-color: #c7e9a3;
+    background-color: var(--lime);
 
     html.light-theme & {
-      background-color: #859900;
+      background-color: var(--lime);
     }
   }
 }

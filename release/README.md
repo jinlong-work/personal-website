@@ -16,11 +16,11 @@ Compress-Archive -Path dist/* -DestinationPath release/personal-website-dist.zip
 
 ## 后端代理
 
-默认后端根地址为同源 `/api`。Nginx 应去掉 `/api/` 前缀转发到后端，并允许头像上传：
+默认后端根地址为同源 `/api`。Nginx 应去掉 `/api/` 前缀转发到后端，并允许头像及项目效果图上传：
 
 ```nginx
 location /api/ {
-    client_max_body_size 3m;
+    client_max_body_size 12m;
     proxy_pass http://127.0.0.1:8080/;
     proxy_set_header Host $host;
     proxy_set_header X-Real-IP $remote_addr;

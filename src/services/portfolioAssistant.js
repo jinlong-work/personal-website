@@ -3,9 +3,38 @@
  * your own server when enabling a model. Keep provider credentials server-side.
  * Returns { text, projectIds, showResume, showContact }.
  */
-export async function getPortfolioReply({ question, projects = [], signal, locale = 'zh' }) {
+export async function getPortfolioReply({
+  question,
+  projects = [],
+  resume,
+  signal,
+  locale = 'zh'
+}) {
   if (signal?.aborted) throw new DOMException('Aborted', 'AbortError')
   const available = (ids) => ids.filter((id) => projects.some((p) => p.id === id))
+  if (resume && /resume|contact|collaborat|email|简历|联系|合作|邮箱/i.test(question)) {
+    return {
+      text:
+        locale === 'en'
+          ? `Explore ${resume.basic.name}’s resume and the contact details below.`
+          : `可以查看${resume.basic.name}的简历，或通过网站最新的联系方式交流。`,
+      showResume: true,
+      showContact: true
+    }
+  }
+  if (resume && /skill|tech|java|backend|full.stack|技术|技能|擅长|后端|全栈/i.test(question)) {
+    const skills = resume.skills.flatMap((group) => group.items).join(' / ')
+    return {
+      text:
+        [
+          resume.basic.intro,
+          skills ? `${locale === 'en' ? 'Technology stack' : '技术栈'}：${skills}` : ''
+        ]
+          .filter(Boolean)
+          .join('\n\n') ||
+        (locale === 'en' ? 'This background is being updated.' : '相关资料正在整理中。')
+    }
+  }
   if (/三维|3d|cesium/i.test(question)) {
     return {
       text:

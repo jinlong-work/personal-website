@@ -1,21 +1,14 @@
-import axios from 'axios'
+import request from '@/utils/request'
+import { resolveProjectImage } from '@/utils/projectImage'
 
-// 创建一个axios实例
-const apiClient = axios.create({
-  baseURL: `${import.meta.env.BASE_URL}config`,
-  headers: {
-    'Content-Type': 'application/json'
+export async function getProjects(options = {}) {
+  const { data } = await request.get('/public/projects', { ...options, skipAuth: true })
+  if (!Array.isArray(data.data)) throw new Error('项目数据响应异常')
+  return {
+    projects: data.data.map(project => ({
+      ...project,
+      images: Array.isArray(project.images) ? project.images.map(resolveProjectImage).filter(Boolean) : []
+    }))
   }
-})
-
-// 定义一个函数来获取数据
-export function getProjects() {
-  return apiClient
-    .get('/projects.json')
-    .then((response) => response.data)
-    .catch((error) => {
-      console.error('Error fetching data:', error)
-      throw error
-    })
 }
 

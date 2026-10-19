@@ -33,3 +33,4 @@ coverage
 .apifox/
 .playwright-cli/
 output/playwright/
+output/project-build/

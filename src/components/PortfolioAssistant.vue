@@ -5,6 +5,8 @@
     class="ai-launch"
     type="button"
     aria-controls="ai-panel"
+    :aria-label="copy.a0"
+    :title="copy.a0"
     :aria-expanded="isOpen"
     @click="open()"
   >
@@ -133,10 +135,21 @@ import { getPortfolioReply } from '@/services/portfolioAssistant'
 const props = defineProps({
   locale: { type: String, default: 'zh' },
   projects: { type: Array, default: () => [] },
+  resume: { type: Object, default: null },
   motionEnabled: { type: Boolean, default: true }
 })
-const emit = defineEmits(['project', 'resume', 'contact'])
-const copy = computed(() => assistantCopy[props.locale])
+const emit = defineEmits(['project', 'resume', 'contact', 'open-change'])
+const copy = computed(() => {
+  const base = assistantCopy[props.locale]
+  const name = props.resume?.basic.name
+  if (!name) return base
+  return {
+    ...base,
+    a1: props.locale === 'en' ? `${name}’s portfolio assistant` : `${name}的作品集助手`,
+    a6: props.locale === 'en' ? `I’m ${name}’s portfolio assistant.` : `我是${name}的作品集助手。`,
+    a9: `${name} / ${props.locale === 'en' ? 'PORTFOLIO ASSISTANT' : '作品集助手'}`
+  }
+})
 const questions = computed(() => copy.value.questions)
 const isOpen = ref(false)
 const messages = ref([])
@@ -160,12 +173,15 @@ const scrollBottom = async () => {
 async function open(question) {
   trigger = document.activeElement
   isOpen.value = true
+  emit('open-change', true)
   await nextTick()
   input.value?.focus({ preventScroll: true })
   if (typeof question === 'string') send(question)
 }
 function close() {
+  if (!isOpen.value) return
   isOpen.value = false
+  emit('open-change', false)
   nextTick(() => (trigger?.isConnected ? trigger : launcher.value)?.focus({ preventScroll: true }))
 }
 function showContact() {
@@ -186,6 +202,7 @@ async function send(value) {
       question,
       locale: props.locale,
       projects: props.projects,
+      resume: props.resume,
       history: messages.value.map(({ role, text }) => ({ role, content: text })),
       signal: request.signal
     })
@@ -215,6 +232,9 @@ watch(
     pending.value = false
   }
 )
-onBeforeUnmount(() => controller?.abort())
-defineExpose({ open })
+onBeforeUnmount(() => {
+  controller?.abort()
+  emit('open-change', false)
+})
+defineExpose({ open, close })
 </script>

@@ -4,14 +4,9 @@
       <div>
         <p class="eyebrow">USER DIRECTORY</p>
         <h1 id="user-ledger-title">用户管理 <span>用户台账</span></h1>
-        <p class="description">集中维护用户账号、登录状态与角色权限。</p>
       </div>
       <el-button class="create-user" type="primary" :disabled="loading || saving || !canCreate" @click="openDialog('create')">＋ 新增用户</el-button>
     </header>
-
-    <div class="role-guide" aria-label="角色权限说明">
-      <div v-for="role in roleDefinitions" :key="role.key"><span class="role-dot" :class="role.key"></span><div><strong>{{ role.label }}</strong><p>{{ role.description }}</p></div></div>
-    </div>
 
     <div class="ledger-card">
       <form class="ledger-filters" @submit.prevent="search">
@@ -41,11 +36,11 @@
       <footer class="table-footer"><span>{{ currentAdmin?.isSuperAdmin ? '内置超级管理员和本人账号不可停用，本人角色不可调整。' : '可维护普通用户；本人角色和其他管理员由超级管理员维护。' }}</span><el-pagination v-model:current-page="pageNum" v-model:page-size="pageSize" :page-sizes="[10, 20, 50]" :total="total" layout="total, sizes, prev, pager, next" :disabled="saving || loading" background @size-change="changePageSize" @current-change="loadUsers" /></footer>
     </div>
 
-    <el-dialog v-model="dialogVisible" :title="dialogTitle" width="540px" class="user-editor-dialog" :close-on-click-modal="false" :close-on-press-escape="!saving" :show-close="!saving" :before-close="beforeClose" @closed="clearDialog">
+    <el-dialog v-model="dialogVisible" :title="dialogTitle" width="540px" class="user-editor-dialog" destroy-on-close :close-on-click-modal="false" :close-on-press-escape="!saving && !avatarBusy" :show-close="!saving && !avatarBusy" :before-close="beforeClose" @closed="clearDialog">
       <p class="dialog-description">{{ dialogDescription }}</p>
       <el-form ref="formRef" :model="form" :rules="rules" label-position="top" :disabled="saving" @submit.prevent="save">
         <template v-if="mode === 'create' || mode === 'edit'">
-          <el-form-item label="用户头像"><AvatarPicker v-model="form.avatar" v-model:file="avatarFile" :name="form.nickname || form.username" :disabled="saving" /></el-form-item>
+          <el-form-item label="用户头像"><AvatarPicker v-model="form.avatar" v-model:file="avatarFile" :name="form.nickname || form.username" :disabled="saving" @busy="setAvatarBusy" /></el-form-item>
           <el-form-item label="登录账号" prop="username"><el-input v-model="form.username" maxlength="100" autocomplete="off" placeholder="请输入登录账号" /></el-form-item>
           <el-form-item label="用户昵称" prop="nickname"><el-input v-model="form.nickname" maxlength="100" placeholder="请输入昵称（选填）" /></el-form-item>
           <div class="form-columns"><el-form-item label="联系邮箱" prop="email"><el-input v-model="form.email" maxlength="254" type="email" placeholder="选填" /></el-form-item><el-form-item label="手机号码" prop="phone"><el-input v-model="form.phone" maxlength="30" placeholder="选填" /></el-form-item></div>
@@ -60,7 +55,7 @@
         </template>
         <el-alert v-if="saveError" type="error" :title="saveError" :closable="false" show-icon />
       </el-form>
-      <template #footer><el-button :disabled="saving" @click="requestClose">取消</el-button><el-button type="primary" :loading="saving" @click="save">{{ mode === 'create' ? '创建用户' : '保存修改' }}</el-button></template>
+      <template #footer><el-button :disabled="saving || avatarBusy" @click="requestClose">取消</el-button><el-button type="primary" :loading="saving" :disabled="avatarBusy" @click="save">{{ mode === 'create' ? '创建用户' : '保存修改' }}</el-button></template>
     </el-dialog>
   </section>
 </template>
@@ -97,6 +92,7 @@ const mode = ref('create')
 const target = ref(null)
 const formRef = ref(null)
 const avatarFile = ref(null)
+const avatarBusy = ref(false)
 const emptyForm = () => ({ username: '', nickname: '', email: '', phone: '', avatar: '', status: '0', role: 'common', password: '', confirmPassword: '' })
 const form = reactive(emptyForm())
 const baseline = ref('')
@@ -133,7 +129,8 @@ function errorMessage(error) {
   if (status && status < 500) return error.response?.data?.msg || '操作未完成，请刷新后重试'
   return '服务暂时不可用，请稍后重试；若刚提交修改，请先刷新列表核对结果。'
 }
-function setBusy(value) { saving.value = value; emit('busy', value) }
+function setBusy(value) { saving.value = value; emit('busy', value || avatarBusy.value) }
+function setAvatarBusy(value) { avatarBusy.value = value; emit('busy', value || saving.value) }
 
 async function loadUsers() {
   if (disposed) return
@@ -181,7 +178,7 @@ async function openDialog(action, row = null) {
 }
 function clearDialog() { Object.assign(form, emptyForm()); avatarFile.value = null; target.value = null; saveError.value = ''; formRef.value?.clearValidate() }
 async function beforeClose(done) {
-  if (saving.value) return
+  if (saving.value || avatarBusy.value) return
   if (dirty.value) {
     try { await ElMessageBox.confirm('尚有未保存的修改，确定关闭吗？', '放弃修改', { confirmButtonText: '放弃修改', cancelButtonText: '继续编辑', type: 'warning' }) } catch { return }
   }
@@ -190,9 +187,9 @@ async function beforeClose(done) {
 function requestClose() { void beforeClose(() => { dialogVisible.value = false }) }
 
 async function save() {
-  if (saving.value || !dialogVisible.value) return
+  if (saving.value || avatarBusy.value || !dialogVisible.value) return
   const valid = await formRef.value?.validate().catch(() => false)
-  if (!valid || disposed || saving.value || !dialogVisible.value) return
+  if (!valid || disposed || saving.value || avatarBusy.value || !dialogVisible.value) return
   setBusy(true)
   saveError.value = ''
   const self = target.value && isSelf(target.value)
@@ -244,7 +241,7 @@ async function changeStatus(row) {
   finally { setBusy(false) }
 }
 
-function warnUnsaved(event) { if (dialogVisible.value && (dirty.value || saving.value)) { event.preventDefault(); event.returnValue = '' } }
+function warnUnsaved(event) { if (dialogVisible.value && (dirty.value || saving.value || avatarBusy.value)) { event.preventDefault(); event.returnValue = '' } }
 onMounted(() => { void loadUsers(); window.addEventListener('beforeunload', warnUnsaved) })
 onBeforeUnmount(() => { disposed = true; listController?.abort(); form.password = ''; form.confirmPassword = ''; emit('busy', false); window.removeEventListener('beforeunload', warnUnsaved) })
 </script>
@@ -254,14 +251,13 @@ onBeforeUnmount(() => { disposed = true; listController?.abort(); form.password 
 .ledger-heading { display: flex; justify-content: space-between; align-items: center; gap: 24px; margin-bottom: 28px; }
 .eyebrow { color: #71815e; font-size: 10px; font-weight: 600; letter-spacing: 2px; }
 h1 { font-size: 28px; font-weight: 600; margin: 12px 0; } h1 span { font-size: 11px; font-weight: 400; color: #708167; vertical-align: middle; padding: 5px 9px; border: 1px solid #d7e0cf; border-radius: 5px; margin-left: 10px; }
-.description { font-size: 13px; color: #788871; line-height: 1.8; }.create-user { padding: 18px 20px; }
-.role-guide { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }.role-guide > div { display: flex; gap: 12px; padding: 18px 20px; background: #fbfcf8; border: 1px solid #dfe5d8; border-radius: 10px; }.role-guide strong { font-size: 13px; font-weight: 600; }.role-guide p { color: #82917a; font-size: 11px; margin-top: 7px; line-height: 1.6; }.role-dot { width: 8px; height: 8px; background: #90a283; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }.role-dot.admin { background: #bb9252; }.role-dot.manager { background: #577c50; }
+.create-user { padding: 18px 20px; }
 .ledger-card { background: #fbfcf8; border: 1px solid #dfe5d8; border-radius: 14px; overflow: hidden; }.ledger-filters { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 24px; border-bottom: 1px solid #e8ecdf; }.ledger-filters .search-input { width: 250px; }.ledger-filters .el-select { width: 142px; }.ledger-filters .el-button + .el-button { margin-left: 0; }
 .table-caption { display: flex; justify-content: space-between; align-items: center; padding: 18px 24px; color: #607454; font-size: 12px; }.table-caption strong { color: #334e31; margin: 0 8px 0 12px; }.table-caption small { color: #8c9785; }.ledger-alert { margin-bottom: 12px; }
 .ledger-table { --el-table-header-bg-color: #f0f4e9; --el-table-tr-bg-color: #fbfcf8; --el-table-row-hover-bg-color: #eef3e6; --el-table-border-color: #e7ecdf; --el-table-header-text-color: #64785a; --el-table-text-color: #3e5138; font-size: 12px; }:deep(.el-table__cell) { padding: 15px 0; }:deep(.el-table__row--striped td.el-table__cell) { background: #f6f8f1; }.account-cell { display: flex; align-items: center; gap: 12px; }.user-avatar { width: 34px; height: 34px; flex-shrink: 0; display: grid; place-items: center; border-radius: 9px; color: #597344; background: #eaf0df; font-size: 14px; }.account-cell strong { color: #2b4529; font-weight: 600; overflow-wrap: anywhere; }.account-cell small, .cell-secondary { display: block; font-size: 11px; color: #8a9782; margin-top: 5px; }.self-tag { margin-left: 7px; font-size: 10px; }.status-text { display: inline-flex; align-items: center; gap: 7px; color: #62824d; }.status-text i { width: 6px; height: 6px; border-radius: 50%; background: #72965c; }.status-text.inactive { color: #939d8e; }.status-text.inactive i { background: #aeb6a8; }.row-actions { display: flex; align-items: center; gap: 12px; }.row-actions .el-button { margin: 0; font-size: 12px; }
 .table-footer { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; padding: 22px 24px; border-top: 1px solid #e8ecdf; }.table-footer > span { font-size: 11px; color: #8a9782; line-height: 1.8; }.dialog-description { color: #7b8b72; font-size: 12px; line-height: 1.8; margin-bottom: 22px; }.form-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }.role-options { display: grid; gap: 10px; width: 100%; }.role-options .el-radio { margin: 0; padding: 16px; width: 100%; height: auto; white-space: normal; }.role-options strong { font-size: 13px; }.role-options small { display: block; font-size: 11px; line-height: 1.7; font-weight: 400; margin-top: 5px; color: #8a9782; }
-@media (max-width: 900px) { .role-guide { gap: 8px; }.role-guide > div { padding: 14px 12px; }.ledger-filters { padding: 18px; }.table-footer { padding: 18px; }.ledger-filters .search-input { width: 100%; } }
-@media (max-width: 600px) { .ledger-heading { flex-wrap: wrap; gap: 16px; }.role-guide { grid-template-columns: 1fr; }.role-guide > div { padding: 12px 16px; }.role-guide p { margin-top: 3px; }.ledger-filters .el-select { width: calc(50% - 6px); }.form-columns { grid-template-columns: 1fr; gap: 0; }.table-footer :deep(.el-pagination) { flex-wrap: wrap; gap: 8px; }.table-footer :deep(.el-pagination__sizes) { margin: 0; } }
+@media (max-width: 900px) { .ledger-filters { padding: 18px; }.table-footer { padding: 18px; }.ledger-filters .search-input { width: 100%; } }
+@media (max-width: 600px) { .ledger-heading { flex-wrap: wrap; gap: 16px; }.ledger-filters .el-select { width: calc(50% - 6px); }.form-columns { grid-template-columns: 1fr; gap: 0; }.table-footer :deep(.el-pagination) { flex-wrap: wrap; gap: 8px; }.table-footer :deep(.el-pagination__sizes) { margin: 0; } }
 </style>
 
 <style>

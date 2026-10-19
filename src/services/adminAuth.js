@@ -41,6 +41,8 @@ function requireUser(response) {
     lastLoginAt: account.loginDate,
     roles: roleKeys,
     canManageUsers: roleKeys.includes('admin') || roleKeys.includes('manager'),
+    canManageProjects: (roleKeys.includes('admin') || roleKeys.includes('manager')) && Array.isArray(permissions) && permissions.some(permission => ['*:*:*', 'website:project:list'].includes(permission)),
+    canManageResume: (roleKeys.includes('admin') || roleKeys.includes('manager')) && Array.isArray(permissions) && permissions.some(permission => ['*:*:*', 'website:resume:list'].includes(permission)),
     isSuperAdmin: roleKeys.includes('admin'),
     roleLabel: roleKeys.includes('admin') ? '超级管理员' : roleNames.join('、') || roleKeys.join('、') || '未分配角色',
     permissions: Array.isArray(permissions) ? permissions : [],

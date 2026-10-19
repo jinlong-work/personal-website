@@ -4,8 +4,8 @@
       <RouterLink to="/" class="admin-brand"><span>jl.</span><div>曹进龙<small>网站管理中心</small></div></RouterLink>
       <p class="nav-label">工作空间</p>
       <nav aria-label="后台管理导航">
-        <button v-for="item in sections" :key="item.key" type="button" :disabled="loggingOut || accountSaving" :class="{ active: section === item.key }" :aria-current="section === item.key ? 'page' : undefined" @click="section = item.key">
-          <span aria-hidden="true">{{ item.icon }}</span>{{ item.label }}<small v-if="['projects', 'settings'].includes(item.key)">待完善</small>
+        <button v-for="item in sections" :key="item.key" type="button" :disabled="loggingOut || accountSaving" :class="{ active: section === item.key }" :aria-current="section === item.key ? 'page' : undefined" @click="selectSection(item.key)">
+          <span aria-hidden="true">{{ item.icon }}</span>{{ item.label }}<small v-if="item.key === 'settings'">待完善</small>
         </button>
       </nav>
       <RouterLink class="sidebar-return" to="/">← 查看个人网站</RouterLink>
@@ -31,11 +31,12 @@
               <dl><div><dt>登录账号</dt><dd>{{ currentAdmin?.username || '—' }}</dd></div><div><dt>账号角色</dt><dd>{{ currentAdmin?.roleLabel || '—' }}</dd></div><div><dt>联系邮箱</dt><dd>{{ currentAdmin?.email || '未设置' }}</dd></div><div><dt>最近登录</dt><dd>{{ formatDate(currentAdmin?.lastLoginAt) }}</dd></div><div><dt>登录凭证有效至</dt><dd>{{ formatDate(tokenState?.expiresAt) }}</dd></div></dl>
               <button class="secondary-button" type="button" :disabled="refreshing || loggingOut || accountSaving" @click="refreshAccount">{{ refreshing ? '正在刷新…' : '刷新账号信息' }}</button>
             </section>
-            <section v-if="sections.length > 1" class="content-card"><div class="card-heading"><h2>管理入口</h2><span class="muted">工作空间</span></div><div class="quick-links"><button v-for="item in sections.slice(1)" :key="item.key" type="button" :disabled="accountSaving" @click="section = item.key"><span>{{ item.label }}<small>{{ item.description }}</small></span><span aria-hidden="true">↗</span></button></div></section>
+            <section v-if="sections.length > 1" class="content-card"><div class="card-heading"><h2>管理入口</h2><span class="muted">工作空间</span></div><div class="quick-links"><button v-for="item in sections.slice(1)" :key="item.key" type="button" :disabled="accountSaving" @click="selectSection(item.key)"><span>{{ item.label }}<small>{{ item.description }}</small></span><span aria-hidden="true">↗</span></button></div></section>
           </div>
-          <section class="content-card progress-note"><span aria-hidden="true">↗</span><div><h2>管理空间已就绪</h2><p>{{ currentAdmin?.canManageUsers ? '用户管理支持头像、账号资料、密码和角色维护。项目管理及网站设置将在后续逐步开放。' : '如需修改账号资料、头像或密码，请联系管理员。' }}</p></div></section>
         </template>
         <AdminUserLedger v-else-if="section === 'users' && currentAdmin?.canManageUsers" @busy="accountSaving = $event" />
+        <AdminProjectManager v-else-if="section === 'projects' && currentAdmin?.canManageProjects" @busy="accountSaving = $event" />
+        <AdminResumeManager v-else-if="section === 'resume' && currentAdmin?.canManageResume" ref="resumeManager" @busy="accountSaving = $event" />
         <section v-else class="content-card placeholder-panel">
           <p class="eyebrow">COMING SOON</p><span class="placeholder-icon" aria-hidden="true">{{ activeSection.icon }}</span><h1>{{ activeSection.label }}</h1><p>{{ activeSection.description }}，功能正在规划中。</p><button class="secondary-button" type="button" @click="section = 'overview'">返回工作台</button>
         </section>
@@ -49,6 +50,8 @@
 import { computed, ref, watch } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
 import AdminUserLedger from '@/components/AdminUserLedger.vue'
+import AdminProjectManager from '@/components/AdminProjectManager.vue'
+import AdminResumeManager from '@/components/AdminResumeManager.vue'
 import UserAvatar from '@/components/UserAvatar.vue'
 import { authErrorMessage, currentAdmin, fetchCurrentAdmin, isSessionError, logoutAdmin } from '@/services/adminAuth'
 import { tokenState } from '@/utils/auth'
@@ -59,12 +62,14 @@ const loggingOut = ref(false)
 const refreshing = ref(false)
 const accountSaving = ref(false)
 const feedback = ref('')
+const resumeManager = ref(null)
 const sections = computed(() => [
   { key: 'overview', label: '工作台', icon: '◈' },
   ...(currentAdmin.value?.canManageUsers ? [
-    { key: 'users', label: '用户管理', icon: '♙', description: '用户台账、账号密码和角色权限' },
-    { key: 'projects', label: '项目管理', icon: '▦', description: '整理与展示你的精选作品' }
+    { key: 'users', label: '用户管理', icon: '♙', description: '用户台账、账号密码和角色权限' }
   ] : []),
+  ...(currentAdmin.value?.canManageProjects ? [{ key: 'projects', label: '项目管理', icon: '▦', description: '维护首页作品、效果图和发布状态' }] : []),
+  ...(currentAdmin.value?.canManageResume ? [{ key: 'resume', label: '在线简历', icon: '▤', description: '维护个人介绍、教育经历、工作履历和技术栈' }] : []),
   ...(currentAdmin.value?.canManageUsers ? [{ key: 'settings', label: '网站设置', icon: '⚙', description: '管理网站的基础信息' }] : [])
 ])
 const activeSection = computed(() => sections.value.find(item => item.key === section.value) || sections.value[0])
@@ -73,6 +78,12 @@ const displayName = computed(() => currentAdmin.value?.nickname || currentAdmin.
 watch(currentAdmin, (account) => {
   if (account && !sections.value.some(item => item.key === section.value)) section.value = 'overview'
 })
+
+async function selectSection(key) {
+  if (key === section.value) return
+  if (section.value === 'resume' && !(await resumeManager.value?.confirmLeave())) return
+  section.value = key
+}
 
 function formatDate(value) {
   if (!value) return '—'
@@ -100,6 +111,7 @@ async function refreshAccount() {
 
 async function logout() {
   if (loggingOut.value || refreshing.value || accountSaving.value) return
+  if (section.value === 'resume' && !(await resumeManager.value?.confirmLeave())) return
   loggingOut.value = true
   feedback.value = ''
   try {
@@ -156,9 +168,6 @@ dd { text-align: right; overflow-wrap: anywhere; }
 .quick-links button { display: flex; align-items: center; justify-content: space-between; gap: 14px; border: 1px solid #e5e9df; border-radius: 8px; padding: 14px 16px; text-align: left; background: transparent; color: #334b2c; font-size: 13px; }
 .quick-links button:hover { background: #f0f4e7; }
 .quick-links small { display: block; margin-top: 6px; color: #82917f; font-size: 11px; }
-.progress-note { margin-top: 24px; display: flex; gap: 20px; align-items: center; }
-.progress-note > span { font-size: 30px; color: #72885d; }
-.progress-note p { margin-top: 10px; font-size: 12px; line-height: 1.9; color: #7b8c73; }
 .dashboard-feedback { padding: 14px 18px; margin-bottom: 20px; border-radius: 8px; background: #e9efdc; font-size: 13px; line-height: 1.8; }
 .placeholder-panel { text-align: center; padding: 72px 24px; }
 .placeholder-icon { display: block; margin: 24px 0; color: #6d8553; font-size: 48px; }

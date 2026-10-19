@@ -271,7 +271,7 @@ export const siteContent = {
       achievements: '主要职责',
       gallery: '项目截图',
       imageHint: '点击图片可放大预览',
-      disclaimer: '展示图片已筛选并完成隐私脱敏',
+      disclaimer: '项目效果图，仅供作品展示。',
       close: '关闭'
     }
   },
@@ -384,7 +384,7 @@ export const siteContent = {
       achievements: 'Key Contributions',
       gallery: 'Screenshots',
       imageHint: 'Click an image to enlarge',
-      disclaimer: 'Portfolio images have been reviewed and privacy-redacted.',
+      disclaimer: 'Project screenshots for portfolio presentation.',
       close: 'Close'
     }
   }
@@ -511,6 +511,13 @@ export function localizeProjects(projects, locale) {
   }
 
   return projects.map((project) => {
+    // 后台管理的项目使用数据库里的翻译，避免按旧ID覆盖已经编辑过的内容。
+    if (project.managed) {
+      const translated = locale === 'en' ? project.english : null
+      if (!translated) return project
+      const fields = ['name', 'type', 'description', 'category', 'headline', 'summary', 'technologies', 'achievements']
+      return { ...project, ...Object.fromEntries(fields.filter(key => Array.isArray(translated[key]) ? translated[key].length : typeof translated[key] === 'string' && translated[key].trim()).map(key => [key, translated[key]])) }
+    }
     const localizedProject = localeProjects[project.id]
 
     if (!localizedProject) {

@@ -153,10 +153,10 @@ onUnmounted(() => {
 }
 
 .dialog-icon {
-  color: #c7e9a3;
+  color: var(--lime);
 
   :deep(.resume-preview-dialog.light-theme) & {
-    color: #859900;
+    color: var(--lime);
   }
 }
 
@@ -186,19 +186,19 @@ onUnmounted(() => {
   align-items: center;
   justify-content: center;
   gap: 14px;
-  color: #9baea3;
+  color: var(--muted);
   font-size: 0.95rem;
 
   i {
     font-size: 2rem;
-    color: #c7e9a3;
+    color: var(--lime);
   }
 
   :deep(.resume-preview-dialog.light-theme) & {
-    color: #657b83;
+    color: var(--muted);
 
     i {
-      color: #859900;
+      color: var(--lime);
     }
   }
 }
@@ -207,55 +207,29 @@ onUnmounted(() => {
 <style lang="scss">
 /* 全局样式 - 用于覆盖 Element Plus 弹窗并适配主题 */
 .resume-preview-dialog {
-  /* 暗夜主题（默认） */
-  &:not(.light-theme) {
-    .el-dialog {
-      background-color: #17251f;
-      border: 1px solid #34483c;
-    }
-    .el-dialog__header,
-    .el-dialog__body,
-    .el-dialog__footer {
-      background-color: #17251f;
-      border-color: #34483c;
-    }
-    .dialog-title {
-      color: #f0eee4;
-    }
-    .el-dialog__body {
-      color: #9baea3;
-    }
-    .el-dialog__close {
-      color: #9baea3;
-    }
-  }
+  background: var(--surface-raised);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  color: var(--ink);
 
-  /* 明亮主题 */
-  &.light-theme {
-    .el-dialog {
-      background-color: #fef9ef;
-      border: 1px solid #eee8d5;
-    }
-    .el-dialog__header,
-    .el-dialog__body,
-    .el-dialog__footer {
-      background-color: #fef9ef;
-      border-color: #eee8d5;
-    }
-    .dialog-title {
-      color: #586e75;
-    }
-    .el-dialog__body {
-      color: #657b83;
-    }
-    .el-dialog__close {
-      color: #657b83;
-    }
+  .el-dialog__header,
+  .el-dialog__body,
+  .el-dialog__footer {
+    background: var(--surface-raised);
+    border-color: var(--line);
+  }
+  .dialog-title {
+    color: var(--ink);
+  }
+  .el-dialog__body,
+  .el-dialog__close {
+    color: var(--muted);
   }
 
   .el-dialog {
     border-radius: 12px;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 25px 50px -12px var(--backdrop);
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -311,10 +285,10 @@ onUnmounted(() => {
       font-size: 1.2rem;
 
       &:hover {
-        color: #c7e9a3;
+        color: var(--lime);
 
         html.light-theme & {
-          color: #859900;
+          color: var(--lime);
         }
       }
     }
@@ -329,19 +303,19 @@ onUnmounted(() => {
   flex-wrap: wrap;
   gap: 12px;
   margin-bottom: 12px;
-  color: #c3d4bf;
+  color: var(--muted);
   font-size: 12px;
 }
 .resume-tools button {
-  background: #20382a;
-  color: #dbedc7;
-  border: 1px solid #658367;
+  background: var(--surface);
+  color: var(--ink);
+  border: 1px solid var(--line-strong);
   border-radius: 6px;
   padding: 4px 10px;
   cursor: pointer;
 }
 .resume-tools a {
-  color: #c7e9a3;
+  color: var(--lime);
   margin-left: auto;
 }
 </style>
