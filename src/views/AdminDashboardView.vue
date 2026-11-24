@@ -70,6 +70,7 @@ const sections = computed(() => [
   ] : []),
   ...(currentAdmin.value?.canManageProjects ? [{ key: 'projects', label: '项目管理', icon: '▦', description: '维护首页作品、效果图和发布状态' }] : []),
   ...(currentAdmin.value?.canManageResume ? [{ key: 'resume', label: '在线简历', icon: '▤', description: '维护个人介绍、教育经历、工作履历和技术栈' }] : []),
+  { key: 'english', label: '英语角', icon: 'Aa', description: '按章节学习雅思词汇和跟读' },
   ...(currentAdmin.value?.canManageUsers ? [{ key: 'settings', label: '网站设置', icon: '⚙', description: '管理网站的基础信息' }] : [])
 ])
 const activeSection = computed(() => sections.value.find(item => item.key === section.value) || sections.value[0])
@@ -82,6 +83,10 @@ watch(currentAdmin, (account) => {
 async function selectSection(key) {
   if (key === section.value) return
   if (section.value === 'resume' && !(await resumeManager.value?.confirmLeave())) return
+  if (key === 'english') {
+    await router.push({ name: 'admin-english' })
+    return
+  }
   section.value = key
 }
 

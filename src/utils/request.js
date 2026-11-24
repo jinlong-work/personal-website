@@ -36,6 +36,9 @@ request.interceptors.request.use((config) => {
 
 request.interceptors.response.use((response) => {
   const body = response.data
+  if (response.config.responseType === 'blob' && body instanceof Blob && !body.type.includes('json')) {
+    return response
+  }
   if (body?.code !== 200) {
     const error = new axios.AxiosError(
       body?.msg || '后台响应异常，请稍后重试',

@@ -138,6 +138,7 @@ async function submit() {
     document.getElementById(`admin-${invalidField}`)?.focus()
     return
   }
+  const destination = loginDestination()
   submitting.value = true
   let focusField
   try {
@@ -150,7 +151,7 @@ async function submit() {
     if (disposed) return
     password.value = ''
     captcha.code = ''
-    await router.replace(loginDestination())
+    await router.replace(destination)
   } catch (error) {
     if (disposed) return
     feedback.value = authErrorMessage(error)

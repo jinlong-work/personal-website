@@ -19,6 +19,18 @@ const router = createRouter({
       meta: { requiresAdmin: true }
     },
     {
+      path: '/admin/english',
+      name: 'admin-english',
+      component: () => import('../views/EnglishCornerView.vue'),
+      meta: { requiresAdmin: true }
+    },
+    {
+      path: '/admin/english/practice',
+      name: 'admin-english-practice',
+      component: () => import('../views/EnglishPracticeView.vue'),
+      meta: { requiresAdmin: true }
+    },
+    {
       path: '/admin/login',
       name: 'admin-login',
       component: () => import('../views/AdminLoginView.vue')
