@@ -6,9 +6,20 @@
         <p v-if="chapters.length">{{ chapters.length }} 章 <span aria-hidden="true">·</span> {{ wordCount.toLocaleString('zh-CN') }} 个词汇</p>
       </template>
       <template #primary>
-        <RouterLink class="study-action study-action--primary" :to="practiceRoute">
-          <EditPen aria-hidden="true" />
+        <RouterLink
+          class="study-action study-action--primary"
+          :to="{ name: 'admin-english-study', query: selectedId === null ? {} : { fromChapter: String(selectedId) } }"
+        >
+          <Reading aria-hidden="true" />
           背单词
+        </RouterLink>
+        <RouterLink class="study-action" :to="practiceRoute">
+          <EditPen aria-hidden="true" />
+          单词默写
+        </RouterLink>
+        <RouterLink class="study-action" :to="{ name: 'admin-english-study-ledger', query: chapterQuery }">
+          <DataAnalysis aria-hidden="true" />
+          学习台账
         </RouterLink>
       </template>
       <template #return>
@@ -194,7 +205,7 @@
 </template>
 
 <script setup>
-import { ArrowLeft, ArrowRight, EditPen, Headset, Reading, VideoPause } from '@element-plus/icons-vue'
+import { ArrowLeft, ArrowRight, DataAnalysis, EditPen, Headset, Reading, VideoPause } from '@element-plus/icons-vue'
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, shallowRef, watch } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
 import { getAllChapterWords, getChapters, getChapterWords } from '@/api/admin/english'
@@ -226,10 +237,8 @@ const pagePlayback = computed(() => playback.value?.mode === 'detail' ? null : p
 const selectedChapter = computed(() => chapters.value.find(chapter => chapter.id === selectedId.value))
 const chapterLoaded = computed(() => wordPage.value?.chapterId === selectedId.value)
 const wordCount = computed(() => chapters.value.reduce((sum, chapter) => sum + chapter.wordCount, 0))
-const practiceRoute = computed(() => ({
-  name: 'admin-english-practice',
-  query: selectedId.value === null ? {} : { chapter: String(selectedId.value) }
-}))
+const chapterQuery = computed(() => selectedId.value === null ? {} : { chapter: String(selectedId.value) })
+const practiceRoute = computed(() => ({ name: 'admin-english-practice', query: chapterQuery.value }))
 let chapterRequest
 let wordRequest
 let indexRequest
@@ -402,6 +411,7 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .english-corner { --card-min-height: 176px; --card-content-height: 144px; }
+.english-corner :deep(.study-actions) { justify-content: flex-end; margin-inline-start: auto; }
 .chapter-meta { color: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums; }
 .chapter-meta span { margin: 0 4px; }
 .corner-layout { display: grid; grid-template-columns: 196px minmax(0, 1fr); align-items: start; gap: 24px; }

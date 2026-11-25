@@ -1,6 +1,6 @@
 <template>
   <main class="english-study english-practice" aria-labelledby="english-title">
-    <EnglishStudyHeader title="背单词">
+    <EnglishStudyHeader title="单词默写">
       <template #icon><EditPen /></template>
       <template #return>
         <RouterLink class="study-action" :to="vocabularyRoute">
@@ -22,7 +22,7 @@
         <section class="practice-settings" aria-label="练习设置">
           <label class="practice-setting">
             <span>练习章节</span>
-            <select :value="selectedId" @change="loadDeck(Number($event.target.value))">
+            <select :value="selectedId" @change="selectChapter(Number($event.target.value))">
               <option v-for="chapter in chapters" :key="chapter.id" :value="chapter.id">
                 第 {{ chapter.number }} 章 · {{ chapter.title }}
               </option>
@@ -44,6 +44,11 @@
           </div>
         </section>
 
+        <div v-if="targetWordIds && !deckLoading && !deckError" class="practice-selection">
+          <span>指定词汇 · {{ practiceWords.length }} 词</span>
+          <button type="button" class="practice-button" @click="selectChapter(selectedId)">练习整章</button>
+        </div>
+
         <div v-if="questions.length && !deckLoading && !deckError" class="practice-progress">
           <dl>
             <div><dt>进度</dt><dd>{{ outcomes.length }} / {{ questions.length }}</dd></div>
@@ -60,7 +65,7 @@
           <button type="button" class="practice-button" @click="loadDeck(selectedId)">重试</button>
         </div>
         <p v-else-if="!questions.length" class="practice-message">
-          {{ mode === 'audio' && deck.length ? '本章暂无可用发音，可以选择看中文练习。' : '本章暂无可练习的词汇。' }}
+          {{ mode === 'audio' && practiceWords.length ? '这组词汇暂无可用发音，可以选择看中文练习。' : '暂无可练习的词汇。' }}
         </p>
 
         <section v-else class="practice-session" aria-label="单词拼写练习">
@@ -158,21 +163,29 @@
 <script setup>
 import { ArrowLeft, ArrowRight, CircleCheck, CircleClose, EditPen, Headset, Reading, Switch } from '@element-plus/icons-vue'
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, shallowRef } from 'vue'
-import { RouterLink, useRoute } from 'vue-router'
+import { RouterLink, useRoute, useRouter } from 'vue-router'
 import { getAllChapterWords, getChapters } from '@/api/admin/english'
 import EnglishSpellingInput from '@/components/EnglishSpellingInput.vue'
 import EnglishStudyHeader from '@/components/EnglishStudyHeader.vue'
 import EnglishWordDetails from '@/components/EnglishWordDetails.vue'
 import { useEnglishAudio } from '@/composables/useEnglishAudio'
+import { shuffleWords } from '@/utils/englishStudy'
 
 const outcomeLabels = { correct: '拼写正确', incorrect: '拼写错误，正确单词', skipped: '已跳过，正确单词' }
 const outcomeIcons = { correct: CircleCheck, incorrect: CircleClose, skipped: ArrowRight }
 const route = useRoute()
+const router = useRouter()
 const { playback, audioError, playWord, reset: resetAudio } = useEnglishAudio()
 const chapters = ref([])
 const selectedId = ref(null)
 const mode = ref('meaning')
 const deck = shallowRef([])
+const targetWordIds = shallowRef(typeof route.query.words === 'string'
+  ? new Set(route.query.words.split(',').map(Number).filter(id => Number.isSafeInteger(id) && id > 0))
+  : null)
+const practiceWords = computed(() => targetWordIds.value
+  ? deck.value.filter(word => targetWordIds.value.has(word.id))
+  : deck.value)
 const questions = shallowRef([])
 const deckCache = new Map()
 const chaptersLoading = ref(true)
@@ -210,7 +223,9 @@ async function loadChapters() {
     const data = await getChapters(controller.signal)
     if (controller.signal.aborted) return
     chapters.value = data
-    const chapter = data.find(item => String(item.id) === route.query.chapter) ?? data[0]
+    const requested = data.find(item => String(item.id) === route.query.chapter)
+    if (!requested) targetWordIds.value = null
+    const chapter = requested ?? data[0]
     if (chapter) void loadDeck(chapter.id)
   } catch {
     if (!controller.signal.aborted) chapterError.value = '章节加载失败，请稍后重试'
@@ -247,17 +262,18 @@ async function loadDeck(chapterId) {
   }
 }
 
+function selectChapter(chapterId) {
+  targetWordIds.value = null
+  void router.replace({ name: 'admin-english-practice', query: { chapter: String(chapterId) } })
+  void loadDeck(chapterId)
+}
+
 function restartRound() {
   resetAudio()
   reviewOpen.value = false
   const selectedMode = mode.value
-  const shuffled = selectedMode === 'audio' ? deck.value.filter(word => word.hasAudio) : deck.value.slice()
-  for (let index = shuffled.length - 1; index > 0; index--) {
-    const otherIndex = Math.floor(Math.random() * (index + 1))
-    const word = shuffled[index]
-    shuffled[index] = shuffled[otherIndex]
-    shuffled[otherIndex] = word
-  }
+  const words = selectedMode === 'audio' ? practiceWords.value.filter(word => word.hasAudio) : practiceWords.value
+  const shuffled = shuffleWords(words)
   questions.value = shuffled.map(word => {
     let questionMode = selectedMode
     if (selectedMode === 'random') {
@@ -323,6 +339,16 @@ onBeforeUnmount(() => {
 .english-practice { padding-block: clamp(12px, 2.4vh, 28px) 18px; }
 .english-practice :deep(.study-header) { margin-bottom: 16px; padding-block: 8px 14px; }
 .practice-workspace { inline-size: min(100%, 920px); margin-inline: auto; }
+.practice-selection {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 16px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 13px;
+}
 .practice-settings {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;

@@ -25,6 +25,18 @@ const router = createRouter({
       meta: { requiresAdmin: true }
     },
     {
+      path: '/admin/english/study',
+      name: 'admin-english-study',
+      component: () => import('../views/EnglishStudyView.vue'),
+      meta: { requiresAdmin: true }
+    },
+    {
+      path: '/admin/english/study/ledger',
+      name: 'admin-english-study-ledger',
+      component: () => import('../views/EnglishStudyLedgerView.vue'),
+      meta: { requiresAdmin: true }
+    },
+    {
       path: '/admin/english/practice',
       name: 'admin-english-practice',
       component: () => import('../views/EnglishPracticeView.vue'),

@@ -33,3 +33,13 @@ export async function getWordAudio(wordId, signal) {
   if (data.type !== 'audio/mpeg' || !data.size) throw new Error('词汇音频格式异常')
   return data
 }
+
+export async function getStudyProgress(signal) {
+  const { data } = await request.get('/english/study/progress', { signal })
+  return data.data
+}
+
+export async function saveStudyProgress(wordId, rating, version) {
+  const { data } = await request.put('/english/study/words/' + wordId, { rating, version })
+  return data.data
+}
